@@ -1,15 +1,19 @@
-package com.joep.backofficeapi.DAL.Stores;
+package com.joep.backofficeapi.DAL.Stores.OrderStores;
 
 import com.joep.backofficeapi.DAL.Interfaces.IOrderStore;
+import com.joep.backofficeapi.Exceptions.OrderNotFoundException;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Order;
 import com.joep.backofficeapi.Models.Orderstatus;
 import com.mongodb.client.MongoClients;
+import com.mongodb.client.result.UpdateResult;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
 import dev.morphia.query.Query;
 import dev.morphia.query.UpdateOperations;
 import dev.morphia.query.experimental.filters.Filters;
+import dev.morphia.query.internal.MorphiaCursor;
+import org.bson.types.ObjectId;
 
 import java.util.List;
 
@@ -29,26 +33,32 @@ public class MongoOrderStore implements IOrderStore {
 
     @Override
     public List<Order> getOrders() {
-        return datastore.find(Order.class).iterator().toList();
+        MorphiaCursor query = datastore.find(Order.class).iterator();
+        return query.toList();
     }
 
     @Override
     public List<Order> getOrdersByCustomer(Customer customer) {
-        return datastore.find(Order.class).filter(Filters.lte("customer", customer.getId())).iterator().toList();
+        return datastore.find(Order.class).filter(Filters.eq("customer", customer.getId())).iterator().toList();
     }
 
     @Override
-    public Order getOrderById(int id) {
-        return datastore.find(Order.class).filter(Filters.lte("Id", id)).first();
+    public Order getOrderById(ObjectId id) throws OrderNotFoundException {
+        Order result = datastore.find(Order.class).filter(Filters.eq("Id", id)).first();
+        if (result != null) return result;
+
+        throw new OrderNotFoundException();
     }
 
     @Override
     public void changeOrderStatus(Order order, Orderstatus newOrderStatus) {
 
-        Query<Order> query = datastore.find(Order.class).filter(Filters.lte("Id", order.getId()));
+        Query<Order> query = datastore.find(Order.class).filter(Filters.eq("Id", order.getId()));
         UpdateOperations<Order> ops = datastore.createUpdateOperations(Order.class)
                 .set("orderStatus", newOrderStatus);
 
-        datastore.update(query, ops);
+        UpdateResult res = datastore.update(query, ops);
+
+        System.out.println(res);
     }
 }
