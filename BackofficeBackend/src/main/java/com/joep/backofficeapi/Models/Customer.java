@@ -1,13 +1,22 @@
 package com.joep.backofficeapi.Models;
 
-public class Customer {
-    private int Id;
+import dev.morphia.annotations.Entity;
+import dev.morphia.annotations.Id;
+import org.bson.types.ObjectId;
 
-    public Customer(int id) {
+@Entity
+public class Customer {
+    @dev.morphia.annotations.Id
+    private ObjectId Id;
+
+    public Customer(ObjectId id) {
         Id = id;
     }
 
-    public int getId() {
+    public Customer() {
+    }
+
+    public ObjectId getId() {
         return Id;
     }
 }

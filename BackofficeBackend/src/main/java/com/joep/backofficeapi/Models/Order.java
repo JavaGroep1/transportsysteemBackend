@@ -3,28 +3,29 @@ package com.joep.backofficeapi.Models;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
 import dev.morphia.annotations.Reference;
+import org.bson.types.ObjectId;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
 public class Order {
 
     @Id
-    private int Id;
+    private ObjectId Id;
 
-    private final Date dateOrdered;
-    private final Date deadline;
-    private final String startingPoint;
-    private final String destination;
-    private final Orderstatus orderStatus;
+    private  LocalDate dateOrdered;
+    private  LocalDate deadline;
+    private  String startingPoint;
+    private  String destination;
+    private  Orderstatus orderStatus;
+
+    private  Vehicle vehicle;
 
     @Reference
-    private final Vehicle vehicle;
+    private  Customer customer;
 
-    @Reference
-    private final Customer customer;
-
-    public Order(Date dateOrdered, Date deadline, String startingPoint, String destination, Orderstatus orderStatus, Vehicle vehicle, Customer customer) {
+    public Order(LocalDate dateOrdered, LocalDate deadline, String startingPoint, String destination, Orderstatus orderStatus, Vehicle vehicle, Customer customer) {
         this.dateOrdered = dateOrdered;
         this.deadline = deadline;
         this.startingPoint = startingPoint;
@@ -34,15 +35,18 @@ public class Order {
         this.customer = customer;
     }
 
-    public int getId() {
+    public Order() {
+    }
+
+    public ObjectId getId() {
         return Id;
     }
 
-    public Date getDateOrdered() {
+    public LocalDate getDateOrdered() {
         return dateOrdered;
     }
 
-    public Date getDeadline() {
+    public LocalDate getDeadline() {
         return deadline;
     }
 

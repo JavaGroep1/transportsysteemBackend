@@ -1,9 +1,12 @@
 package com.joep.backofficeapi.DAL.Containers;
 
 import com.joep.backofficeapi.DAL.Interfaces.IOrderStore;
+import com.joep.backofficeapi.Exceptions.OrderNotFoundException;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Order;
 import com.joep.backofficeapi.Models.Orderstatus;
+import org.bson.types.ObjectId;
+
 import java.util.List;
 
 public class OrderContainer implements IOrderStore {
@@ -29,7 +32,7 @@ public class OrderContainer implements IOrderStore {
     }
 
     @Override
-    public Order getOrderById(int id) {
+    public Order getOrderById(ObjectId id) throws OrderNotFoundException {
         return orderStore.getOrderById(id);
     }
 
