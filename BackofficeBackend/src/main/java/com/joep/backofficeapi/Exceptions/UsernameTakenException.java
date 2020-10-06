@@ -1,4 +1,4 @@
-package com.joep.springsecurityjwt.exceptions;
+package com.joep.backofficeapi.Exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

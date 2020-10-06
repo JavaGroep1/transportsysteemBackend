@@ -1,7 +1,7 @@
-package com.joep.springsecurityjwt.filters;
+package com.joep.backofficeapi.filters;
 
-import com.joep.springsecurityjwt.MyUserDetailService;
-import com.joep.springsecurityjwt.util.JwtUtil;
+import com.joep.backofficeapi.MyUserDetailService;
+import com.joep.backofficeapi.Util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
