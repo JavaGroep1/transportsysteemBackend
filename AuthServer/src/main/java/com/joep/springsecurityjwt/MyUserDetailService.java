@@ -48,7 +48,7 @@ public class MyUserDetailService implements UserDetailsService {
         userStore.createUser(new ApplicationUser(name, passwordEncoded, new ArrayList<>(), (int) (System.currentTimeMillis() + 1), Email, roles));
     }
 
-    private Boolean emailExist(String email){
+    private Boolean emailExist(String email) {
         return userStore.emailExists(email);
     }
 }

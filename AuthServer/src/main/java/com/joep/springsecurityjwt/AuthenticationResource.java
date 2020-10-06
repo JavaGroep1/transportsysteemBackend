@@ -35,6 +35,7 @@ public class AuthenticationResource {
     public ResponseEntity<?> test(@RequestBody String text) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         return ResponseEntity.ok(encoder.Encode(text));
     }
+
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         try {
@@ -42,8 +43,7 @@ public class AuthenticationResource {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), encodedPass)
             );
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
             throw new Exception("Incorrect username or password", e);
         }
@@ -51,7 +51,7 @@ public class AuthenticationResource {
                 .loadUserByUsername(authenticationRequest.getUsername());
         final String accessToken = jwtTokenUtil.generateToken(userDetails);
         final AuthenticationResponse response = new AuthenticationResponse(accessToken);
-        return  ResponseEntity.ok(response);
+        return ResponseEntity.ok(response);
     }
 
     @CrossOrigin(origins = {"*"})

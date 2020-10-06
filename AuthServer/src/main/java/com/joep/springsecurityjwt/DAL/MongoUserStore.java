@@ -28,6 +28,7 @@ public class MongoUserStore implements IUserStore {
         database = mongoClient.getDB("test");
         collection = database.getCollection("Accounts");
     }
+
     @Override
     public ArrayList<ApplicationUser> getAllUsers() {
         return null;
@@ -52,14 +53,16 @@ public class MongoUserStore implements IUserStore {
 
         return true;
     }
+
     @Override
     public Boolean emailExists(String email) {
         DBObject query = new BasicDBObject("email", email);
-        if ( collection.find(query).hasNext()) return true;
+        if (collection.find(query).hasNext()) return true;
 
         return false;
     }
-    private DBObject userToDBObject(ApplicationUser user){
+
+    private DBObject userToDBObject(ApplicationUser user) {
         BasicDBObject obj = new BasicDBObject()
                 .append("id", user.getId())
                 .append("email", user.getEmail())

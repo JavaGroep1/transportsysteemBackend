@@ -5,11 +5,11 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.ArrayList;
 
-public class MockUserStore implements IUserStore{
+public class MockUserStore implements IUserStore {
 
     public MockUserStore() {
         Users.add(new ApplicationUser("Username1", "Password1", new ArrayList<>(), 1, "2@gmail.com", null));
-        Users.add(new ApplicationUser("Username2", "Password2", new ArrayList<>(), 2, "2@gmail.com",null));
+        Users.add(new ApplicationUser("Username2", "Password2", new ArrayList<>(), 2, "2@gmail.com", null));
         Users.add(new ApplicationUser("Username3", "Password3", new ArrayList<>(), 3, "2@gmail.com", null));
         Users.add(new ApplicationUser("Username4", "Password4", new ArrayList<>(), 4, "2@gmail.com", null));
         Users.add(new ApplicationUser("Username5", "Password5", new ArrayList<>(), 5, "2@gmail.com", new String[]{"Yee1"}));
@@ -25,7 +25,7 @@ public class MockUserStore implements IUserStore{
 
     @Override
     public ApplicationUser getUserByName(String name) {
-        for (ApplicationUser User : Users){
+        for (ApplicationUser User : Users) {
             if (User.getUsername().equals(name))
                 return User;
         }
@@ -39,11 +39,11 @@ public class MockUserStore implements IUserStore{
     }
 
     @Override
-    public Boolean emailExists(String Email){
+    public Boolean emailExists(String Email) {
         for (ApplicationUser user : Users)
             if (user.getEmail().equals(Email))
                 return true;
 
-    return false;
+        return false;
     }
 }

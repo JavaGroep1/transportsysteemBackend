@@ -27,13 +27,14 @@ import java.security.SecureRandom;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfigurer  extends WebSecurityConfigurerAdapter {
+public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private MyUserDetailService myUserDetailService;
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(myUserDetailService);
@@ -48,8 +49,8 @@ public class SecurityConfigurer  extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-         // We don't need CSRF for this example
-                http
+        // We don't need CSRF for this example
+        http
                 .cors()
                 .and()
                 .csrf()
@@ -63,11 +64,11 @@ public class SecurityConfigurer  extends WebSecurityConfigurerAdapter {
 
                 // all other requests need to be authenticated
                         anyRequest().authenticated()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);;
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        ;
         // Add a filter to validate the tokens with every request
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
-
 
 
     @Override
@@ -77,7 +78,7 @@ public class SecurityConfigurer  extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
 }

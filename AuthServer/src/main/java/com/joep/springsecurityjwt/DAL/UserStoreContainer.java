@@ -13,19 +13,22 @@ public class UserStoreContainer {
     private IUserStore store;
 
     public UserStoreContainer(IUserStore userStore) {
-        store=userStore;
+        store = userStore;
     }
 
-    public ArrayList<ApplicationUser> getAllUsers(){
+    public ArrayList<ApplicationUser> getAllUsers() {
         return store.getAllUsers();
     }
+
     public ApplicationUser getUserByName(String name) throws IOException {
         return store.getUserByName(name);
     }
-    public Boolean createUser(ApplicationUser user){
+
+    public Boolean createUser(ApplicationUser user) {
         return store.createUser(user);
     }
-    public Boolean emailExists(String email){
+
+    public Boolean emailExists(String email) {
         return store.emailExists(email);
     }
 }

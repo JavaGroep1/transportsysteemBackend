@@ -8,6 +8,7 @@ public class AuthenticationRequest {
     private String username;
     private String email;
     private String[] roles;
+
     public AuthenticationRequest(String username, String email, String[] roles, String password) {
         this.username = username;
         this.email = email;

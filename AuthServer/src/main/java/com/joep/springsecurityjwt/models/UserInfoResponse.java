@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class UserInfoResponse {
-    private final String  username;
-    private final Integer  id;
+    private final String username;
+    private final Integer id;
     private final String[] roles;
     private final String email;
 
@@ -23,7 +23,7 @@ public class UserInfoResponse {
         return email;
     }
 
-    public String[] getRoles(){
+    public String[] getRoles() {
         return roles;
     }
 

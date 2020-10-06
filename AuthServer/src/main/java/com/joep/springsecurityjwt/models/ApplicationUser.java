@@ -11,6 +11,7 @@ public class ApplicationUser extends User {
 
     private final String email;
     private final String[] roles;
+
     public ApplicationUser(String username, String password, Collection<? extends GrantedAuthority> authorities, int id, String email, String[] roles) {
         super(username, password, authorities);
         Id = id;
