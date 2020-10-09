@@ -62,11 +62,13 @@ public class MongoUserStore implements IUserStore {
 
         return false;
     }
+
+
     private DBObject userToDBObject(ApplicationUser user){
         BasicDBObject obj = new BasicDBObject()
                 .append("id", user.getId())
                 .append("email", user.getEmail())
-                .append("roles", user.getRoles())
+                .append("role", user.getRole())
                 .append("username", user.getUsername())
                 .append("password", user.getPassword())
                 .append("accountNonExpired", user.isAccountNonExpired())

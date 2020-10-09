@@ -12,6 +12,6 @@ import java.util.List;
 public interface ICustomerStore {
     void addCustomer(Customer Customer);
     List<Customer> getCustomers();
-    List<Customer> getCustomersByCustomer(Customer customer);
+    public Customer getCustomerByJwt(String jwt) throws CustomerNotFoundException;
     Customer getCustomerById(ObjectId id) throws CustomerNotFoundException;
 }

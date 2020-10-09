@@ -10,8 +10,12 @@ import com.mongodb.client.result.UpdateResult;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
 import dev.morphia.query.Query;
+import dev.morphia.query.Update;
 import dev.morphia.query.UpdateOperations;
 import dev.morphia.query.experimental.filters.Filters;
+import dev.morphia.query.experimental.updates.SetEntityOperator;
+import dev.morphia.query.experimental.updates.UpdateOperator;
+import dev.morphia.query.experimental.updates.UpdateOperators;
 import dev.morphia.query.internal.MorphiaCursor;
 import org.bson.types.ObjectId;
 
@@ -38,8 +42,13 @@ public class MongoOrderStore implements IOrderStore {
     }
 
     @Override
-    public List<Order> getOrdersByCustomer(Customer customer) {
-        return datastore.find(Order.class).filter(Filters.eq("customer", customer.getId())).iterator().toList();
+    public List<Order> getOrdersByCustomer(Customer customer) throws OrderNotFoundException {
+         MorphiaCursor<Order> cursor = datastore.find(Order.class).filter(Filters.eq("customer", customer.getId())).iterator();
+         if (cursor.hasNext()){
+             return cursor.toList();
+         }
+
+         throw new OrderNotFoundException();
     }
 
     @Override
@@ -53,12 +62,61 @@ public class MongoOrderStore implements IOrderStore {
     @Override
     public void changeOrderStatus(Order order, Orderstatus newOrderStatus) {
 
-        Query<Order> query = datastore.find(Order.class).filter(Filters.eq("Id", order.getId()));
-        UpdateOperations<Order> ops = datastore.createUpdateOperations(Order.class)
-                .set("orderStatus", newOrderStatus);
-
-        UpdateResult res = datastore.update(query, ops);
-
-        System.out.println(res);
+        datastore.find(Order.class)
+                 .filter(Filters.eq("Id", order.getId()))
+                 .update(UpdateOperators.set("orderStatus", newOrderStatus))
+                 .execute();
     }
+
+    @Override
+    public List<Order> getActiveOrders() throws OrderNotFoundException {
+        MorphiaCursor<Order> cursor = datastore.find(Order.class)
+                .filter(Filters.eq("orderStatus", Orderstatus.Confirmed))
+                .iterator();
+        if (cursor.hasNext()){
+            return cursor.toList();
+        }
+
+        throw new OrderNotFoundException();
+    }
+
+    @Override
+    public List<Order> getActiveOrdersByCustomer(Customer customer) throws OrderNotFoundException {
+        MorphiaCursor<Order> cursor = datastore.find(Order.class)
+                .filter(Filters.eq("orderStatus", Orderstatus.Confirmed))
+                .filter(Filters.eq("customer", customer.getId()))
+                .iterator();
+
+        if (cursor.hasNext()){
+            return cursor.toList();
+        }
+
+        throw new OrderNotFoundException();
+    }
+
+    @Override
+    public List<Order> getPendingOrders() throws OrderNotFoundException {
+        MorphiaCursor<Order> cursor = datastore.find(Order.class)
+                .filter(Filters.eq("orderStatus", Orderstatus.Pending))
+                .iterator();
+
+        if (cursor.hasNext()){
+            return cursor.toList();
+        }
+
+        throw new OrderNotFoundException();
+    }
+
+    @Override
+    public List<Order> getPendingOrdersByCustomer(Customer customer) throws OrderNotFoundException {
+        MorphiaCursor<Order> cursor = datastore.find(Order.class)
+                .filter(Filters.eq("orderStatus", Orderstatus.Pending))
+                .filter(Filters.eq("customer", customer.getId()))
+                .iterator();
+
+        if (cursor.hasNext()){
+            return cursor.toList();
+        }
+
+        throw new OrderNotFoundException();    }
 }

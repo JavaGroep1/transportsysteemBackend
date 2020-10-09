@@ -1,5 +1,7 @@
 package com.joep.backofficeapi.Models.Authentication;
 
+import com.joep.backofficeapi.Models.Customer;
+import dev.morphia.annotations.Reference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -10,15 +12,19 @@ public class ApplicationUser extends User {
     private final int Id;
 
     private final String email;
-    private final String[] roles;
+    private final Roles role;
     public String profilePicture;
 
-    public ApplicationUser(String username, String password, Collection<? extends GrantedAuthority> authorities, int id, String email, String[] roles, String profilePicture) {
+    @Reference
+    private Customer customer;
+
+    public ApplicationUser(String username, String password, Collection<? extends GrantedAuthority> authorities, int id, String email, Roles role, String profilePicture, Customer customer) {
         super(username, password, authorities);
         Id = id;
         this.email = email;
-        this.roles = roles;
+        this.role = role;
         this.profilePicture = profilePicture;
+        this.customer = customer;
     }
 
     public String getEmail() {
@@ -29,10 +35,13 @@ public class ApplicationUser extends User {
         return Id;
     }
 
-    public String[] getRoles() {
-        return roles;
+    public Roles getRole() {
+        return role;
     }
 
     public String getProfilePicture() {return profilePicture;}
 
+    public Customer getCustomer() {
+        return customer;
+    }
 }

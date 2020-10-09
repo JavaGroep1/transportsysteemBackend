@@ -1,5 +1,6 @@
-package com.joep.backofficeapi.Models.Requests;
+package com.joep.backofficeapi.Models.Requests.Auth;
 
+import com.joep.backofficeapi.Models.Authentication.Roles;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
@@ -7,11 +8,11 @@ import java.util.Collection;
 public class AuthenticationRequest {
     private String username;
     private String email;
-    private String[] roles;
-    public AuthenticationRequest(String username, String email, String[] roles, String password) {
+    private Roles role;
+    public AuthenticationRequest(String username, String email, Roles role, String password) {
         this.username = username;
         this.email = email;
-        this.roles = roles;
+        this.role = role;
         this.password = password;
     }
 
@@ -40,7 +41,7 @@ public class AuthenticationRequest {
         return email;
     }
 
-    public String[] getRoles() {
-        return roles;
+    public Roles getRole() {
+        return role;
     }
 }

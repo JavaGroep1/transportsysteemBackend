@@ -1,4 +1,4 @@
-package com.joep.backofficeapi.Models.Requests;
+package com.joep.backofficeapi.Models.Requests.Auth;
 
 public class UserInfoRequest {
     private final String authToken;

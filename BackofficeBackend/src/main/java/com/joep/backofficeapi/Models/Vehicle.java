@@ -14,9 +14,12 @@ public class Vehicle {
 
     private int capacityInKG;
 
-    public Vehicle(ObjectId id, String licensePlate) {
+    private VehicleCategory vehicleCategory;
+
+    public Vehicle(ObjectId id, String licensePlate, VehicleCategory vehicleCategory) {
         Id = id;
         this.licensePlate = licensePlate;
+        this.vehicleCategory = vehicleCategory;
     }
 
     public Vehicle() {
@@ -32,5 +35,9 @@ public class Vehicle {
 
     public ObjectId getId() {
         return Id;
+    }
+
+    public VehicleCategory getVehicleCategory() {
+        return vehicleCategory;
     }
 }

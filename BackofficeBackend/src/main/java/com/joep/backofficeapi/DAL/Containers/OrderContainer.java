@@ -27,7 +27,7 @@ public class OrderContainer implements IOrderStore {
     }
 
     @Override
-    public List<Order> getOrdersByCustomer(Customer customer) {
+    public List<Order> getOrdersByCustomer(Customer customer) throws OrderNotFoundException {
         return orderStore.getOrdersByCustomer(customer);
     }
 
@@ -39,5 +39,25 @@ public class OrderContainer implements IOrderStore {
     @Override
     public void changeOrderStatus(Order order, Orderstatus newOrderStatus) {
         orderStore.changeOrderStatus(order, newOrderStatus);
+    }
+
+    @Override
+    public List<Order> getActiveOrders() throws OrderNotFoundException {
+        return orderStore.getActiveOrders();
+    }
+
+    @Override
+    public List<Order> getActiveOrdersByCustomer(Customer customer) throws OrderNotFoundException {
+        return orderStore.getActiveOrdersByCustomer(customer);
+    }
+
+    @Override
+    public List<Order> getPendingOrders() throws OrderNotFoundException {
+        return orderStore.getPendingOrders();
+    }
+
+    @Override
+    public List<Order> getPendingOrdersByCustomer(Customer customer) throws OrderNotFoundException {
+        return orderStore.getPendingOrdersByCustomer(customer);
     }
 }

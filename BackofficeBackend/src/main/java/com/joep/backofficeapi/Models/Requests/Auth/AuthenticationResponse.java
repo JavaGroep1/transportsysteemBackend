@@ -1,4 +1,4 @@
-package com.joep.backofficeapi.Models.Requests;
+package com.joep.backofficeapi.Models.Requests.Auth;
 
 import org.springframework.security.core.GrantedAuthority;
 

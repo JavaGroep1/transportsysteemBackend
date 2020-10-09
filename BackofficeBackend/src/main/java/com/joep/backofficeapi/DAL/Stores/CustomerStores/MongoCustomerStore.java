@@ -19,12 +19,12 @@ public class MongoCustomerStore implements ICustomerStore {
     }
 
     @Override
-    public List<Customer> getCustomersByCustomer(Customer customer) {
-        return null;
+    public Customer getCustomerByJwt(String jwt) throws CustomerNotFoundException {
+        throw new CustomerNotFoundException();
     }
 
     @Override
     public Customer getCustomerById(ObjectId id) throws CustomerNotFoundException {
-        return null;
+        throw new CustomerNotFoundException();
     }
 }

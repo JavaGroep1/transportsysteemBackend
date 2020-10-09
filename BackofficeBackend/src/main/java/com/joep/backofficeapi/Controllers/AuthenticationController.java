@@ -1,13 +1,14 @@
 package com.joep.backofficeapi.Controllers;
 
-import com.joep.backofficeapi.Models.Requests.AuthenticationRequest;
-import com.joep.backofficeapi.Models.Requests.AuthenticationResponse;
-import com.joep.backofficeapi.Models.Requests.UserInfoResponse;
+import com.joep.backofficeapi.Models.Requests.Auth.AuthenticationRequest;
+import com.joep.backofficeapi.Models.Requests.Auth.AuthenticationResponse;
+import com.joep.backofficeapi.Models.Requests.Auth.UserInfoResponse;
 import com.joep.backofficeapi.MyUserDetailService;
 import com.joep.backofficeapi.Util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -55,7 +56,7 @@ public class AuthenticationController {
     @RequestMapping(value = "/authenticate/signup", method = RequestMethod.POST)
     public ResponseEntity<?> CreateUser(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
-        userDetailService.addUser(authenticationRequest.getUsername(), authenticationRequest.getPassword(), authenticationRequest.getEmail(), authenticationRequest.getRoles());
+        userDetailService.addUser(authenticationRequest.getUsername(), authenticationRequest.getPassword(), authenticationRequest.getEmail(), authenticationRequest.getRole());
         return ResponseEntity.ok("Created");
     }
 

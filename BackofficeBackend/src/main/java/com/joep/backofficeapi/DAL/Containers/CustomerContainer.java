@@ -24,12 +24,12 @@ public class CustomerContainer implements ICustomerStore {
     }
 
     @Override
-    public List<Customer> getCustomersByCustomer(Customer customer) {
+    public Customer getCustomerByJwt(String jwt) {
         return null;
     }
 
     @Override
     public Customer getCustomerById(ObjectId id) throws CustomerNotFoundException {
-        return null;
+        return store.getCustomerById(id);
     }
 }

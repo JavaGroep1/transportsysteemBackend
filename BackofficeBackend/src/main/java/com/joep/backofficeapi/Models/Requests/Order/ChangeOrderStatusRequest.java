@@ -1,4 +1,4 @@
-package com.joep.backofficeapi.Models.Requests;
+package com.joep.backofficeapi.Models.Requests.Order;
 
 import com.joep.backofficeapi.Models.Orderstatus;
 import org.bson.types.ObjectId;

@@ -7,6 +7,7 @@ import com.joep.backofficeapi.Exceptions.EmailTakenException;
 import com.joep.backofficeapi.Exceptions.InvalidEmailException;
 import com.joep.backofficeapi.Exceptions.UsernameTakenException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
+import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Util.PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -42,7 +43,7 @@ public class MyUserDetailService implements UserDetailsService {
         return details;
     }
 
-    public void addUser(String name, String pass, String Email, String[] roles) throws EmailTakenException, UsernameTakenException, UnsupportedEncodingException, NoSuchAlgorithmException, InvalidEmailException {
+    public void addUser(String name, String pass, String Email, Roles role) throws EmailTakenException, UsernameTakenException, UnsupportedEncodingException, NoSuchAlgorithmException, InvalidEmailException {
         if (!isValidEmail(Email)){
             throw new InvalidEmailException();
         }
@@ -54,7 +55,7 @@ public class MyUserDetailService implements UserDetailsService {
         }
         String passwordEncoded = encoder.Encode(pass);
         String defaultUserPicture= "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
-        userStore.createUser(new ApplicationUser(name, passwordEncoded, new ArrayList<>(), (int) (System.currentTimeMillis() + 1), Email, roles, defaultUserPicture));
+        userStore.createUser(new ApplicationUser(name, passwordEncoded, new ArrayList<>(), (int) (System.currentTimeMillis() + 1), Email, role, defaultUserPicture, null));
     }
 
     private boolean isValidEmail(String email){
