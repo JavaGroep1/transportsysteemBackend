@@ -1,5 +1,6 @@
 package com.joep.backofficeapi;
 
+import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
 import com.joep.backofficeapi.filters.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,13 +23,13 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 public class SecurityConfigurer  extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private MyUserDetailService myUserDetailService;
+    private UserStoreContainer userStore;
 
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(myUserDetailService);
+        auth.userDetailsService(userStore);
 
     }
 

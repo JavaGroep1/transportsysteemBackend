@@ -1,5 +1,6 @@
 package com.joep.backofficeapi.DAL.Stores.VehicleStores;
 
+import com.joep.backofficeapi.ConnectionConfiguration;
 import com.joep.backofficeapi.DAL.Interfaces.IVehicleStore;
 import com.joep.backofficeapi.Exceptions.OrderNotFoundException;
 import com.joep.backofficeapi.Exceptions.VehicleNotFoundException;
@@ -20,7 +21,7 @@ public class MongoVehicleStore implements IVehicleStore {
 
     private final Datastore datastore;
     public MongoVehicleStore() {
-        datastore = Morphia.createDatastore(MongoClients.create(), "backoffice");
+        datastore = Morphia.createDatastore(MongoClients.create(ConnectionConfiguration.getMongoConnectionString()), "backoffice");
         datastore.getMapper().mapPackage("org.joep.BackofficeBackend");
         datastore.ensureIndexes();
     }

@@ -1,81 +1,63 @@
 package com.joep.backofficeapi.DAL.Stores.UserStores;
 
-import com.google.gson.Gson;
+import com.joep.backofficeapi.ConnectionConfiguration;
 import com.joep.backofficeapi.DAL.Interfaces.IUserStore;
+import com.joep.backofficeapi.Exceptions.UserNotFoundException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
-import com.mongodb.*;
+import com.mongodb.client.MongoClients;
+import dev.morphia.Datastore;
+import dev.morphia.Morphia;
+import dev.morphia.query.experimental.filters.Filters;
+import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
+import java.util.List;
 
+@Component
 public class MongoUserStore implements IUserStore {
 
-    MongoClientURI uri;
-    MongoClient mongoClient;
-    DB database;
-    DBCollection collection;
+    private final Datastore datastore;
+
+
 
     public MongoUserStore() throws UnknownHostException {
 
-        uri = new MongoClientURI(
-                "mongodb://127.0.0.1:27017/?compressors=zlib&gssapiServiceName=mongodb");
-        mongoClient = new MongoClient(uri);
-        database = mongoClient.getDB("test");
-        collection = database.getCollection("Accounts");
+        datastore = Morphia.createDatastore(MongoClients.create(ConnectionConfiguration.getMongoConnectionString()), "backoffice");
+        datastore.getMapper().mapPackage("org.joep.BackofficeBackend");
+        datastore.ensureIndexes();
     }
     @Override
-    public ArrayList<ApplicationUser> getAllUsers() {
-        return null;
+    public List<ApplicationUser> getAllUsers() {
+        var list = datastore.find(ApplicationUser.class).iterator().toList();
+        return list;
     }
 
     @Override
-    public ApplicationUser getUserByName(String name) throws IOException {
-
-        DBObject query = new BasicDBObject("username", name);
-        DBCursor cursos = collection.find(query);
-        DBObject obj = cursos.one();
-        String json = obj.toString();
-        Gson gson = new Gson();
-        ApplicationUser accountFound = gson.fromJson(json, ApplicationUser.class);
-        return accountFound;
+    public ApplicationUser getUserByName(String name) throws Exception {
+        var user=  datastore.find(ApplicationUser.class).filter(Filters.eq("username", name)).first();
+        if (user == null) throw new UserNotFoundException();
+        return user;
     }
 
     @Override
     public Boolean createUser(ApplicationUser user) {
 
-        collection.insert(userToDBObject(user));
+        datastore.save(user);
 
         return true;
     }
     @Override
     public Boolean emailExists(String email) {
-        DBObject query = new BasicDBObject("email", email);
-        if ( collection.find(query).hasNext()) return true;
 
-        return false;
+        var res = datastore.find(ApplicationUser.class).filter(Filters.eq("email", email)).iterator();
+
+        return res.hasNext();
     }
     @Override
     public Boolean usernameExists(String name) {
-        DBObject query = new BasicDBObject("username", name);
-        if ( collection.find(query).hasNext()) return true;
+        var res = datastore.find(ApplicationUser.class).filter(Filters.eq("username", name)).iterator();
 
-        return false;
-    }
-
-
-    private DBObject userToDBObject(ApplicationUser user){
-        BasicDBObject obj = new BasicDBObject()
-                .append("id", user.getId())
-                .append("email", user.getEmail())
-                .append("role", user.getRole())
-                .append("username", user.getUsername())
-                .append("password", user.getPassword())
-                .append("accountNonExpired", user.isAccountNonExpired())
-                .append("accountNonLocked", user.isAccountNonLocked())
-                .append("credentialsNonExpired", user.isCredentialsNonExpired())
-                .append("enabled", user.isEnabled());
-
-        return obj;
+        return res.hasNext();
     }
 }
+

@@ -2,10 +2,11 @@ package com.joep.backofficeapi.Models.Requests.Auth;
 
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
+import org.bson.types.ObjectId;
 
 public class UserInfoResponse {
     private final String  username;
-    private final Integer  id;
+    private final ObjectId id;
     private final Roles role;
     private final String email;
     private final String profilePicture;
@@ -13,7 +14,7 @@ public class UserInfoResponse {
         return username;
     }
 
-    public Integer getId() {
+    public ObjectId getId() {
         return id;
     }
 
@@ -34,7 +35,7 @@ public class UserInfoResponse {
         this.profilePicture = user.getProfilePicture();
     }
 
-    public UserInfoResponse(Integer id, String username, String email, Roles role, String profilePicture) {
+    public UserInfoResponse(ObjectId id, String username, String email, Roles role, String profilePicture) {
         this.username = username;
         this.id = id;
         this.role = role;

@@ -1,9 +1,10 @@
 package com.joep.backofficeapi.Controllers;
 
+import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
+import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Requests.Auth.AuthenticationRequest;
 import com.joep.backofficeapi.Models.Requests.Auth.AuthenticationResponse;
 import com.joep.backofficeapi.Models.Requests.Auth.UserInfoResponse;
-import com.joep.backofficeapi.MyUserDetailService;
 import com.joep.backofficeapi.Util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private MyUserDetailService userDetailService;
+    private UserStoreContainer userStore;
 
     @Autowired
     private JwtUtil jwtTokenUtil;
@@ -45,8 +46,7 @@ public class AuthenticationController {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Username and password combination not found" ,e);
         }
-        final UserDetails userDetails = userDetailService
-                .loadUserByUsername(authenticationRequest.getUsername());
+        final ApplicationUser userDetails = userStore.loadUserByUsername(authenticationRequest.getUsername());
         final String accessToken = jwtTokenUtil.generateToken(userDetails);
         final AuthenticationResponse response = new AuthenticationResponse(accessToken);
         return  ResponseEntity.ok(response);
@@ -55,8 +55,13 @@ public class AuthenticationController {
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/authenticate/signup", method = RequestMethod.POST)
     public ResponseEntity<?> CreateUser(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-
-        userDetailService.addUser(authenticationRequest.getUsername(), authenticationRequest.getPassword(), authenticationRequest.getEmail(), authenticationRequest.getRole());
+        var user = new ApplicationUser(
+                authenticationRequest.getUsername(),
+                authenticationRequest.getPassword(),
+                authenticationRequest.getEmail(),
+                authenticationRequest.getRole(),
+                authenticationRequest.getCustomer());
+        userStore.createUser(user);
         return ResponseEntity.ok("Created");
     }
 
@@ -67,7 +72,7 @@ public class AuthenticationController {
         token = token.substring(7);
         System.out.println(token);
         String username = jwtTokenUtil.extractUsername(token);
-        UserInfoResponse user = new UserInfoResponse(userDetailService.loadUserByUsername(username));
+        UserInfoResponse user = new UserInfoResponse(userStore.loadUserByUsername(username));
         return ResponseEntity.ok(user);
     }
 }

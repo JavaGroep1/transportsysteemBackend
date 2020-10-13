@@ -1,5 +1,6 @@
 package com.joep.backofficeapi.DAL.Stores.OrderStores;
 
+import com.joep.backofficeapi.ConnectionConfiguration;
 import com.joep.backofficeapi.DAL.Interfaces.IOrderStore;
 import com.joep.backofficeapi.Exceptions.OrderNotFoundException;
 import com.joep.backofficeapi.Models.Customer;
@@ -25,7 +26,7 @@ public class MongoOrderStore implements IOrderStore {
 
     private final Datastore datastore;
     public MongoOrderStore() {
-        datastore = Morphia.createDatastore(MongoClients.create(), "backoffice");
+        datastore = Morphia.createDatastore(MongoClients.create(ConnectionConfiguration.getMongoConnectionString()), "backoffice");
         datastore.getMapper().mapPackage("org.joep.BackofficeBackend");
         datastore.ensureIndexes();
     }
