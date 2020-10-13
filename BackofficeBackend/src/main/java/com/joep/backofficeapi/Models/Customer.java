@@ -7,15 +7,15 @@ import org.bson.types.ObjectId;
 public class Customer {
     @dev.morphia.annotations.Id
     private ObjectId Id;
-    private Boolean isProspect;
+    private String name;
     private String businessIdentifier;
     private String address;
     private String phoneNumber;
 
 
-    public Customer(ObjectId id, Boolean isProspect, String businessIdentifier, String address, String phoneNumber) {
+    public Customer(ObjectId id, String name, String businessIdentifier, String address, String phoneNumber) {
         Id = id;
-        this.isProspect = isProspect;
+        this.name = name;
         this.businessIdentifier = businessIdentifier;
         this.address = address;
         this.phoneNumber = phoneNumber;
@@ -40,7 +40,7 @@ public class Customer {
         return businessIdentifier;
     }
 
-    public Boolean getProspect() {
-        return isProspect;
+    public String getName() {
+        return name;
     }
 }

@@ -6,6 +6,7 @@ import com.joep.backofficeapi.Exceptions.EmailTakenException;
 import com.joep.backofficeapi.Exceptions.InvalidEmailException;
 import com.joep.backofficeapi.Exceptions.UsernameTakenException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
+import com.joep.backofficeapi.Models.Authentication.Roles;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -62,5 +63,10 @@ public class UserStoreContainer implements UserDetailsService {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public List<ApplicationUser> getByRole(Roles role) {
+        return store.getByRole(role);
+
     }
 }

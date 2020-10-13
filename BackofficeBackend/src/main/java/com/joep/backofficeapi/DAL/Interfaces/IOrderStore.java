@@ -1,14 +1,16 @@
 package com.joep.backofficeapi.DAL.Interfaces;
+import com.joep.backofficeapi.Exceptions.OrderInvalidException;
 import com.joep.backofficeapi.Exceptions.OrderNotFoundException;
 import com.joep.backofficeapi.Models.*;
 import org.bson.types.ObjectId;
 
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IOrderStore {
 
-    void addOrder(Order order);
+    void addOrder(Order order) throws OrderInvalidException, IOException, InterruptedException;
     List<Order> getOrders();
     List<Order> getOrdersByCustomer(Customer customer) throws OrderNotFoundException;
     Order getOrderById(ObjectId id) throws OrderNotFoundException;

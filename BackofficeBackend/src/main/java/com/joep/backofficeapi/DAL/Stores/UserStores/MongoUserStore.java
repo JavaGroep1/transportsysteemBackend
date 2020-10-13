@@ -4,6 +4,8 @@ import com.joep.backofficeapi.ConnectionConfiguration;
 import com.joep.backofficeapi.DAL.Interfaces.IUserStore;
 import com.joep.backofficeapi.Exceptions.UserNotFoundException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
+import com.joep.backofficeapi.Models.Authentication.Roles;
+import com.joep.backofficeapi.Models.Customer;
 import com.mongodb.client.MongoClients;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
@@ -17,8 +19,6 @@ import java.util.List;
 public class MongoUserStore implements IUserStore {
 
     private final Datastore datastore;
-
-
 
     public MongoUserStore() throws UnknownHostException {
 
@@ -59,5 +59,12 @@ public class MongoUserStore implements IUserStore {
 
         return res.hasNext();
     }
+
+    @Override
+    public List<ApplicationUser> getByRole(Roles role) {
+        return datastore.find(ApplicationUser.class).filter(Filters.eq("role", role)).iterator().toList();
+
+    }
+
 }
 

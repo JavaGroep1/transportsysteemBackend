@@ -1,5 +1,6 @@
 package com.joep.backofficeapi.Models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.joep.backofficeapi.Exceptions.OrderInvalidException;
 import com.joep.backofficeapi.Util.RouteUtility;
 import dev.morphia.annotations.Embedded;
@@ -10,6 +11,7 @@ import org.bson.types.ObjectId;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.time.Duration;
 import java.time.LocalDate;
 
@@ -18,14 +20,16 @@ public class Order {
 
     @Id
     private ObjectId Id;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private LocalDate dateOrdered;
 
-    private  LocalDate dateOrdered;
+    @JsonFormat(pattern="yyyy-MM-dd")
     private  LocalDate deadline;
     private  LocalDate dateDelivered;
     private  double weightInKg;
     private double distanceInKm;
     private double fuelUsed;
-    private Duration timeTaken;
+    private String timeTaken;
     private double cost;
     private  String startingPoint;
     private  String destination;
@@ -36,8 +40,6 @@ public class Order {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
-
-    @Reference
     private  Customer customer;
 
     public Order(LocalDate dateOrdered, LocalDate deadline, double weightInKg, String startingPoint, String destination, Orderstatus orderStatus, Vehicle vehicle, Customer customer) throws IOException, InterruptedException, OrderInvalidException {
@@ -50,12 +52,8 @@ public class Order {
         this.vehicle = vehicle;
         this.customer = customer;
 
-        var order = RouteUtility.getRoute(startingPoint, destination);
-        if (order == null) throw new OrderInvalidException();
-        this.distanceInKm = order.getDistance();
-        this.fuelUsed = order.getFuelUsed();
-        this.cost = RouteUtility.getRoutePrice(this.fuelUsed);
-        this.timeTaken = Duration.between(this.dateOrdered, this.dateDelivered);
+
+       // this.timeTaken = Duration.between(this.dateOrdered, this.dateDelivered).toString();
     }
 
     public Order() {
@@ -94,7 +92,7 @@ public class Order {
     }
 
 
-    public Duration getTimeTaken() {
+    public String getTimeTaken() {
         return timeTaken;
     }
 
@@ -108,5 +106,21 @@ public class Order {
 
     public double getWeightInKg() {
         return weightInKg;
+    }
+
+    public void setDistanceInKm(double distanceInKm) {
+        this.distanceInKm = distanceInKm;
+    }
+
+    public void setFuelUsed(double fuelUsed) {
+        this.fuelUsed = fuelUsed;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public double getFuelUsed() {
+        return fuelUsed;
     }
 }

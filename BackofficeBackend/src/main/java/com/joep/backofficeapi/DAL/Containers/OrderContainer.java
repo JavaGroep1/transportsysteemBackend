@@ -1,12 +1,15 @@
 package com.joep.backofficeapi.DAL.Containers;
 
 import com.joep.backofficeapi.DAL.Interfaces.IOrderStore;
+import com.joep.backofficeapi.Exceptions.OrderInvalidException;
 import com.joep.backofficeapi.Exceptions.OrderNotFoundException;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Order;
 import com.joep.backofficeapi.Models.Orderstatus;
+import com.joep.backofficeapi.Util.RouteUtility;
 import org.bson.types.ObjectId;
 
+import java.io.IOException;
 import java.util.List;
 
 public class OrderContainer implements IOrderStore {
@@ -17,7 +20,12 @@ public class OrderContainer implements IOrderStore {
     }
 
     @Override
-    public void addOrder(Order order) {
+    public void addOrder(Order order) throws OrderInvalidException, IOException, InterruptedException {
+        var orderRoute = RouteUtility.getRoute(order.getStartingPoint(), order.getDestination());
+        if (orderRoute == null) throw new OrderInvalidException();
+        order.setDistanceInKm(orderRoute.getDistance());
+        order.setFuelUsed(orderRoute.getFuelUsed());
+       order.setCost(RouteUtility.getRoutePrice(order.getFuelUsed()));
         orderStore.addOrder(order);
     }
 

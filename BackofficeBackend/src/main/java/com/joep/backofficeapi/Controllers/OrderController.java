@@ -4,6 +4,7 @@ import com.joep.backofficeapi.DAL.Containers.CustomerContainer;
 import com.joep.backofficeapi.DAL.Containers.OrderContainer;
 import com.joep.backofficeapi.DAL.Stores.CustomerStores.MongoCustomerStore;
 import com.joep.backofficeapi.DAL.Stores.OrderStores.MongoOrderStore;
+import com.joep.backofficeapi.Exceptions.OrderInvalidException;
 import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Order;
@@ -33,11 +34,12 @@ public class OrderController {
 
 
     @PostMapping("/orders/add")
-    public ResponseEntity<?> addOrder(@RequestBody Order order, HttpServletRequest req){
+    public ResponseEntity<?> addOrder(@RequestBody Order order, HttpServletRequest req) throws Exception {
         String token = req.getHeader("Authorization");
         token = token.substring(7);
-
-        order.setCustomer(customerContainer.getCustomerByJwt(token));
+        if (order.getCustomer() == null){
+            order.setCustomer(customerContainer.getCustomerByJwt(token));
+        }
 
         orderContainer.addOrder(order);
         return ResponseEntity.ok("ok");
@@ -48,9 +50,9 @@ public class OrderController {
         return ResponseEntity.ok(RouteUtility.getRoute("Veltackerstraat 3, diessen", "Professor goossenlaan 1, Tilburg"));
     }
     @GetMapping("/orders")
-    public ResponseEntity<?> getOrder(HttpServletRequest request, @RequestBody GetOrderRequest data) throws Exception {
+    public ResponseEntity<?> getOrder(HttpServletRequest request, @RequestBody(required = false) GetOrderRequest data) throws Exception {
        // RoleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
-
+        if (data == null ) return getAllOrders();
         if (data.getOrderId() != null){
             return ResponseEntity.ok(orderContainer.getOrderById(data.getOrderId()));
         }
@@ -63,9 +65,9 @@ public class OrderController {
     }
 
     @GetMapping("/orders/active")
-    public ResponseEntity<?> getActiveOrders(@RequestBody GetOrderRequest req) throws Exception {
+    public ResponseEntity<?> getActiveOrders(@RequestBody(required = false) GetOrderRequest req) throws Exception {
 
-        if (req.getCustomerId() != null){
+        if (req != null && req.getCustomerId() != null){
             Customer customer = customerContainer.getCustomerById(req.getCustomerId());
             return ResponseEntity.ok(orderContainer.getOrdersByCustomer(customer));
         }
@@ -74,9 +76,9 @@ public class OrderController {
     }
 
     @GetMapping("/orders/pending")
-    public ResponseEntity<?> getPendingOrder(@RequestBody GetOrderRequest req) throws Exception {
+    public ResponseEntity<?> getPendingOrder(@RequestBody(required = false) GetOrderRequest req) throws Exception {
 
-        if (req.getCustomerId() != null){
+        if (req != null && req.getCustomerId() != null){
             Customer customer = customerContainer.getCustomerById(req.getCustomerId());
             return ResponseEntity.ok(orderContainer.getOrdersByCustomer(customer));
         }
