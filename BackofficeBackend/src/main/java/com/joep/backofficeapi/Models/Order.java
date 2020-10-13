@@ -2,6 +2,7 @@ package com.joep.backofficeapi.Models;
 
 import com.joep.backofficeapi.Exceptions.OrderInvalidException;
 import com.joep.backofficeapi.Util.RouteUtility;
+import dev.morphia.annotations.Embedded;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
 import dev.morphia.annotations.Reference;
@@ -9,6 +10,7 @@ import org.bson.types.ObjectId;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDate;
 
 @Entity
@@ -23,7 +25,7 @@ public class Order {
     private  double weightInKg;
     private double distanceInKm;
     private double fuelUsed;
-    private double timeTaken;
+    private Duration timeTaken;
     private double cost;
     private  String startingPoint;
     private  String destination;
@@ -53,6 +55,7 @@ public class Order {
         this.distanceInKm = order.getDistance();
         this.fuelUsed = order.getFuelUsed();
         this.cost = RouteUtility.getRoutePrice(this.fuelUsed);
+        this.timeTaken = Duration.between(this.dateOrdered, this.dateDelivered);
     }
 
     public Order() {
@@ -91,4 +94,19 @@ public class Order {
     }
 
 
+    public Duration getTimeTaken() {
+        return timeTaken;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public double getDistanceInKm() {
+        return distanceInKm;
+    }
+
+    public double getWeightInKg() {
+        return weightInKg;
+    }
 }

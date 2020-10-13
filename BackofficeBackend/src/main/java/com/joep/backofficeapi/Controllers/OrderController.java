@@ -11,6 +11,7 @@ import com.joep.backofficeapi.Models.Requests.Order.ChangeOrderStatusRequest;
 import com.joep.backofficeapi.Models.Requests.Order.GetOrderRequest;
 import com.joep.backofficeapi.Util.Authorization.RoleAuthorization;
 import com.joep.backofficeapi.Util.RouteUtility;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,13 +24,13 @@ import java.util.Objects;
 @CrossOrigin(origins = {"*"})
 public class OrderController {
 
-    private final OrderContainer orderContainer;
-    private final CustomerContainer customerContainer;
+    @Autowired
+    private OrderContainer orderContainer;
 
-    public OrderController() {
-        this.orderContainer = new OrderContainer(new MongoOrderStore());
-        this.customerContainer = new CustomerContainer(new MongoCustomerStore());
-    }
+    @Autowired
+    private CustomerContainer customerContainer;
+
+
 
     @PostMapping("/orders/add")
     public ResponseEntity<?> addOrder(@RequestBody Order order, HttpServletRequest req){
