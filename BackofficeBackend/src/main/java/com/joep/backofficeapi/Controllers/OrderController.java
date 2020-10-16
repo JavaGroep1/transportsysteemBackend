@@ -1,16 +1,16 @@
 package com.joep.backofficeapi.Controllers;
 
-import com.joep.backofficeapi.ConnectionConfiguration;
 import com.joep.backofficeapi.DAL.Containers.CustomerContainer;
 import com.joep.backofficeapi.DAL.Containers.OrderContainer;
 import com.joep.backofficeapi.Models.Customer;
-import com.joep.backofficeapi.Models.Order;
+import com.joep.backofficeapi.Models.Order.Order;
 import com.joep.backofficeapi.Models.Requests.Order.ChangeOrderStatusRequest;
 import com.joep.backofficeapi.Models.Requests.Order.GetOrderRequest;
 import com.joep.backofficeapi.Util.RouteUtility;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,23 +46,19 @@ public class OrderController {
         return ResponseEntity.ok(RouteUtility.getRoute("Veltackerstraat 3, diessen", "Professor goossenlaan 1, Tilburg"));
     }
     @GetMapping("/orders")
-    public ResponseEntity<?> getOrder(HttpServletRequest request, String orderid, String customerid) throws Exception {
+    public ResponseEntity<?> getOrder(HttpServletRequest request, @Nullable String orderid, @Nullable String customerid) throws Exception {
         ObjectId orderIdObject = null;
         ObjectId customerIdObject = null;
         if (orderid != null){
             orderIdObject = new ObjectId(orderid);
+            return ResponseEntity.ok(orderContainer.getOrderById(orderIdObject));
         }
         if (customerid != null){
             customerIdObject = new ObjectId(customerid);
-        }
-       // RoleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
-        if (orderIdObject != null){
-            return ResponseEntity.ok(orderContainer.getOrderById(orderIdObject));
-        }
-        if (customerIdObject != null){
             Customer customer = customerContainer.getCustomerById(customerIdObject);
             return ResponseEntity.ok(orderContainer.getOrdersByCustomer(customer));
         }
+       // RoleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
         return getAllOrders();
 
     }

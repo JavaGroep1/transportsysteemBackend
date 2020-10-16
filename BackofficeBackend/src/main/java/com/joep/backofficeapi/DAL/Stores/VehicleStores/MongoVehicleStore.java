@@ -2,11 +2,10 @@ package com.joep.backofficeapi.DAL.Stores.VehicleStores;
 
 import com.joep.backofficeapi.ConnectionConfiguration;
 import com.joep.backofficeapi.DAL.Interfaces.IVehicleStore;
-import com.joep.backofficeapi.Exceptions.OrderNotFoundException;
 import com.joep.backofficeapi.Exceptions.VehicleNotFoundException;
-import com.joep.backofficeapi.Models.Order;
-import com.joep.backofficeapi.Models.Vehicle;
-import com.joep.backofficeapi.Models.VehicleCategory;
+import com.joep.backofficeapi.Models.Order.Order;
+import com.joep.backofficeapi.Models.Vehicle.Vehicle;
+import com.joep.backofficeapi.Models.Vehicle.VehicleCategory;
 import com.mongodb.client.MongoClients;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;

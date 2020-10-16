@@ -1,12 +1,8 @@
 package com.joep.backofficeapi.DAL.Interfaces;
 
 import com.joep.backofficeapi.Exceptions.CustomerNotFoundException;
-import com.joep.backofficeapi.Exceptions.OrderNotFoundException;
-import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Customer;
-import com.joep.backofficeapi.Models.Order;
-import com.joep.backofficeapi.Models.Orderstatus;
 import org.bson.types.ObjectId;
 
 import java.util.List;

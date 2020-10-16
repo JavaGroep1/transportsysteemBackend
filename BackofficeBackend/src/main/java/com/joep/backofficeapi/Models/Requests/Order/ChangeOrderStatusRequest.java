@@ -1,6 +1,6 @@
 package com.joep.backofficeapi.Models.Requests.Order;
 
-import com.joep.backofficeapi.Models.Orderstatus;
+import com.joep.backofficeapi.Models.Order.Orderstatus;
 import org.bson.types.ObjectId;
 
 public class ChangeOrderStatusRequest {

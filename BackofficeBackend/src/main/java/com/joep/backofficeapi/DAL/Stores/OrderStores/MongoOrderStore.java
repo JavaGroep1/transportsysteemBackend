@@ -4,22 +4,17 @@ import com.joep.backofficeapi.ConnectionConfiguration;
 import com.joep.backofficeapi.DAL.Interfaces.IOrderStore;
 import com.joep.backofficeapi.Exceptions.OrderNotFoundException;
 import com.joep.backofficeapi.Models.Customer;
-import com.joep.backofficeapi.Models.Order;
-import com.joep.backofficeapi.Models.Orderstatus;
+import com.joep.backofficeapi.Models.Order.Order;
+import com.joep.backofficeapi.Models.Order.Orderstatus;
 import com.mongodb.client.MongoClients;
-import com.mongodb.client.result.UpdateResult;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
-import dev.morphia.query.Query;
-import dev.morphia.query.Update;
-import dev.morphia.query.UpdateOperations;
 import dev.morphia.query.experimental.filters.Filters;
-import dev.morphia.query.experimental.updates.SetEntityOperator;
-import dev.morphia.query.experimental.updates.UpdateOperator;
 import dev.morphia.query.experimental.updates.UpdateOperators;
 import dev.morphia.query.internal.MorphiaCursor;
 import org.bson.types.ObjectId;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class MongoOrderStore implements IOrderStore {
@@ -120,4 +115,13 @@ public class MongoOrderStore implements IOrderStore {
         }
 
         throw new OrderNotFoundException();    }
+
+    @Override
+    public void changeOrderDate(Order order, LocalDate date) {
+        datastore.find(Order.class)
+                .filter(Filters.eq("Id", order.getId()))
+                .update(UpdateOperators.set("dateStarted", date))
+                .execute();
+
+    }
 }

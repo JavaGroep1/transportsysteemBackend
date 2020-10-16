@@ -4,12 +4,13 @@ import com.joep.backofficeapi.DAL.Interfaces.IOrderStore;
 import com.joep.backofficeapi.Exceptions.OrderInvalidException;
 import com.joep.backofficeapi.Exceptions.OrderNotFoundException;
 import com.joep.backofficeapi.Models.Customer;
-import com.joep.backofficeapi.Models.Order;
-import com.joep.backofficeapi.Models.Orderstatus;
+import com.joep.backofficeapi.Models.Order.Order;
+import com.joep.backofficeapi.Models.Order.Orderstatus;
 import com.joep.backofficeapi.Util.RouteUtility;
 import org.bson.types.ObjectId;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class OrderContainer implements IOrderStore {
@@ -46,6 +47,8 @@ public class OrderContainer implements IOrderStore {
 
     @Override
     public void changeOrderStatus(Order order, Orderstatus newOrderStatus) {
+        if (newOrderStatus == Orderstatus.Confirmed)
+            changeOrderDate(order, LocalDate.now());
         orderStore.changeOrderStatus(order, newOrderStatus);
     }
 
@@ -67,5 +70,10 @@ public class OrderContainer implements IOrderStore {
     @Override
     public List<Order> getPendingOrdersByCustomer(Customer customer) throws OrderNotFoundException {
         return orderStore.getPendingOrdersByCustomer(customer);
+    }
+
+    @Override
+    public void changeOrderDate(Order order, LocalDate date) {
+        orderStore.changeOrderDate(order, date);
     }
 }

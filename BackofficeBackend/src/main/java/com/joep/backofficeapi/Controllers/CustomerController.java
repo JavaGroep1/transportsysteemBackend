@@ -3,13 +3,8 @@ package com.joep.backofficeapi.Controllers;
 import com.joep.backofficeapi.DAL.Containers.CustomerContainer;
 import com.joep.backofficeapi.Exceptions.OrderInvalidException;
 import com.joep.backofficeapi.Models.Customer;
-import com.joep.backofficeapi.Models.Order;
 import com.joep.backofficeapi.Models.Requests.Customer.ChangeCustomerRequest;
 import com.joep.backofficeapi.Models.Requests.Customer.getCustomerRequest;
-import com.joep.backofficeapi.Models.Requests.Order.ChangeOrderStatusRequest;
-import com.joep.backofficeapi.Models.Requests.Order.GetOrderRequest;
-import com.joep.backofficeapi.Util.RouteUtility;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -35,7 +30,7 @@ public class CustomerController {
     }
 
     @GetMapping("/customers")
-    public ResponseEntity<?> getOrder(HttpServletRequest request, @RequestBody(required = false) getCustomerRequest data) throws Exception {
+    public ResponseEntity<?> getCustomer(HttpServletRequest request, @RequestBody(required = false) getCustomerRequest data) throws Exception {
         // RoleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
         if (data == null ) return getAllCustomers();
 
