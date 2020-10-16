@@ -59,7 +59,6 @@ public class AuthenticationController {
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/authenticate/signup", method = RequestMethod.POST)
     public ResponseEntity<?> CreateUser(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-        customerContainer.addCustomer(authenticationRequest.getCustomer());
         var user = new ApplicationUser(
                 authenticationRequest.getUsername(),
                 authenticationRequest.getPassword(),
