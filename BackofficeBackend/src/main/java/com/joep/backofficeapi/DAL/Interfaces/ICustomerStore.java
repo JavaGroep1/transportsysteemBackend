@@ -14,4 +14,5 @@ public interface ICustomerStore {
     Customer getCustomerById(ObjectId id) throws CustomerNotFoundException;
     List<Customer> getActiveCustomers();
     void changeCustomerRole(Customer customer, Roles role);
+    void deleteCustomer(String businessIdentifier);
 }

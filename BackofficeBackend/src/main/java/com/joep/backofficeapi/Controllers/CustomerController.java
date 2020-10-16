@@ -1,6 +1,7 @@
 package com.joep.backofficeapi.Controllers;
 
 import com.joep.backofficeapi.DAL.Containers.CustomerContainer;
+import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
 import com.joep.backofficeapi.Exceptions.OrderInvalidException;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Requests.Customer.ChangeCustomerRequest;
@@ -8,19 +9,20 @@ import com.joep.backofficeapi.Models.Requests.Customer.getCustomerRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Controller
+@CrossOrigin("*")
 public class CustomerController {
 
     @Autowired
     private CustomerContainer customerContainer;
+
+    @Autowired
+    private UserStoreContainer userStoreContainer;
 
     @PostMapping("/customers/add")
     public ResponseEntity<?> addCustomer(@RequestBody Customer customer, HttpServletRequest req) throws InterruptedException, OrderInvalidException, IOException {
@@ -30,7 +32,7 @@ public class CustomerController {
     }
 
     @GetMapping("/customers")
-    public ResponseEntity<?> getCustomer(HttpServletRequest request, @RequestBody(required = false) getCustomerRequest data) throws Exception {
+    public ResponseEntity<?> getCustomers(HttpServletRequest request, @RequestBody(required = false) getCustomerRequest data) throws Exception {
         // RoleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
         if (data == null ) return getAllCustomers();
 
@@ -42,6 +44,12 @@ public class CustomerController {
 
     }
 
+    @DeleteMapping("/customers")
+    public ResponseEntity<?> DeleteCustomer(HttpServletRequest req, @RequestBody String businessIdentifier) {
+        userStoreContainer.deleteAccount(businessIdentifier);
+        customerContainer.deleteCustomer(businessIdentifier);
+        return ResponseEntity.ok("Deleted");
+    }
 
     public ResponseEntity<?> getAllCustomers(){
         return ResponseEntity.ok(customerContainer.getCustomers());

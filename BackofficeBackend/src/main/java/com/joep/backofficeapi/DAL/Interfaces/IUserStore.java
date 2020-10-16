@@ -15,5 +15,5 @@ public interface IUserStore {
     public Boolean emailExists(String email);
     public Boolean usernameExists(String name);
     public List<ApplicationUser> getByRole(Roles role);
-
+    public void deleteAccount(String businessIdentifier);
 }

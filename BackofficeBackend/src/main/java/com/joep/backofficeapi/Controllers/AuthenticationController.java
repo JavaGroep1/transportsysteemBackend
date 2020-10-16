@@ -1,5 +1,6 @@
 package com.joep.backofficeapi.Controllers;
 
+import com.joep.backofficeapi.DAL.Containers.CustomerContainer;
 import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Requests.Auth.AuthenticationRequest;
@@ -24,6 +25,9 @@ import javax.servlet.http.HttpServletRequest;
 public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private CustomerContainer customerContainer;
 
     @Autowired
     private UserStoreContainer userStore;
@@ -55,6 +59,7 @@ public class AuthenticationController {
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/authenticate/signup", method = RequestMethod.POST)
     public ResponseEntity<?> CreateUser(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+        customerContainer.addCustomer(authenticationRequest.getCustomer());
         var user = new ApplicationUser(
                 authenticationRequest.getUsername(),
                 authenticationRequest.getPassword(),

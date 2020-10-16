@@ -47,4 +47,7 @@ public class CustomerContainer implements ICustomerStore {
     }
 
 
+    public void deleteCustomer(String businessIdentifier) {
+        store.deleteCustomer(businessIdentifier);
+    }
 }

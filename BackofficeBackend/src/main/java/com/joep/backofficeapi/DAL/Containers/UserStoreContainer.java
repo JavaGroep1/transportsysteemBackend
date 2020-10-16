@@ -69,4 +69,8 @@ public class UserStoreContainer implements UserDetailsService {
         return store.getByRole(role);
 
     }
+
+    public void deleteAccount(String businessIdentifier) {
+        store.deleteAccount(businessIdentifier);
+    }
 }

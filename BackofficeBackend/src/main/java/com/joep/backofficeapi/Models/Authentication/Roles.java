@@ -2,7 +2,7 @@ package com.joep.backofficeapi.Models.Authentication;
 
 public enum Roles {
     Prospect,
-    User,
+    Customer,
     Employee,
     Admin,
     Unknown

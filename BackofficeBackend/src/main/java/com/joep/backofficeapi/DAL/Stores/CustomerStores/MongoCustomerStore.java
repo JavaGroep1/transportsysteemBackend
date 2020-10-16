@@ -67,5 +67,12 @@ public class MongoCustomerStore implements ICustomerStore {
                 .execute();
     }
 
+    @Override
+    public void deleteCustomer(String businessIdentifier) {
+        datastore.find(Customer.class)
+                .filter(Filters.eq("businessIdentifier", businessIdentifier))
+                .delete();
+    }
+
 
 }
