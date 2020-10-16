@@ -5,5 +5,5 @@ public enum Orderstatus {
     Confirmed,
     Pending,
     Cancelled,
-
+    Declined
 }

@@ -3,6 +3,7 @@ package com.joep.backofficeapi.Models;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.joep.backofficeapi.Exceptions.OrderInvalidException;
 import com.joep.backofficeapi.Util.RouteUtility;
+import dev.morphia.Morphia;
 import dev.morphia.annotations.Embedded;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
@@ -15,11 +16,14 @@ import java.sql.Date;
 import java.time.Duration;
 import java.time.LocalDate;
 
+
 @Entity
 public class Order {
 
     @Id
     private ObjectId Id;
+
+    private String IdString;
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate dateOrdered;
 
@@ -122,5 +126,9 @@ public class Order {
 
     public double getFuelUsed() {
         return fuelUsed;
+    }
+
+    public String getIdString() {
+        return Id.toString();
     }
 }

@@ -51,8 +51,8 @@ public class MongoCustomerStore implements ICustomerStore {
     }
 
     @Override
-    public Customer getCustomerById(ObjectId id) throws CustomerNotFoundException {
-        return datastore.find(Customer.class).filter(Filters.eq("Id", id)).first();
+    public Customer getCustomerById(ObjectId id){
+        return datastore.find(Customer.class).filter(Filters.eq("Id", id.toString())).first();
     }
 
     @Override

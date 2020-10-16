@@ -1,17 +1,14 @@
 package com.joep.backofficeapi.Controllers;
 
+import com.joep.backofficeapi.ConnectionConfiguration;
 import com.joep.backofficeapi.DAL.Containers.CustomerContainer;
 import com.joep.backofficeapi.DAL.Containers.OrderContainer;
-import com.joep.backofficeapi.DAL.Stores.CustomerStores.MongoCustomerStore;
-import com.joep.backofficeapi.DAL.Stores.OrderStores.MongoOrderStore;
-import com.joep.backofficeapi.Exceptions.OrderInvalidException;
-import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Order;
 import com.joep.backofficeapi.Models.Requests.Order.ChangeOrderStatusRequest;
 import com.joep.backofficeapi.Models.Requests.Order.GetOrderRequest;
-import com.joep.backofficeapi.Util.Authorization.RoleAuthorization;
 import com.joep.backofficeapi.Util.RouteUtility;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Objects;
 
 @Controller
 @CrossOrigin(origins = {"*"})
@@ -50,14 +46,21 @@ public class OrderController {
         return ResponseEntity.ok(RouteUtility.getRoute("Veltackerstraat 3, diessen", "Professor goossenlaan 1, Tilburg"));
     }
     @GetMapping("/orders")
-    public ResponseEntity<?> getOrder(HttpServletRequest request, @RequestBody(required = false) GetOrderRequest data) throws Exception {
-       // RoleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
-        if (data == null ) return getAllOrders();
-        if (data.getOrderId() != null){
-            return ResponseEntity.ok(orderContainer.getOrderById(data.getOrderId()));
+    public ResponseEntity<?> getOrder(HttpServletRequest request, String orderid, String customerid) throws Exception {
+        ObjectId orderIdObject = null;
+        ObjectId customerIdObject = null;
+        if (orderid != null){
+            orderIdObject = new ObjectId(orderid);
         }
-        if (data.getCustomerId() != null){
-            Customer customer = customerContainer.getCustomerById(data.getCustomerId());
+        if (customerid != null){
+            customerIdObject = new ObjectId(customerid);
+        }
+       // RoleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
+        if (orderIdObject != null){
+            return ResponseEntity.ok(orderContainer.getOrderById(orderIdObject));
+        }
+        if (customerIdObject != null){
+            Customer customer = customerContainer.getCustomerById(customerIdObject);
             return ResponseEntity.ok(orderContainer.getOrdersByCustomer(customer));
         }
         return getAllOrders();
@@ -90,9 +93,7 @@ public class OrderController {
         return ResponseEntity.ok(orderContainer.getOrders());
     }
 
-
-
-    @PutMapping("/orders/status")
+    @PostMapping("/orders/status")
     public ResponseEntity<?> changeOrderStatus(@RequestBody ChangeOrderStatusRequest request) throws Exception {
         Order order = orderContainer.getOrderById(request.getOrderId());
         orderContainer.changeOrderStatus(order,request.getStatus());
