@@ -1,10 +1,9 @@
 package com.joep.backofficeapi.DAL.Containers;
 
-import com.joep.backofficeapi.DAL.Interfaces.IOrderStore;
 import com.joep.backofficeapi.DAL.Interfaces.IVehicleStore;
 import com.joep.backofficeapi.Exceptions.VehicleNotFoundException;
-import com.joep.backofficeapi.Models.Vehicle;
-import com.joep.backofficeapi.Models.VehicleCategory;
+import com.joep.backofficeapi.Models.Vehicle.Vehicle;
+import com.joep.backofficeapi.Models.Vehicle.VehicleCategory;
 import org.bson.types.ObjectId;
 
 import java.util.List;

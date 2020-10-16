@@ -1,4 +1,4 @@
-package com.joep.backofficeapi.Models;
+package com.joep.backofficeapi.Models.Vehicle;
 
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;

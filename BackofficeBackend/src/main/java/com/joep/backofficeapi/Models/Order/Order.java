@@ -1,19 +1,14 @@
-package com.joep.backofficeapi.Models;
+package com.joep.backofficeapi.Models.Order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.joep.backofficeapi.Exceptions.OrderInvalidException;
-import com.joep.backofficeapi.Util.RouteUtility;
-import dev.morphia.Morphia;
-import dev.morphia.annotations.Embedded;
+import com.joep.backofficeapi.Models.Customer;
+import com.joep.backofficeapi.Models.Vehicle.Vehicle;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
-import dev.morphia.annotations.Reference;
 import org.bson.types.ObjectId;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.time.Duration;
 import java.time.LocalDate;
 
 
@@ -24,29 +19,34 @@ public class Order {
     private ObjectId Id;
 
     private String IdString;
+
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate dateOrdered;
 
     @JsonFormat(pattern="yyyy-MM-dd")
     private  LocalDate deadline;
+
+    @JsonFormat(pattern="yyyy-MM-dd")
     private  LocalDate dateDelivered;
+
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private LocalDate dateStarted;
+
     private  double weightInKg;
     private double distanceInKm;
     private double fuelUsed;
-    private String timeTaken;
     private double cost;
     private  String startingPoint;
     private  String destination;
     private  Orderstatus orderStatus;
-
-    private  Vehicle vehicle;
+    private Vehicle vehicle;
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
     private  Customer customer;
 
-    public Order(LocalDate dateOrdered, LocalDate deadline, double weightInKg, String startingPoint, String destination, Orderstatus orderStatus, Vehicle vehicle, Customer customer) throws IOException, InterruptedException, OrderInvalidException {
+    public Order(LocalDate dateOrdered, LocalDate dateStarted, LocalDate deadline, double weightInKg, String startingPoint, String destination, Orderstatus orderStatus, Vehicle vehicle, Customer customer) throws IOException, InterruptedException, OrderInvalidException {
         this.dateOrdered = dateOrdered;
         this.deadline = deadline;
         this.weightInKg = weightInKg;
@@ -56,8 +56,6 @@ public class Order {
         this.vehicle = vehicle;
         this.customer = customer;
 
-
-       // this.timeTaken = Duration.between(this.dateOrdered, this.dateDelivered).toString();
     }
 
     public Order() {
@@ -95,11 +93,6 @@ public class Order {
         return orderStatus;
     }
 
-
-    public String getTimeTaken() {
-        return timeTaken;
-    }
-
     public double getCost() {
         return cost;
     }
@@ -131,4 +124,6 @@ public class Order {
     public String getIdString() {
         return Id.toString();
     }
+
+
 }

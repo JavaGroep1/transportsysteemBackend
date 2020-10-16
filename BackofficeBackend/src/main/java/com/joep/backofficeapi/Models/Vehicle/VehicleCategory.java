@@ -1,4 +1,4 @@
-package com.joep.backofficeapi.Models;
+package com.joep.backofficeapi.Models.Vehicle;
 
 public enum VehicleCategory {
     Car,
