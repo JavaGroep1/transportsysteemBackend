@@ -4,7 +4,7 @@ on:
  workflow_dispatch:
  
  push:
-  branches: [ main ]
+  branches: [ master ]
 jobs:
   compile:
     runs-on: ubuntu-latest
