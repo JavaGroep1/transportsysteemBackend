@@ -1,7 +1,5 @@
 package com.joep.backofficeapi.Util;
 
-import org.springframework.context.annotation.Bean;
-
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

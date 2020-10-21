@@ -9,8 +9,6 @@ import com.joep.backofficeapi.Util.JwtUtil;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.net.UnknownHostException;
 
 @Component
 public class RoleAuthorization {

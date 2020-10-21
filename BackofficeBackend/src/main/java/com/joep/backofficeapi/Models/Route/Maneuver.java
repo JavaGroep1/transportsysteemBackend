@@ -3,7 +3,6 @@ package com.joep.backofficeapi.Models.Route;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

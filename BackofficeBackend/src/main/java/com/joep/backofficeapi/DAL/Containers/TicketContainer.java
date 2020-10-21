@@ -1,6 +1,5 @@
 package com.joep.backofficeapi.DAL.Containers;
 
-import com.joep.backofficeapi.DAL.Interfaces.IOrderStore;
 import com.joep.backofficeapi.DAL.Interfaces.ITicketStore;
 import com.joep.backofficeapi.Models.Ticket.Ticket;
 import com.joep.backofficeapi.Models.Ticket.TicketReply;
@@ -19,6 +18,11 @@ public class TicketContainer implements ITicketStore {
     @Override
     public void addReply(Ticket ticket, TicketReply ticketReply) {
         ticketStore.addReply(ticket, ticketReply);
+    }
+
+    @Override
+    public void addTicket(Ticket ticket) {
+        ticketStore.addTicket(ticket);
     }
 
     @Override
