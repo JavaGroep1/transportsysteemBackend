@@ -1,6 +1,5 @@
 package com.joep.backofficeapi.Controllers;
 
-import com.joep.backofficeapi.DAL.Containers.CustomerContainer;
 import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Requests.Auth.AuthenticationRequest;
@@ -13,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -24,9 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private CustomerContainer customerContainer;
 
     @Autowired
     private UserStoreContainer userStore;

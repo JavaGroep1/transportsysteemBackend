@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 
 @Service
 public class OrderBean {
+
     @Bean
     OrderContainer orderContainer() throws UnknownHostException {
         return new OrderContainer(new MongoOrderStore());

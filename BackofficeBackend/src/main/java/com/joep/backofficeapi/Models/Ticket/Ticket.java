@@ -15,18 +15,6 @@ public class Ticket {
 
     @Id
     private ObjectId Id;
-
-    public Ticket(String title, String body, ApplicationUser issuedBy) {
-        this.title = title;
-        this.body = body;
-        this.status = TicketStatus.PENDING;
-        this.issuedBy = issuedBy;
-        this.dateIssued = LocalDateTime.now();
-    }
-
-    public Ticket() {
-    }
-
     private String idString;
 
     private String title;
@@ -41,6 +29,18 @@ public class Ticket {
     private List<TicketReply> replies;
 
     private LocalDateTime dateIssued;
+
+    public Ticket(String title, String body, ApplicationUser issuedBy) {
+        this.title = title;
+        this.body = body;
+        this.status = TicketStatus.PENDING;
+        this.issuedBy = issuedBy;
+        this.dateIssued = LocalDateTime.now();
+    }
+
+    public Ticket() {
+    }
+
 
     public ObjectId getId() {
         return Id;
