@@ -2,10 +2,15 @@ package com.joep.backofficeapi.Controllers;
 
 import com.joep.backofficeapi.DAL.Containers.CustomerContainer;
 import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
+import com.joep.backofficeapi.Exceptions.CustomerNotFoundException;
 import com.joep.backofficeapi.Exceptions.OrderInvalidException;
+import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
+import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Requests.Customer.ChangeCustomerRequest;
+import com.joep.backofficeapi.Models.Requests.Customer.DeleteCustomerRequest;
 import com.joep.backofficeapi.Models.Requests.Customer.getCustomerRequest;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @CrossOrigin("*")
@@ -32,22 +39,24 @@ public class CustomerController {
     }
 
     @GetMapping("/customers")
-    public ResponseEntity<?> getCustomers(HttpServletRequest request, @RequestBody(required = false) getCustomerRequest data) throws Exception {
+    public ResponseEntity<?> getCustomers(HttpServletRequest request) throws Exception {
         // RoleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
-        if (data == null ) return getAllCustomers();
-
-        if (data.getCustomerId() != null){
-          return ResponseEntity.ok(customerContainer.getCustomerById(data.getCustomerId()));
-
+        List<ApplicationUser> customers = new ArrayList<>();
+        for (ApplicationUser item:
+             userStoreContainer.getByRole(Roles.Customer)) {
+            customers.add(item);
         }
-        return getAllCustomers();
-
+        for (ApplicationUser item:
+                userStoreContainer.getByRole(Roles.Prospect)) {
+            customers.add(item);
+        }
+        return ResponseEntity.ok(customers);
     }
 
-    @DeleteMapping("/customers")
-    public ResponseEntity<?> DeleteCustomer(HttpServletRequest req, @RequestBody String businessIdentifier) {
-        userStoreContainer.deleteAccount(businessIdentifier);
-        customerContainer.deleteCustomer(businessIdentifier);
+    @DeleteMapping("/customers/{id}")
+    public ResponseEntity<?> DeleteCustomer(HttpServletRequest req, @PathVariable String id) {
+        userStoreContainer.deleteAccount(id);
+        customerContainer.deleteCustomer(id);
         return ResponseEntity.ok("Deleted");
     }
 
@@ -60,5 +69,10 @@ public class CustomerController {
         Customer customer = customerContainer.getCustomerById(request.getCustomerId());
         customerContainer.changeCustomerRole(customer,request.getRole());
         return ResponseEntity.ok("Status changed to " + request.getRole().toString());
+    }
+
+    @GetMapping("/customers/{id}")
+    public ResponseEntity<Customer> getCustomerById(@PathVariable ObjectId id) throws CustomerNotFoundException {
+        return ResponseEntity.ok(customerContainer.getCustomerById(id));
     }
 }

@@ -80,4 +80,5 @@ public class UserStoreContainer implements UserDetailsService {
     public void deleteAccount(String businessIdentifier) {
         store.deleteAccount(businessIdentifier);
     }
+
 }
