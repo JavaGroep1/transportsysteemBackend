@@ -5,21 +5,19 @@ import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Requests.Auth.AuthenticationRequest;
 import com.joep.backofficeapi.Models.Requests.Auth.AuthenticationResponse;
 import com.joep.backofficeapi.Models.Requests.Auth.UserInfoResponse;
-import com.joep.backofficeapi.Util.*;
+import com.joep.backofficeapi.Util.JwtUtil;
+import com.joep.backofficeapi.Util.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Controller
+@RestController
 @CrossOrigin(origins = {"*"})
 public class AuthenticationController {
     @Autowired
@@ -55,6 +53,7 @@ public class AuthenticationController {
     @CrossOrigin(origins = {"*"})
     @RequestMapping(value = "/authenticate/signup", method = RequestMethod.POST)
     public ResponseEntity<?> CreateUser(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+
         var user = new ApplicationUser(
                 authenticationRequest.getUsername(),
                 authenticationRequest.getPassword(),

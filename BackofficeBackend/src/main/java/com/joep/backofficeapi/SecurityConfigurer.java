@@ -52,7 +52,13 @@ public class SecurityConfigurer  extends WebSecurityConfigurerAdapter {
                 .deny()
                 .and()
                 // dont authenticate this particular request
-                .authorizeRequests().antMatchers("/authenticate", "/authenticate/signup", "/authenticate/getUser").permitAll().
+                .authorizeRequests().antMatchers(
+                        "/authenticate",
+                        "/authenticate/signup",
+                        "/authenticate/getUser",
+                        "/swagger-ui.html",
+                        "/v3/**",
+                        "/swagger-ui/*").permitAll().
 
                 // all other requests need to be authenticated
                         anyRequest().authenticated()

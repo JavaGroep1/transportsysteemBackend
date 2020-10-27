@@ -1,14 +1,14 @@
 package com.joep.backofficeapi.Models.Authentication;
 
 import com.joep.backofficeapi.Models.Customer;
+import com.joep.backofficeapi.Util.PasswordEncoder;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Reference;
 import dev.morphia.annotations.Transient;
 import org.bson.types.ObjectId;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.joep.backofficeapi.Util.PasswordEncoder;
+
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collection;

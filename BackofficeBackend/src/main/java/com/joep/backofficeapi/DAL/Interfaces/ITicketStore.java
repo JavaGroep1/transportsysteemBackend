@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface ITicketStore {
     public void addReply(Ticket ticket, TicketReply ticketReply);
+    void addTicket(Ticket ticket);
     Ticket getTicketById(ObjectId id);
     List<Ticket> getTickets();
     List<Ticket> getPendingTickets();

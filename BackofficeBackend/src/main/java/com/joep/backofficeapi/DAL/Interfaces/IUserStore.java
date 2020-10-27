@@ -5,7 +5,6 @@ import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface IUserStore {

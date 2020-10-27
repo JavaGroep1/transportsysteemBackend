@@ -7,16 +7,17 @@ import com.joep.backofficeapi.Exceptions.InvalidEmailException;
 import com.joep.backofficeapi.Exceptions.UsernameTakenException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UserStoreContainer implements UserDetailsService {
+
+    @Autowired
+    private CustomerContainer customerContainer;
 
     private IUserStore store;
 
@@ -40,7 +41,9 @@ public class UserStoreContainer implements UserDetailsService {
         if (usernameExists(user.getUsername())) {
             throw new UsernameTakenException();
         }
-
+        if (user.getCustomer() != null){
+            customerContainer.addCustomer(user.getCustomer());
+        }
         return store.createUser(user);
     }
     public Boolean emailExists(String email){
