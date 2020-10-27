@@ -55,7 +55,7 @@ public class MongoCustomerStore implements ICustomerStore {
 
     @Override
     public List<Customer> getActiveCustomers() {
-        return datastore.find(Customer.class).filter(Filters.eq("isProspect", false)).iterator().toList();
+        return datastore.find(Customer.class).filter(Filters.eq("Role", Roles.Customer)).iterator().toList();
 
     }
 
@@ -63,7 +63,7 @@ public class MongoCustomerStore implements ICustomerStore {
     public void changeCustomerRole(Customer customer, Roles role) {
         datastore.find(Customer.class)
                 .filter(Filters.eq("Id", customer.getId()))
-                .update(UpdateOperators.set("orderStatus", role))
+                .update(UpdateOperators.set("Role", role))
                 .execute();
     }
 

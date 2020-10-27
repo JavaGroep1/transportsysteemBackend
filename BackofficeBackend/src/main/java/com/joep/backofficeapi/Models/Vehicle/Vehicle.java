@@ -2,13 +2,14 @@ package com.joep.backofficeapi.Models.Vehicle;
 
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
+import dev.morphia.annotations.experimental.Name;
 import org.bson.types.ObjectId;
 
 @Entity
 public class Vehicle {
 
     @Id
-    private ObjectId Id;
+    public ObjectId id;
 
     private String licensePlate;
 
@@ -16,9 +17,9 @@ public class Vehicle {
 
     private VehicleCategory vehicleCategory;
 
-    public Vehicle(ObjectId id, String licensePlate, VehicleCategory vehicleCategory) {
-        Id = id;
+    public Vehicle(String licensePlate, VehicleCategory vehicleCategory, int capacityInKG) {
         this.licensePlate = licensePlate;
+        this.capacityInKG = capacityInKG;
         this.vehicleCategory = vehicleCategory;
     }
 
@@ -34,9 +35,10 @@ public class Vehicle {
     }
 
     public ObjectId getId() {
-        return Id;
+        return id;
     }
 
+    public String getIdString() {return  id.toString();}
     public VehicleCategory getVehicleCategory() {
         return vehicleCategory;
     }
