@@ -35,11 +35,8 @@ public class TicketController {
     }
 
     @GetMapping("/tickets")
-    Ticket getTicket(){
-
-            var ticket = ticketContainer.getTicketById(new ObjectId("5f898cf41904c25503685a14"));
-            return ticket;
-
+    Ticket getTicket(String Id){
+        return ticketContainer.getTicketById(new ObjectId(Id));
     }
 
     @GetMapping("/tickets/completed")
@@ -51,7 +48,7 @@ public class TicketController {
         return ResponseEntity.ok(ticketContainer.getPendingTickets());
     }
     @GetMapping("/tickets/inprogress")
-    ResponseEntity<?> getinProgressTickets(){
+    ResponseEntity<?> getInProgressTickets(){
         return ResponseEntity.ok(ticketContainer.getInProgressTickets());
     }
     @PostMapping("/tickets/reply")
