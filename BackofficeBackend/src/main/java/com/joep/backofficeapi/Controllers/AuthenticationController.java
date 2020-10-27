@@ -19,7 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Controller
+@RestController
 @CrossOrigin(origins = {"*"})
 public class AuthenticationController {
     @Autowired

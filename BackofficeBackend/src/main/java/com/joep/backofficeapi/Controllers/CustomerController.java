@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@Controller
+@RestController
 @CrossOrigin(origins = {"*"})
 public class CustomerController {
 
