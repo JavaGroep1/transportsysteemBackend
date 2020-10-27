@@ -5,5 +5,6 @@ public enum Roles {
     User,
     Employee,
     Admin,
-    Unknown
+    Unknown,
+    Customer
 }

@@ -3,9 +3,11 @@ package com.joep.backofficeapi.Controllers;
 import com.joep.backofficeapi.DAL.Containers.TicketContainer;
 import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
 import com.joep.backofficeapi.Models.Requests.Ticket.AddTicketRequest;
+import com.joep.backofficeapi.Models.Requests.Ticket.ChangeTicketStatusRequest;
 import com.joep.backofficeapi.Models.Requests.Ticket.ReplyToTicketRequest;
 import com.joep.backofficeapi.Models.Ticket.Ticket;
 import com.joep.backofficeapi.Models.Ticket.TicketReply;
+import com.joep.backofficeapi.Models.Ticket.TicketStatus;
 import com.joep.backofficeapi.Util.JwtUtil;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +60,12 @@ public class TicketController {
         var replyToAdd = new TicketReply(reply.getReplyBody(), userStoreContainer.getUserByName(jwtUtil.extractUsername(req)));
         ticketContainer.addReply(ticket, replyToAdd);
         return ResponseEntity.ok("Replied");
+    }
+    @PutMapping("/changestatus")
+    ResponseEntity<?> changeTicketStatus(HttpServletRequest req, @RequestBody ChangeTicketStatusRequest ticketStatusRequest){
+        var ticket = ticketContainer.getTicketById(new ObjectId(ticketStatusRequest.ticketId));
+        ticketContainer.changeTicketStatus(ticket, ticketStatusRequest.getNewStatus());
+        return ResponseEntity.ok("Updated ticket status");
     }
 
 }
