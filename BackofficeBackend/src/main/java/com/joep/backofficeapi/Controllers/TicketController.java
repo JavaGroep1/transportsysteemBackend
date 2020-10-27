@@ -7,7 +7,7 @@ import com.joep.backofficeapi.Models.Requests.Ticket.ChangeTicketStatusRequest;
 import com.joep.backofficeapi.Models.Requests.Ticket.ReplyToTicketRequest;
 import com.joep.backofficeapi.Models.Ticket.Ticket;
 import com.joep.backofficeapi.Models.Ticket.TicketReply;
-import com.joep.backofficeapi.Models.Ticket.TicketStatus;
+import com.joep.backofficeapi.Util.Email.EmailUtil;
 import com.joep.backofficeapi.Util.JwtUtil;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 public class TicketController {
     @Autowired
     private TicketContainer ticketContainer;
+
+    @Autowired
+    EmailUtil emailUtil;
 
     @Autowired
     private UserStoreContainer userStoreContainer;
@@ -59,12 +62,15 @@ public class TicketController {
         var ticket = ticketContainer.getTicketById(reply.getTicketId());
         var replyToAdd = new TicketReply(reply.getReplyBody(), userStoreContainer.getUserByName(jwtUtil.extractUsername(req)));
         ticketContainer.addReply(ticket, replyToAdd);
+        emailUtil.sendEmail(new String[]{ticket.getIssuedBy().getEmail()}, "New reply to your Ticket ("+ticket.getIdString()+")", "One of our support staff has replied to your ticket, visit the website to view the reply");
         return ResponseEntity.ok("Replied");
     }
     @PutMapping("/changestatus")
     ResponseEntity<?> changeTicketStatus(HttpServletRequest req, @RequestBody ChangeTicketStatusRequest ticketStatusRequest){
         var ticket = ticketContainer.getTicketById(new ObjectId(ticketStatusRequest.ticketId));
         ticketContainer.changeTicketStatus(ticket, ticketStatusRequest.getNewStatus());
+        emailUtil.sendEmail(new String[]{ticket.getIssuedBy().getEmail()}, "Status of ticket "+ticket.getIdString()+" has been changed", "The status of your ticket has been changed to " + ticketStatusRequest.getNewStatus());
+
         return ResponseEntity.ok("Updated ticket status");
     }
 
