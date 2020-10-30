@@ -77,15 +77,10 @@ public class MongoVehicleStore implements IVehicleStore {
         var vehicleId = new ObjectId(newVehicle.getVehicleIdString());
         datastore.find(Vehicle.class)
                 .filter(Filters.eq("id", vehicleId))
-                .update(UpdateOperators.set("vehicleCategory", newVehicle.getNewVehicleCategory()))
+                .update(UpdateOperators.set("vehicleCategory", newVehicle.getNewVehicleCategory()),
+                        UpdateOperators.set("licensePlate", newVehicle.getNewLicensePlate()),
+                        UpdateOperators.set("capacityInKG", newVehicle.getNewCapacityInKg()))
                 .execute();
-        datastore.find(Vehicle.class)
-                .filter(Filters.eq("id", vehicleId))
-                .update(UpdateOperators.set("licensePlate", newVehicle.getNewLicensePlate()))
-                .execute();
-        datastore.find(Vehicle.class)
-                .filter(Filters.eq("id", vehicleId))
-                .update(UpdateOperators.set("capacityInKG", newVehicle.getNewCapacityInKg()))
-                .execute();
+       
     }
 }
