@@ -63,18 +63,7 @@ public class TicketController {
         }
         throw new BadRequestException();
     }
-    @GetMapping("/completed")
-    ResponseEntity<?> getCompletedTickets(){
-        return ResponseEntity.ok(ticketContainer.getCompletedTickets());
-    }
-    @GetMapping("/pending")
-    ResponseEntity<?> getPendingTickets(){
-        return ResponseEntity.ok(ticketContainer.getPendingTickets());
-    }
-    @GetMapping("/inprogress")
-    ResponseEntity<?> getInProgressTickets(){
-        return ResponseEntity.ok(ticketContainer.getInProgressTickets());
-    }
+    
     @PostMapping("/reply")
     ResponseEntity<?> replyToTicket(HttpServletRequest req, @RequestBody ReplyToTicketRequest reply) throws Exception {
         var ticket = ticketContainer.getTicketById(reply.getTicketId());

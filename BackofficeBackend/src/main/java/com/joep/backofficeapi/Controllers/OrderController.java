@@ -43,6 +43,7 @@ public class OrderController {
     public ResponseEntity<List<Order>> getOrder(HttpServletRequest request) throws Exception {
         return ResponseEntity.ok(orderContainer.getOrders());
     }
+
     @GetMapping(value = "", params = "customerid")
     public ResponseEntity<List<Order>> getOrderByCustomerId(HttpServletRequest request, String customerid) throws Exception {
             var customerIdObject = new ObjectId(customerid);
@@ -77,7 +78,6 @@ public class OrderController {
     public ResponseEntity<?> getPendingOrder() throws Exception {
         return ResponseEntity.ok(orderContainer.getPendingOrders());
     }
-
 
     @PostMapping(value = "/status", headers = "Accept=application/json" )
     public ResponseEntity<?> changeOrderStatus(@RequestBody ChangeOrderStatusRequest request) throws Exception {
