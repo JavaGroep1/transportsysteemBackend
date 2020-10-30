@@ -35,8 +35,8 @@ public class TicketController {
     ResponseEntity<?> addTicket(HttpServletRequest req, @RequestBody AddTicketRequest ticket) throws Exception {
         var user = userStoreContainer.getUserByName(jwtUtil.extractUsername(req));
         Ticket ticketToAdd = new Ticket(ticket.getTitle(), ticket.getBody(), user);
-        System.out.println(ticketToAdd);
         ticketContainer.addTicket(ticketToAdd);
+        emailUtil.sendEmail(new String[] {user.getEmail()}, "New ticket created", "We recieved your ticket request. You can view it on the website at any time");
         return ResponseEntity.ok("Created");
     }
 
