@@ -81,6 +81,6 @@ public class MongoVehicleStore implements IVehicleStore {
                         UpdateOperators.set("licensePlate", newVehicle.getNewLicensePlate()),
                         UpdateOperators.set("capacityInKG", newVehicle.getNewCapacityInKg()))
                 .execute();
-       
+
     }
 }

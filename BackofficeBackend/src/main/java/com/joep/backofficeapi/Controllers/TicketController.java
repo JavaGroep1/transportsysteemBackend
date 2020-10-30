@@ -31,7 +31,7 @@ public class TicketController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @PostMapping(value = "/add", headers = "Accept=application/json")
+    @PostMapping(value = "", headers = "Accept=application/json")
     ResponseEntity<?> addTicket(HttpServletRequest req, @RequestBody AddTicketRequest ticket) throws Exception {
         var user = userStoreContainer.getUserByName(jwtUtil.extractUsername(req));
         Ticket ticketToAdd = new Ticket(ticket.getTitle(), ticket.getBody(), user);
