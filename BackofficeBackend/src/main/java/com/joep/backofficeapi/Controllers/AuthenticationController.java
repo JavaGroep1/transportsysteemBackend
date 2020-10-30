@@ -31,7 +31,7 @@ public class AuthenticationController {
 
     private final PasswordEncoder encoder = new PasswordEncoder();
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    @RequestMapping(value = "/authenticate", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         try {
             String encodedPass = encoder.Encode(authenticationRequest.getPassword());

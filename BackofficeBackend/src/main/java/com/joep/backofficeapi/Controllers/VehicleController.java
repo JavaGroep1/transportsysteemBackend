@@ -11,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = {"*"})
 @RequestMapping("/vehicles")
@@ -45,6 +49,7 @@ public class VehicleController {
 
         vehicleContainer.updateVehicle(request);
         return ResponseEntity.ok("Updated");
+
     }
 
     @DeleteMapping("")

@@ -31,12 +31,12 @@ public class TicketController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @PostMapping("/add")
+    @PostMapping(value = "/add", headers = "Accept=application/json")
     ResponseEntity<?> addTicket(HttpServletRequest req, @RequestBody AddTicketRequest ticket) throws Exception {
         var user = userStoreContainer.getUserByName(jwtUtil.extractUsername(req));
         Ticket ticketToAdd = new Ticket(ticket.getTitle(), ticket.getBody(), user);
-        System.out.println(ticketToAdd);
         ticketContainer.addTicket(ticketToAdd);
+        emailUtil.sendEmail(new String[] {user.getEmail()}, "New ticket created", "We recieved your ticket request. You can view it on the website at any time");
         return ResponseEntity.ok("Created");
     }
 
@@ -58,7 +58,7 @@ public class TicketController {
         return ResponseEntity.ok(ticketContainer.getInProgressTickets());
     }
     @PostMapping("/reply")
-    ResponseEntity<?> getTicketById(HttpServletRequest req, @RequestBody ReplyToTicketRequest reply) throws Exception {
+    ResponseEntity<?> replyToTicket(HttpServletRequest req, @RequestBody ReplyToTicketRequest reply) throws Exception {
         var ticket = ticketContainer.getTicketById(reply.getTicketId());
         var replyToAdd = new TicketReply(reply.getReplyBody(), userStoreContainer.getUserByName(jwtUtil.extractUsername(req)));
         ticketContainer.addReply(ticket, replyToAdd);
