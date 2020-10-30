@@ -1,5 +1,6 @@
 package com.joep.backofficeapi.Controllers;
 
+import com.joep.backofficeapi.Models.Route.Route_;
 import com.joep.backofficeapi.Util.RouteUtility;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,9 +12,10 @@ import java.io.IOException;
 @RestController
 @CrossOrigin(origins = {"*"})
 public class RouteController {
-    @GetMapping("/route")
-    public ResponseEntity<?> getRoute() throws IOException, InterruptedException {
-        var route= RouteUtility.getRoute("Veltackerstraat 3, diessen", "Professor goossenlaan 1, Tilburg");
+
+    @GetMapping(value = "/route", params = {"startingpoint", "destination"})
+    public ResponseEntity<Route_> getRoute(String startingpoint, String destination) throws IOException, InterruptedException {
+        var route= RouteUtility.getRoute(startingpoint, destination);
         assert route != null;
         return ResponseEntity.ok(route);
     }
