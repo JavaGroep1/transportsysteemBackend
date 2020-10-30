@@ -14,7 +14,6 @@ import com.joep.backofficeapi.Util.JwtUtil;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +41,7 @@ public class TicketController {
         ticketContainer.addTicket(ticketToAdd);
         emailUtil.sendEmail(new String[] {user.getEmail()}, "New ticket created", "We recieved your ticket request. You can view it on the website at any time");
         return ResponseEntity.ok("Created");
+
     }
 
     @GetMapping("")
@@ -51,19 +51,20 @@ public class TicketController {
 
     @GetMapping(value = "", params = "status", produces = "application/json")
     List<Ticket> getTicketByStatus(TicketStatus status) throws BadRequestException {
-        if (status == TicketStatus.DONE){
-            return ticketContainer.getCompletedTickets();
-        }
-        else if (status == TicketStatus.IN_PROGRESS){
-            return ticketContainer.getInProgressTickets();
-        }
-        else if (status == TicketStatus.PENDING)
-        {
-            return ticketContainer.getPendingTickets();
-        }
-        throw new BadRequestException();
+        return ticketContainer.getTicketByStatus(status);
     }
-    
+
+    @GetMapping(value = "", params = "client", produces = "application/json")
+    List<Ticket> getTicketByClient(String client) throws Exception {
+        var customer= userStoreContainer.getUserByName(jwtUtil.extractUsername(client));
+        return ticketContainer.getTicketsByCustomer(customer);
+    }
+    @GetMapping(value = "", params = {"client", "status"}, produces = "application/json")
+    List<Ticket> getTicketByClientAndStatus(String client, TicketStatus status) throws Exception {
+        var customer= userStoreContainer.getUserById(new ObjectId(client));
+        return ticketContainer.getTicketByStatusAndClient(status, customer);
+    }
+
     @PostMapping("/reply")
     ResponseEntity<?> replyToTicket(HttpServletRequest req, @RequestBody ReplyToTicketRequest reply) throws Exception {
         var ticket = ticketContainer.getTicketById(reply.getTicketId());

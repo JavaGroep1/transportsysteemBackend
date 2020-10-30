@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
@@ -61,6 +60,7 @@ public class OrderController {
     public ResponseEntity<?> getActiveOrders(String customerId) throws Exception {
             Customer customer = customerContainer.getCustomerById(new ObjectId(customerId));
             return ResponseEntity.ok(orderContainer.getActiveOrdersByCustomer(customer));
+
     }
 
     @GetMapping(value = "/active")

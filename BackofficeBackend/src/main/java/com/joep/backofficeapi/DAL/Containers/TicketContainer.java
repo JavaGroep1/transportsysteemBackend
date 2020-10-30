@@ -1,6 +1,7 @@
 package com.joep.backofficeapi.DAL.Containers;
 
 import com.joep.backofficeapi.DAL.Interfaces.ITicketStore;
+import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Ticket.Ticket;
 import com.joep.backofficeapi.Models.Ticket.TicketReply;
 import com.joep.backofficeapi.Models.Ticket.TicketStatus;
@@ -31,24 +32,25 @@ public class TicketContainer implements ITicketStore {
     }
 
     @Override
+    public List<Ticket> getTicketsByCustomer(ApplicationUser customer) {
+        return ticketStore.getTicketsByCustomer(customer);
+    }
+
+    @Override
     public List<Ticket> getTickets() {
         return ticketStore.getTickets();
     }
 
     @Override
-    public List<Ticket> getPendingTickets() {
-        return ticketStore.getPendingTickets();
+    public List<Ticket> getTicketByStatus(TicketStatus status) {
+        return ticketStore.getTicketByStatus(status);
     }
 
     @Override
-    public List<Ticket> getCompletedTickets() {
-        return ticketStore.getCompletedTickets();
+    public List<Ticket> getTicketByStatusAndClient(TicketStatus status, ApplicationUser customer) {
+        return ticketStore.getTicketByStatusAndClient(status,customer);
     }
 
-    @Override
-    public List<Ticket> getInProgressTickets() {
-        return ticketStore.getInProgressTickets();
-    }
 
     @Override
     public void changeTicketStatus(Ticket ticket, TicketStatus status) {

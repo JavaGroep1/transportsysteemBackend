@@ -2,6 +2,8 @@ package com.joep.backofficeapi.DAL.Stores.Tickets;
 
 import com.joep.backofficeapi.ConnectionConfiguration;
 import com.joep.backofficeapi.DAL.Interfaces.ITicketStore;
+import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
+import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Ticket.Ticket;
 import com.joep.backofficeapi.Models.Ticket.TicketReply;
 import com.joep.backofficeapi.Models.Ticket.TicketStatus;
@@ -48,34 +50,31 @@ public class MongoTicketStore implements ITicketStore {
     }
 
     @Override
+    public List<Ticket> getTicketsByCustomer(ApplicationUser customer) {
+        return datastore.find(Ticket.class)
+                .filter(Filters.eq("issuedBy", customer))
+                .iterator().toList();
+    }
+
+    @Override
     public List<Ticket> getTickets() {
         return datastore.find(Ticket.class).iterator().toList();
     }
 
     @Override
-    public List<Ticket> getPendingTickets() {
+    public List<Ticket> getTicketByStatus(TicketStatus status) {
         return datastore.find(Ticket.class)
-                .filter(Filters.eq("status", TicketStatus.PENDING))
-                .iterator()
-                .toList();
-
+                .filter(Filters.eq("status", status))
+                .iterator().toList();
     }
 
     @Override
-    public List<Ticket> getCompletedTickets() {
+    public List<Ticket> getTicketByStatusAndClient(TicketStatus status, ApplicationUser customer) {
         return datastore.find(Ticket.class)
-                .filter(Filters.eq("status", TicketStatus.DONE))
-                .iterator()
-                .toList();
+                .filter(Filters.eq("status", status), Filters.eq("issuedBy", customer))
+                .iterator().toList();
     }
 
-    @Override
-    public List<Ticket> getInProgressTickets() {
-        return datastore.find(Ticket.class)
-                .filter(Filters.eq("status", TicketStatus.IN_PROGRESS))
-                .iterator()
-                .toList();
-    }
 
     @Override
     public void changeTicketStatus(Ticket ticket, TicketStatus status) {

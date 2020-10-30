@@ -1,5 +1,6 @@
 package com.joep.backofficeapi.DAL.Stores.UserStores;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.joep.backofficeapi.ConnectionConfiguration;
 import com.joep.backofficeapi.DAL.Interfaces.IUserStore;
 import com.joep.backofficeapi.Exceptions.UserNotFoundException;
@@ -9,8 +10,10 @@ import com.mongodb.client.MongoClients;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
 import dev.morphia.query.experimental.filters.Filters;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.List;
 
@@ -37,6 +40,12 @@ public class MongoUserStore implements IUserStore {
         if (user == null) throw new UserNotFoundException();
         return user;
     }
+
+    @Override
+    public ApplicationUser getUserById(ObjectId id) throws JsonProcessingException, IOException, Exception {
+        var user=  datastore.find(ApplicationUser.class).filter(Filters.eq("Id", id)).first();
+        if (user == null) throw new UserNotFoundException();
+        return user;    }
 
     @Override
     public Boolean createUser(ApplicationUser user) {
