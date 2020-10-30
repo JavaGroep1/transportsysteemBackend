@@ -20,7 +20,7 @@ public class CustomerController {
     @Autowired
     private CustomerContainer customerContainer;
 
-    @PostMapping(value = "/customers/add", headers = "Accept=application/json")
+    @PostMapping(value = "/customers", headers = "Accept=application/json")
     public ResponseEntity<?> addCustomer(@RequestBody Customer customer, HttpServletRequest req) throws InterruptedException, OrderInvalidException, IOException {
         customerContainer.addCustomer(customer);
         return ResponseEntity.ok("ok");

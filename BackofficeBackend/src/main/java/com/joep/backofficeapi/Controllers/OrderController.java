@@ -27,7 +27,7 @@ public class OrderController {
     @Autowired
     private CustomerContainer customerContainer;
 
-    @PostMapping(value = "/add", headers = "Accept=application/json")
+    @PostMapping(value = "", headers = "Accept=application/json")
     public ResponseEntity<?> addOrder(@RequestBody Order order, HttpServletRequest req) throws Exception {
         String token = req.getHeader("Authorization");
         token = token.substring(7);

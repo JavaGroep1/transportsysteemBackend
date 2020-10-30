@@ -23,7 +23,7 @@ public class VehicleController {
     @Autowired
     private VehicleContainer vehicleContainer;
 
-    @PostMapping("/add")
+    @PostMapping("")
     public ResponseEntity<?> addVehicle(@RequestBody AddVehicleRequest vehicle) {
         vehicleContainer.addVehicle(new Vehicle(
                 vehicle.getLicensePlate(),
