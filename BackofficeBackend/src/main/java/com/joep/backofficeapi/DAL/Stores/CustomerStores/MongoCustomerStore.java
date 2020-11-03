@@ -5,6 +5,7 @@ import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
 import com.joep.backofficeapi.DAL.Interfaces.ICustomerStore;
 import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Customer;
+import com.joep.backofficeapi.Models.Requests.Customer.EditCustomerRequest;
 import com.joep.backofficeapi.Util.JwtUtil;
 import com.mongodb.client.MongoClients;
 import dev.morphia.Datastore;
@@ -50,7 +51,7 @@ public class MongoCustomerStore implements ICustomerStore {
 
     @Override
     public Customer getCustomerById(ObjectId id){
-        return datastore.find(Customer.class).filter(Filters.eq("Id", id.toString())).first();
+        return datastore.find(Customer.class).filter(Filters.eq("Id", id)).first();
     }
 
     @Override
@@ -73,6 +74,19 @@ public class MongoCustomerStore implements ICustomerStore {
                 .filter(Filters.eq("businessIdentifier", businessIdentifier))
                 .delete();
     }
+
+    @Override
+    public void updateCustomer(EditCustomerRequest editCustomerRequest) {
+        var id = editCustomerRequest.getCustomerIdString();
+        datastore.find(Customer.class)
+                .filter(Filters.eq("Id", id))
+                .update(UpdateOperators.set("name", editCustomerRequest.getName()),
+                        UpdateOperators.set("businessIdentifier", editCustomerRequest.getBusinessIdentifier()),
+                        UpdateOperators.set("address", editCustomerRequest.getAddress()),
+                        UpdateOperators.set("phoneNumber", editCustomerRequest.getPhoneNumber()))
+                .execute();
+    }
+
 
 
 }

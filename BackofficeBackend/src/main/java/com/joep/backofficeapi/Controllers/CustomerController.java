@@ -8,8 +8,7 @@ import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Requests.Customer.ChangeCustomerRequest;
-import com.joep.backofficeapi.Models.Requests.Customer.DeleteCustomerRequest;
-import com.joep.backofficeapi.Models.Requests.Customer.getCustomerRequest;
+import com.joep.backofficeapi.Models.Requests.Customer.EditCustomerRequest;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -74,5 +73,11 @@ public class CustomerController {
     @GetMapping("/customers/{id}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable ObjectId id) throws CustomerNotFoundException {
         return ResponseEntity.ok(customerContainer.getCustomerById(id));
+    }
+
+    @PutMapping("/customers")
+    public ResponseEntity<?> editCustomer(@RequestBody EditCustomerRequest editCustomerRequest) throws CustomerNotFoundException{
+        customerContainer.updateCustomer(editCustomerRequest);
+        return ResponseEntity.ok("updated");
     }
 }

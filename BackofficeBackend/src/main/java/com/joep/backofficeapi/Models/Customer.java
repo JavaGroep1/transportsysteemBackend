@@ -32,6 +32,8 @@ public class Customer {
         return Id;
     }
 
+    public String getIdString() { return Id.toString(); }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }

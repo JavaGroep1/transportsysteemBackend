@@ -5,6 +5,8 @@ import com.joep.backofficeapi.Exceptions.CustomerNotFoundException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Customer;
+import com.joep.backofficeapi.Models.Requests.Customer.EditCustomerRequest;
+import com.joep.backofficeapi.Util.Sanitizers.CustomerSanitizer;
 import org.bson.types.ObjectId;
 
 import java.util.List;
@@ -49,5 +51,17 @@ public class CustomerContainer implements ICustomerStore {
 
     public void deleteCustomer(String businessIdentifier) {
         store.deleteCustomer(businessIdentifier);
+    }
+
+    @Override
+    public void updateCustomer(EditCustomerRequest editCustomerRequest) throws CustomerNotFoundException {
+        //still returns 0 from frontend
+        Customer customer = store.getCustomerById(editCustomerRequest.getCustomerIdString());
+        CustomerSanitizer.sanitize(editCustomerRequest, customer);
+        store.updateCustomer(editCustomerRequest);
+
+        //change role if prospect changed
+
+        //maybe change email / account details later too?
     }
 }
