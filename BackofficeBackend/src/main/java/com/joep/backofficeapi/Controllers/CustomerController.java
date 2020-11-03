@@ -63,12 +63,12 @@ public class CustomerController {
         return ResponseEntity.ok(customerContainer.getCustomers());
     }
 
-    @PutMapping("/customer/role")
-    public ResponseEntity<?> changeCustomerRole(@RequestBody ChangeCustomerRequest request) throws Exception {
-        Customer customer = customerContainer.getCustomerById(request.getCustomerId());
-        customerContainer.changeCustomerRole(customer,request.getRole());
-        return ResponseEntity.ok("Status changed to " + request.getRole().toString());
-    }
+//    @PutMapping("/customer/role")
+//    public ResponseEntity<?> changeCustomerRole(@RequestBody ChangeCustomerRequest request) throws Exception {
+//        Customer customer = customerContainer.getCustomerById(request.getCustomerId());
+//        customerContainer.changeCustomerRole(customer,request.getRole());
+//        return ResponseEntity.ok("Status changed to " + request.getRole().toString());
+//    }
 
     @GetMapping("/customers/{id}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable ObjectId id) throws CustomerNotFoundException {
@@ -77,6 +77,7 @@ public class CustomerController {
 
     @PutMapping("/customers")
     public ResponseEntity<?> editCustomer(@RequestBody EditCustomerRequest editCustomerRequest) throws CustomerNotFoundException{
+        userStoreContainer.changeRole(editCustomerRequest.getCustomerIdString(), editCustomerRequest.getProspect() ? Roles.Prospect : Roles.Customer);
         customerContainer.updateCustomer(editCustomerRequest);
         return ResponseEntity.ok("updated");
     }

@@ -43,12 +43,6 @@ public class CustomerContainer implements ICustomerStore {
         return store.getActiveCustomers();
     }
 
-    @Override
-    public void changeCustomerRole(Customer customer, Roles role) {
-        store.changeCustomerRole(customer, role);
-    }
-
-
     public void deleteCustomer(String businessIdentifier) {
         store.deleteCustomer(businessIdentifier);
     }

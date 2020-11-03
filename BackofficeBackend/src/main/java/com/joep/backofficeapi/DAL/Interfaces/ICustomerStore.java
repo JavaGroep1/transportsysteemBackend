@@ -14,7 +14,6 @@ public interface ICustomerStore {
     public Customer getCustomerByJwt(String jwt) throws Exception;
     Customer getCustomerById(ObjectId id) throws CustomerNotFoundException;
     List<Customer> getActiveCustomers();
-    void changeCustomerRole(Customer customer, Roles role);
     void deleteCustomer(String businessIdentifier);
     void updateCustomer(EditCustomerRequest editCustomerRequest) throws CustomerNotFoundException;
 }

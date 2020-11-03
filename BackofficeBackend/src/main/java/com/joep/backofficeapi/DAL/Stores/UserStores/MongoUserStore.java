@@ -11,6 +11,8 @@ import dev.morphia.Datastore;
 import dev.morphia.Morphia;
 import dev.morphia.query.experimental.filters.Filter;
 import dev.morphia.query.experimental.filters.Filters;
+import dev.morphia.query.experimental.updates.UpdateOperators;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
 import java.net.UnknownHostException;
@@ -65,6 +67,14 @@ public class MongoUserStore implements IUserStore {
     public List<ApplicationUser> getByRole(Roles role) {
         return datastore.find(ApplicationUser.class).filter(Filters.eq("role", role)).iterator().toList();
 
+    }
+
+    @Override
+    public void changeRole(ObjectId customerId, Roles role) {
+        datastore.find(ApplicationUser.class)
+                .filter(Filters.eq("customer", customerId))
+                .update(UpdateOperators.set("role", role))
+                .execute();
     }
 
     @Override

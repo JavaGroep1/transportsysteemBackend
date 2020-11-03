@@ -61,14 +61,6 @@ public class MongoCustomerStore implements ICustomerStore {
     }
 
     @Override
-    public void changeCustomerRole(Customer customer, Roles role) {
-        datastore.find(Customer.class)
-                .filter(Filters.eq("Id", customer.getId()))
-                .update(UpdateOperators.set("orderStatus", role))
-                .execute();
-    }
-
-    @Override
     public void deleteCustomer(String businessIdentifier) {
         datastore.find(Customer.class)
                 .filter(Filters.eq("businessIdentifier", businessIdentifier))
