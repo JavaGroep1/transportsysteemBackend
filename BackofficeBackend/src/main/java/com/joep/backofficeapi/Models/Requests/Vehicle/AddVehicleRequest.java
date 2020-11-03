@@ -6,7 +6,11 @@ public class AddVehicleRequest {
     public String licensePlate;
     public int capacityInKg;
     public VehicleCategory vehicleCategory;
-
+    public double kmPerLiter;
+    
+    public double getKmPerLiter() {
+        return kmPerLiter;
+    }
     public String getLicensePlate() {
         return licensePlate;
     }
