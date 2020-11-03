@@ -86,5 +86,13 @@ public class MongoUserStore implements IUserStore {
                 .delete();
     }
 
+    @Override
+    public void changeEmail(ObjectId customerId, String email) {
+        datastore.find(ApplicationUser.class)
+                .filter(Filters.eq("customer", customerId))
+                .update(UpdateOperators.set("email", email))
+                .execute();
+    }
+
 }
 

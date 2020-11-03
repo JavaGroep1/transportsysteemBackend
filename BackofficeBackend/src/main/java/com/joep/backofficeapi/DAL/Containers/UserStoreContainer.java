@@ -86,4 +86,7 @@ public class UserStoreContainer implements UserDetailsService {
         store.deleteAccount(businessIdentifier);
     }
 
+    public void changeEmail(ObjectId customerIdString, String email) {
+        store.changeEmail(customerIdString, email);
+    }
 }

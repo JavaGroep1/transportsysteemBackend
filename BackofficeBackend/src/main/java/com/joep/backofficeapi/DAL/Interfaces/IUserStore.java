@@ -18,4 +18,5 @@ public interface IUserStore {
     public List<ApplicationUser> getByRole(Roles role);
     public void changeRole(ObjectId customerId, Roles role);
     public void deleteAccount(String businessIdentifier);
+    public void changeEmail(ObjectId customerId, String email);
 }

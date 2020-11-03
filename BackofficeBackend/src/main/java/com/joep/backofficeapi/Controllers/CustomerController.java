@@ -78,6 +78,7 @@ public class CustomerController {
     @PutMapping("/customers")
     public ResponseEntity<?> editCustomer(@RequestBody EditCustomerRequest editCustomerRequest) throws CustomerNotFoundException{
         userStoreContainer.changeRole(editCustomerRequest.getCustomerIdString(), editCustomerRequest.getProspect() ? Roles.Prospect : Roles.Customer);
+        userStoreContainer.changeEmail(editCustomerRequest.getCustomerIdString(), editCustomerRequest.getEmail());
         customerContainer.updateCustomer(editCustomerRequest);
         return ResponseEntity.ok("updated");
     }
