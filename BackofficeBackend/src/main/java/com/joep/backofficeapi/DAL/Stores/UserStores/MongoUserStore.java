@@ -9,7 +9,9 @@ import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.mongodb.client.MongoClients;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
+import dev.morphia.query.experimental.filters.Filter;
 import dev.morphia.query.experimental.filters.Filters;
+import dev.morphia.query.experimental.updates.UpdateOperators;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
@@ -72,6 +74,31 @@ public class MongoUserStore implements IUserStore {
     public List<ApplicationUser> getByRole(Roles role) {
         return datastore.find(ApplicationUser.class).filter(Filters.eq("role", role)).iterator().toList();
 
+    }
+
+    @Override
+    public void changeRole(ObjectId customerId, Roles role) {
+        datastore.find(ApplicationUser.class)
+                .filter(Filters.eq("customer", customerId))
+                .update(UpdateOperators.set("role", role))
+                .execute();
+    }
+
+    @Override
+    public void deleteAccount(String businessIdentifier) {
+        Customer customer = datastore.find(Customer.class)
+                .filter(Filters.eq("businessIdentifier", businessIdentifier)).first();
+        datastore.find(ApplicationUser.class)
+                .filter(Filters.eq("customer", customer.getId()))
+                .delete();
+    }
+
+    @Override
+    public void changeEmail(ObjectId customerId, String email) {
+        datastore.find(ApplicationUser.class)
+                .filter(Filters.eq("customer", customerId))
+                .update(UpdateOperators.set("email", email))
+                .execute();
     }
 
 }

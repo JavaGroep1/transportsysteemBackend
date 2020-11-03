@@ -9,6 +9,7 @@ import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -72,6 +73,18 @@ public class UserStoreContainer implements UserDetailsService {
     public List<ApplicationUser> getByRole(Roles role) {
         return store.getByRole(role);
 
+    }
+
+    public void changeRole(ObjectId customerId, Roles role) {
+        store.changeRole(customerId, role);
+    }
+
+    public void deleteAccount(String businessIdentifier) {
+        store.deleteAccount(businessIdentifier);
+    }
+
+    public void changeEmail(ObjectId customerIdString, String email) {
+        store.changeEmail(customerIdString, email);
     }
     public ApplicationUser getUserById(ObjectId id) throws Exception {
         return store.getUserById(id);
