@@ -8,5 +8,7 @@ public class VehicleSanitizer {
         if (vehicleRequest.getNewCapacityInKg() == 0) vehicleRequest.setNewCapacityInKg(vehicle.getCapacityInKG());
         if (vehicleRequest.getNewLicensePlate() == null) vehicleRequest.setNewLicensePlate(vehicle.getLicensePlate());
         if (vehicleRequest.getNewVehicleCategory() == null) vehicleRequest.setNewVehicleCategory(vehicle.getVehicleCategory());
+        if (vehicleRequest.getNewKmPerLiter() == 0) vehicleRequest.setNewKmPerLiter(vehicle.getKmPerLiter());
+
     }
 }

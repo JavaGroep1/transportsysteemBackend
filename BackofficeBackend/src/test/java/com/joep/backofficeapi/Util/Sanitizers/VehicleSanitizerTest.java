@@ -13,7 +13,7 @@ public class VehicleSanitizerTest {
     public void sanitizerFillsInMissingValues(){
         //setup
         var request = new EditVehicleRequest();
-        var vehicle= new Vehicle("licensePlate", VehicleCategory.Car, 500);
+        var vehicle= new Vehicle("licensePlate", VehicleCategory.Car, 500, 50);
 
         //execute
         VehicleSanitizer.sanitize(request,vehicle);
@@ -28,7 +28,7 @@ public class VehicleSanitizerTest {
     public void sanitizerLeavesPopulatesValues(){
         //setup
         var request = new EditVehicleRequest("idstring", 100, "plate", VehicleCategory.Bike);
-        var vehicle= new Vehicle("licensePlate", VehicleCategory.Car, 500);
+        var vehicle= new Vehicle("licensePlate", VehicleCategory.Car, 500, 50);
 
         //execute
         VehicleSanitizer.sanitize(request,vehicle);

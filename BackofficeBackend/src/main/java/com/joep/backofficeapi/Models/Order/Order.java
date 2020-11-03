@@ -76,7 +76,7 @@ public class Order {
         this.vehicle = vehicle;
         this.customer = customer;
 
-        var orderRoute = RouteUtility.getRoute(startingPoint, destination);
+        var orderRoute = RouteUtility.getRoute(startingPoint, destination, vehicle.getVehicleCategory(), vehicle.getKmPerLiter());
         if (orderRoute == null) throw new OrderInvalidException();
         this.distanceInKm= orderRoute.getDistance();
         this.fuelUsed = orderRoute.getFuelUsed();
