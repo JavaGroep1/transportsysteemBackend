@@ -2,9 +2,15 @@ package com.joep.backofficeapi.Controllers;
 
 import com.joep.backofficeapi.DAL.Containers.CustomerContainer;
 import com.joep.backofficeapi.DAL.Containers.OrderContainer;
+import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
+import com.joep.backofficeapi.DAL.Containers.VehicleContainer;
+import com.joep.backofficeapi.Exceptions.UserIsNotACustomerException;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Order.Order;
+import com.joep.backofficeapi.Models.Requests.Order.AddOrderRequest;
 import com.joep.backofficeapi.Models.Requests.Order.ChangeOrderStatusRequest;
+import com.joep.backofficeapi.Models.Requests.Vehicle.AddVehicleRequest;
+import com.joep.backofficeapi.Util.JwtUtil;
 import com.joep.backofficeapi.Util.RouteUtility;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +30,31 @@ public class OrderController {
     private OrderContainer orderContainer;
 
     @Autowired
+    private JwtUtil jwtUtil;
+    @Autowired
+    private UserStoreContainer userStoreContainer;
+    @Autowired
+    private VehicleContainer vehicleContainer;
+    @Autowired
     private CustomerContainer customerContainer;
 
     @PostMapping(value = "", headers = "Accept=application/json")
-    public ResponseEntity<?> addOrder(@RequestBody Order order, HttpServletRequest req) throws Exception {
-        String token = req.getHeader("Authorization");
-        token = token.substring(7);
-        if (order.getCustomer() == null){
-            order.setCustomer(customerContainer.getCustomerByJwt(token));
-        }
+    public ResponseEntity<?> addOrder(@RequestBody AddOrderRequest order, HttpServletRequest req) throws Exception {
 
-        orderContainer.addOrder(order);
+        var vehicle = vehicleContainer.getVehicleById(order.getVehicleId());
+        var customer = userStoreContainer.getUserByName(jwtUtil.extractUsername(req)).getCustomer();
+        if (customer == null)
+            throw new UserIsNotACustomerException();
+        var orderToAdd = new Order(
+                order.getDeadline(),
+                order.getWeightInKg(),
+                order.getStartingPoint(),
+                order.getDestination(),
+                vehicle,
+                customer
+        );
+
+        orderContainer.addOrder(orderToAdd);
         return ResponseEntity.ok("ok");
     }
 
