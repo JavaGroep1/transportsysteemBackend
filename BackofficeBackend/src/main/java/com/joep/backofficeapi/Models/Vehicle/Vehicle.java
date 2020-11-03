@@ -39,6 +39,7 @@ public class Vehicle {
     }
 
     public String getIdString() {return  id.toString();}
+
     public VehicleCategory getVehicleCategory() {
         return vehicleCategory;
     }
