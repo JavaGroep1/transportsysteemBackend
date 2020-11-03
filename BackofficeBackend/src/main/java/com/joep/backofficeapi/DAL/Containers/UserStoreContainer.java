@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,7 +46,6 @@ public class UserStoreContainer implements UserDetailsService {
         if (user.getCustomer() != null){
             customerContainer.addCustomer(user.getCustomer());
         }
-
         return store.createUser(user);
     }
     public Boolean emailExists(String email){
@@ -88,5 +85,9 @@ public class UserStoreContainer implements UserDetailsService {
 
     public void changeEmail(ObjectId customerIdString, String email) {
         store.changeEmail(customerIdString, email);
+    }
+    public ApplicationUser getUserById(ObjectId id) throws Exception {
+        return store.getUserById(id);
+
     }
 }

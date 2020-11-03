@@ -4,6 +4,7 @@ import com.joep.backofficeapi.ConnectionConfiguration;
 import com.joep.backofficeapi.DAL.Interfaces.IVehicleStore;
 import com.joep.backofficeapi.Exceptions.VehicleNotFoundException;
 import com.joep.backofficeapi.Models.Order.Order;
+import com.joep.backofficeapi.Models.Requests.Vehicle.EditVehicleRequest;
 import com.joep.backofficeapi.Models.Vehicle.Vehicle;
 import com.joep.backofficeapi.Models.Vehicle.VehicleCategory;
 import com.mongodb.client.MongoClients;
@@ -38,18 +39,48 @@ public class MongoVehicleStore implements IVehicleStore {
     }
 
     @Override
-    public Vehicle getVehicleById(ObjectId id) throws VehicleNotFoundException {
-        Vehicle result = datastore.find(Vehicle.class).filter(Filters.eq("Id", id)).first();
+    public List<Vehicle> getVehiclesByCategory(VehicleCategory cat) {
+        return datastore.find(Vehicle.class).filter(Filters.eq("vehicleCategory", cat)).iterator().toList();
+    }
+
+    @Override
+    public Vehicle getVehicleByPlate(String plate) throws VehicleNotFoundException {
+        Vehicle result = datastore.find(Vehicle.class).filter(Filters.eq("licensePlate", plate)).first();
         if (result != null) return result;
 
         throw new VehicleNotFoundException();
     }
 
     @Override
+    public Vehicle getVehicleById(ObjectId id) throws VehicleNotFoundException {
+        Vehicle result = datastore.find(Vehicle.class).filter(Filters.eq("id", id)).first();
+        if (result != null) return result;
+
+        throw new VehicleNotFoundException();
+    }
+
+    @Override
+    public void deleteVehicle(ObjectId vehicleId) {
+        datastore.find(Vehicle.class).filter(Filters.eq("id", vehicleId)).delete();
+    }
+
+    @Override
     public void changeVehicleCategory(Vehicle Vehicle, VehicleCategory newVehicleCat) {
-        datastore.find(Order.class)
-                .filter(Filters.eq("Id", Vehicle.getId()))
+        datastore.find(Vehicle.class)
+                .filter(Filters.eq("id", Vehicle.getId()))
                 .update(UpdateOperators.set("vehicleCategory", newVehicleCat))
                 .execute();
+    }
+
+    @Override
+    public void updateVehicle(EditVehicleRequest newVehicle) throws VehicleNotFoundException {
+        var vehicleId = new ObjectId(newVehicle.getVehicleIdString());
+        datastore.find(Vehicle.class)
+                .filter(Filters.eq("id", vehicleId))
+                .update(UpdateOperators.set("vehicleCategory", newVehicle.getNewVehicleCategory()),
+                        UpdateOperators.set("licensePlate", newVehicle.getNewLicensePlate()),
+                        UpdateOperators.set("capacityInKG", newVehicle.getNewCapacityInKg()))
+                .execute();
+
     }
 }

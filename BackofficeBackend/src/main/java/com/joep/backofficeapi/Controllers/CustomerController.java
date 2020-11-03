@@ -22,6 +22,7 @@ import java.util.List;
 
 @Controller
 @CrossOrigin("*")
+
 public class CustomerController {
 
     @Autowired
@@ -30,9 +31,8 @@ public class CustomerController {
     @Autowired
     private UserStoreContainer userStoreContainer;
 
-    @PostMapping("/customers/add")
+    @PostMapping(value = "/customers", headers = "Accept=application/json")
     public ResponseEntity<?> addCustomer(@RequestBody Customer customer, HttpServletRequest req) throws InterruptedException, OrderInvalidException, IOException {
-
         customerContainer.addCustomer(customer);
         return ResponseEntity.ok("ok");
     }
@@ -50,30 +50,23 @@ public class CustomerController {
             customers.add(item);
         }
         return ResponseEntity.ok(customers);
-    }
 
-    @DeleteMapping("/customers/{id}")
-    public ResponseEntity<?> DeleteCustomer(HttpServletRequest req, @PathVariable String id) {
+    }
+  
+    @GetMapping( value = "/customers", params = "id")
+    public ResponseEntity<Customer> getCustomer(HttpServletRequest request, String id) throws Exception {
+        // RoleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
+            return ResponseEntity.ok(customerContainer.getCustomerById(new ObjectId(id)));
+
+      
+      
+    @DeleteMapping(value = "/customers", params = "id")
+    public ResponseEntity<?> DeleteCustomer(HttpServletRequest req, String id) {
         userStoreContainer.deleteAccount(id);
         customerContainer.deleteCustomer(id);
         return ResponseEntity.ok("Deleted");
     }
 
-    public ResponseEntity<?> getAllCustomers(){
-        return ResponseEntity.ok(customerContainer.getCustomers());
-    }
-
-//    @PutMapping("/customer/role")
-//    public ResponseEntity<?> changeCustomerRole(@RequestBody ChangeCustomerRequest request) throws Exception {
-//        Customer customer = customerContainer.getCustomerById(request.getCustomerId());
-//        customerContainer.changeCustomerRole(customer,request.getRole());
-//        return ResponseEntity.ok("Status changed to " + request.getRole().toString());
-//    }
-
-    @GetMapping("/customers/{id}")
-    public ResponseEntity<Customer> getCustomerById(@PathVariable ObjectId id) throws CustomerNotFoundException {
-        return ResponseEntity.ok(customerContainer.getCustomerById(id));
-    }
 
     @PutMapping("/customers")
     public ResponseEntity<?> editCustomer(@RequestBody EditCustomerRequest editCustomerRequest) throws CustomerNotFoundException{
@@ -81,5 +74,12 @@ public class CustomerController {
         userStoreContainer.changeEmail(editCustomerRequest.getCustomerIdString(), editCustomerRequest.getEmail());
         customerContainer.updateCustomer(editCustomerRequest);
         return ResponseEntity.ok("updated");
+    }
+
+    @PutMapping(value = "/customer/role", headers = "Accept=application/json")
+    public ResponseEntity<?> changeCustomerRole(@RequestBody ChangeCustomerRequest request) throws Exception {
+        Customer customer = customerContainer.getCustomerById(request.getCustomerId());
+        customerContainer.changeCustomerRole(customer,request.getRole());
+        return ResponseEntity.ok("Status changed to " + request.getRole().toString());
     }
 }

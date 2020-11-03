@@ -2,7 +2,6 @@ package com.joep.backofficeapi.DAL.Containers;
 
 import com.joep.backofficeapi.DAL.Interfaces.ICustomerStore;
 import com.joep.backofficeapi.Exceptions.CustomerNotFoundException;
-import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Requests.Customer.EditCustomerRequest;

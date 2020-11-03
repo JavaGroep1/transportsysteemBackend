@@ -2,9 +2,6 @@ package com.joep.backofficeapi.Models.Requests.Auth;
 
 import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Customer;
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
 
 public class AuthenticationRequest {
     private String username;
@@ -17,6 +14,11 @@ public class AuthenticationRequest {
         this.role = role;
         this.password = password;
         this.customer = customer;
+    }
+
+    public AuthenticationRequest(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public AuthenticationRequest() {

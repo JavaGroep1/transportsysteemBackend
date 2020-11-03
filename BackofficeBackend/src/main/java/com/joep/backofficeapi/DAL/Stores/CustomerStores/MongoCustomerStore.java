@@ -56,7 +56,7 @@ public class MongoCustomerStore implements ICustomerStore {
 
     @Override
     public List<Customer> getActiveCustomers() {
-        return datastore.find(Customer.class).filter(Filters.eq("isProspect", false)).iterator().toList();
+        return datastore.find(Customer.class).filter(Filters.eq("Role", Roles.Customer)).iterator().toList();
 
     }
 

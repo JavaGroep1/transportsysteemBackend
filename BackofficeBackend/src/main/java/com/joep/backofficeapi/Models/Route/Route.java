@@ -1,7 +1,6 @@
 package com.joep.backofficeapi.Models.Route;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import net.bytebuddy.implementation.bind.annotation.Super;
 @JsonIgnoreProperties(ignoreUnknown = true)
 
 public class Route {

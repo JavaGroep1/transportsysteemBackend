@@ -42,4 +42,6 @@ public class UserInfoResponse {
         this.email = email;
         this.profilePicture = profilePicture;
     }
+
+    public String getIdString() {return id.toString();}
 }

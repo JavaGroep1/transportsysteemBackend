@@ -3,6 +3,7 @@ package com.joep.backofficeapi.DAL.Stores.Tickets;
 import com.joep.backofficeapi.ConnectionConfiguration;
 import com.joep.backofficeapi.DAL.Interfaces.ITicketStore;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
+import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Ticket.Ticket;
 import com.joep.backofficeapi.Models.Ticket.TicketReply;
 import com.joep.backofficeapi.Models.Ticket.TicketStatus;
@@ -31,19 +32,28 @@ public class MongoTicketStore implements ITicketStore {
         var query = datastore.find(Ticket.class)
                 .filter(Filters.eq("Id", ticket.getId()));
 
-        //Haal following op en voeg de nieuwe gebruiker toe.
-        var replies = query.first().getReplies();
-        replies.add(ticketReply);
-
         //Add nieuwe lijst
-        query.update(UpdateOperators.set("replies", replies))
+        query.update(UpdateOperators.addToSet("replies", ticketReply))
                 .execute();
+    }
+
+    @Override
+    public void addTicket(Ticket ticket) {
+        datastore.save(ticket);
     }
 
     @Override
     public Ticket getTicketById(ObjectId id) {
        return datastore.find(Ticket.class)
-                .filter(Filters.eq("Id", id)).first();
+                .filter(Filters.eq("Id", id))
+               .first();
+    }
+
+    @Override
+    public List<Ticket> getTicketsByCustomer(ApplicationUser customer) {
+        return datastore.find(Ticket.class)
+                .filter(Filters.eq("issuedBy", customer))
+                .iterator().toList();
     }
 
     @Override
@@ -52,34 +62,24 @@ public class MongoTicketStore implements ITicketStore {
     }
 
     @Override
-    public List<Ticket> getPendingTickets() {
+    public List<Ticket> getTicketByStatus(TicketStatus status) {
         return datastore.find(Ticket.class)
-                .filter(Filters.eq("status", TicketStatus.PENDING))
-                .iterator()
-                .toList();
+                .filter(Filters.eq("status", status))
+                .iterator().toList();
     }
 
     @Override
-    public List<Ticket> getCompletedTickets() {
+    public List<Ticket> getTicketByStatusAndClient(TicketStatus status, ApplicationUser customer) {
         return datastore.find(Ticket.class)
-                .filter(Filters.eq("status", TicketStatus.DONE))
-                .iterator()
-                .toList();
+                .filter(Filters.eq("status", status), Filters.eq("issuedBy", customer))
+                .iterator().toList();
     }
 
-    @Override
-    public List<Ticket> getInProgressTickets() {
-        return datastore.find(Ticket.class)
-                .filter(Filters.eq("status", TicketStatus.IN_PROGRESS))
-                .iterator()
-                .toList();
-    }
 
     @Override
     public void changeTicketStatus(Ticket ticket, TicketStatus status) {
         var query = datastore.find(Ticket.class)
                 .filter(Filters.eq("Id", ticket.getId()));
-
         query.update(UpdateOperators.set("status", status))
                 .execute();
     }
