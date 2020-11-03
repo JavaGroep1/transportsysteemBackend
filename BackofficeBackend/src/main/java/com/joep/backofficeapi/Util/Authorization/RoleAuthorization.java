@@ -6,18 +6,32 @@ import com.joep.backofficeapi.Exceptions.UnauthorizedException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Util.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class RoleAuthorization {
+    private static UserStoreContainer userStore;
+
+    @Autowired
+    private UserStoreContainer store;
+
+    public RoleAuthorization() {
+        userStore = store;
+    }
+
+    public static Boolean checkRole(ApplicationUser user, Roles[] roles) throws Exception {
+        if (user == null) throw new UnauthorizedException();
+        for (Roles role : roles){
+            if (user.getRole()== role) return true;
+        }
+        throw new UnauthorizedException();
+    };
     private static ApplicationUser getUser(HttpServletRequest req) throws Exception {
-        String token = req.getHeader("Authorization");
-        token = token.substring(7);
-        UserStoreContainer container = new UserStoreContainer(new MongoUserStore());
         JwtUtil util = new JwtUtil();
-        return container.getUserByName(util.extractUsername(token));
+        return userStore.getUserByName(util.extractUsername(req));
     }
     public static Boolean checkRole(HttpServletRequest req, Roles[] roles) throws Exception {
         ApplicationUser user = getUser(req);
@@ -35,6 +49,7 @@ public class RoleAuthorization {
 
         throw new UnauthorizedException();
     };
+
 
 
 }

@@ -16,6 +16,11 @@ public class AuthenticationRequest {
         this.customer = customer;
     }
 
+    public AuthenticationRequest(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     public AuthenticationRequest() {
     }
 

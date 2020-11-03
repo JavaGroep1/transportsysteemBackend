@@ -8,6 +8,16 @@ public class EditVehicleRequest {
     public String NewLicensePlate;
     public VehicleCategory NewVehicleCategory;
 
+    public EditVehicleRequest() {
+    }
+
+    public EditVehicleRequest(String vehicleIdString, int newCapacityInKg, String newLicensePlate, VehicleCategory newVehicleCategory) {
+        this.vehicleIdString = vehicleIdString;
+        NewCapacityInKg = newCapacityInKg;
+        NewLicensePlate = newLicensePlate;
+        NewVehicleCategory = newVehicleCategory;
+    }
+
     public void setVehicleIdString(String vehicleIdString) {
         this.vehicleIdString = vehicleIdString;
     }
