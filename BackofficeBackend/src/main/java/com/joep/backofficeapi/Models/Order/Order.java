@@ -6,6 +6,7 @@ import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Vehicle.Vehicle;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
+import dev.morphia.annotations.Reference;
 import org.bson.types.ObjectId;
 
 import java.io.IOException;
@@ -39,11 +40,15 @@ public class Order {
     private  String startingPoint;
     private  String destination;
     private  Orderstatus orderStatus;
+
+    @Reference
     private Vehicle vehicle;
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+
+    @Reference
     private  Customer customer;
 
     public Order(LocalDate dateOrdered, LocalDate dateStarted, LocalDate deadline, double weightInKg, String startingPoint, String destination, Orderstatus orderStatus, Vehicle vehicle, Customer customer) throws IOException, InterruptedException, OrderInvalidException {
