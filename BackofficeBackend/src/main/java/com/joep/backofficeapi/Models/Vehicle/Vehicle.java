@@ -14,7 +14,7 @@ public class Vehicle {
     private String licensePlate;
 
     private int capacityInKG;
-
+    
     private VehicleCategory vehicleCategory;
 
     public Vehicle(String licensePlate, VehicleCategory vehicleCategory, int capacityInKG) {
