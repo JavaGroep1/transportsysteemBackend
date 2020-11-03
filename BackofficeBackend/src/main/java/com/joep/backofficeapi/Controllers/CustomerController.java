@@ -41,14 +41,8 @@ public class CustomerController {
     public ResponseEntity<?> getCustomers(HttpServletRequest request) throws Exception {
         // RoleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
         List<ApplicationUser> customers = new ArrayList<>();
-        for (ApplicationUser item:
-             userStoreContainer.getByRole(Roles.Customer)) {
-            customers.add(item);
-        }
-        for (ApplicationUser item:
-                userStoreContainer.getByRole(Roles.Prospect)) {
-            customers.add(item);
-        }
+        customers.addAll(userStoreContainer.getByRole(Roles.Customer));
+        customers.addAll(userStoreContainer.getByRole(Roles.Prospect));
         return ResponseEntity.ok(customers);
 
     }
@@ -56,9 +50,9 @@ public class CustomerController {
     @GetMapping( value = "/customers", params = "id")
     public ResponseEntity<Customer> getCustomer(HttpServletRequest request, String id) throws Exception {
         // RoleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
-            return ResponseEntity.ok(customerContainer.getCustomerById(new ObjectId(id)));
+        return ResponseEntity.ok(customerContainer.getCustomerById(new ObjectId(id)));
 
-      
+    }
       
     @DeleteMapping(value = "/customers", params = "id")
     public ResponseEntity<?> DeleteCustomer(HttpServletRequest req, String id) {
@@ -76,10 +70,5 @@ public class CustomerController {
         return ResponseEntity.ok("updated");
     }
 
-    @PutMapping(value = "/customer/role", headers = "Accept=application/json")
-    public ResponseEntity<?> changeCustomerRole(@RequestBody ChangeCustomerRequest request) throws Exception {
-        Customer customer = customerContainer.getCustomerById(request.getCustomerId());
-        customerContainer.changeCustomerRole(customer,request.getRole());
-        return ResponseEntity.ok("Status changed to " + request.getRole().toString());
-    }
+
 }

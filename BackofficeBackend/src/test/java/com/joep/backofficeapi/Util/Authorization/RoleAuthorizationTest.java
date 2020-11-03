@@ -15,7 +15,7 @@ public class RoleAuthorizationTest {
     @Test
     public void unauthorizedUserThrowsUnauthorizedException () throws UnsupportedEncodingException, NoSuchAlgorithmException {
         //setup
-        var user  = new ApplicationUser("user", "pass", "email", Roles.User);
+        var user  = new ApplicationUser("user", "pass", "email", Roles.Employee);
 
         //execute
         Assertions.assertThrows(UnauthorizedException.class, () -> {

@@ -46,6 +46,8 @@ public class CustomerContainer implements ICustomerStore {
         store.deleteCustomer(businessIdentifier);
     }
 
+
+
     @Override
     public void updateCustomer(EditCustomerRequest editCustomerRequest) throws CustomerNotFoundException {
         //still returns 0 from frontend

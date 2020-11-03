@@ -6,6 +6,7 @@ import com.joep.backofficeapi.DAL.Interfaces.IUserStore;
 import com.joep.backofficeapi.Exceptions.UserNotFoundException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
+import com.joep.backofficeapi.Models.Customer;
 import com.mongodb.client.MongoClients;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;

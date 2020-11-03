@@ -79,4 +79,5 @@ public class AuthenticationController {
         UserInfoResponse user = new UserInfoResponse(userStore.loadUserByUsername(username));
         return ResponseEntity.ok(user);
     }
+
 }
