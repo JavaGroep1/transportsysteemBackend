@@ -22,11 +22,7 @@ public class OrderContainer implements IOrderStore {
 
     @Override
     public void addOrder(Order order) throws OrderInvalidException, IOException, InterruptedException {
-        var orderRoute = RouteUtility.getRoute(order.getStartingPoint(), order.getDestination());
-        if (orderRoute == null) throw new OrderInvalidException();
-        order.setDistanceInKm(orderRoute.getDistance());
-        order.setFuelUsed(orderRoute.getFuelUsed());
-       order.setCost(RouteUtility.getRoutePrice(order.getFuelUsed()));
+
         orderStore.addOrder(order);
     }
 

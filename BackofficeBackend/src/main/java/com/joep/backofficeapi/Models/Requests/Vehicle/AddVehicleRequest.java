@@ -5,6 +5,7 @@ import com.joep.backofficeapi.Models.Vehicle.VehicleCategory;
 public class AddVehicleRequest {
     public String licensePlate;
     public int capacityInKg;
+    public VehicleCategory vehicleCategory;
 
     public String getLicensePlate() {
         return licensePlate;
@@ -18,5 +19,4 @@ public class AddVehicleRequest {
         return vehicleCategory;
     }
 
-    public VehicleCategory vehicleCategory;
 }

@@ -3,13 +3,18 @@ package com.joep.backofficeapi.Models.Order;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.joep.backofficeapi.Exceptions.OrderInvalidException;
 import com.joep.backofficeapi.Models.Customer;
+import com.joep.backofficeapi.Models.Requests.Order.AddOrderRequest;
+import com.joep.backofficeapi.Models.Requests.Vehicle.AddVehicleRequest;
 import com.joep.backofficeapi.Models.Vehicle.Vehicle;
+import com.joep.backofficeapi.Util.RouteUtility;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
+import dev.morphia.annotations.Reference;
 import org.bson.types.ObjectId;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -32,18 +37,22 @@ public class Order {
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate dateStarted;
 
-    private  double weightInKg;
+    private double weightInKg;
     private double distanceInKm;
     private double fuelUsed;
     private double cost;
     private  String startingPoint;
     private  String destination;
     private  Orderstatus orderStatus;
+
+    @Reference
     private Vehicle vehicle;
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+
+    @Reference
     private  Customer customer;
 
     public Order(LocalDate dateOrdered, LocalDate dateStarted, LocalDate deadline, double weightInKg, String startingPoint, String destination, Orderstatus orderStatus, Vehicle vehicle, Customer customer) throws IOException, InterruptedException, OrderInvalidException {
@@ -57,7 +66,22 @@ public class Order {
         this.customer = customer;
 
     }
+    public Order(LocalDate deadline, int weightInKg, String startingPoint, String destination, Vehicle vehicle, Customer customer) throws OrderInvalidException, IOException, InterruptedException {
+        this.dateOrdered = LocalDate.now();
+        this.deadline = deadline;
+        this.weightInKg =weightInKg;
+        this.startingPoint = startingPoint;
+        this.destination= destination;
+        this.orderStatus = Orderstatus.Pending;
+        this.vehicle = vehicle;
+        this.customer = customer;
 
+        var orderRoute = RouteUtility.getRoute(startingPoint, destination);
+        if (orderRoute == null) throw new OrderInvalidException();
+        this.distanceInKm= orderRoute.getDistance();
+        this.fuelUsed = orderRoute.getFuelUsed();
+        this.cost= RouteUtility.getRoutePrice(getFuelUsed());
+    }
     public Order() {
     }
 
