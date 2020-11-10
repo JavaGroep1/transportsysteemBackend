@@ -7,7 +7,6 @@ import com.joep.backofficeapi.Exceptions.OrderInvalidException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Customer;
-import com.joep.backofficeapi.Models.Requests.Customer.ChangeCustomerRequest;
 import com.joep.backofficeapi.Models.Requests.Customer.EditCustomerRequest;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +55,7 @@ public class CustomerController {
       
     @DeleteMapping(value = "/customers", params = "id")
     public ResponseEntity<?> DeleteCustomer(HttpServletRequest req, String id) {
-        userStoreContainer.deleteAccount(id);
+        userStoreContainer.deleteAccountByBusinessId(id);
         customerContainer.deleteCustomer(id);
         return ResponseEntity.ok("Deleted");
     }

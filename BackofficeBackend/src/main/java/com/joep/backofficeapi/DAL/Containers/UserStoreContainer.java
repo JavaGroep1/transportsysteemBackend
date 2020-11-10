@@ -7,6 +7,7 @@ import com.joep.backofficeapi.Exceptions.InvalidEmailException;
 import com.joep.backofficeapi.Exceptions.UsernameTakenException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
+import com.joep.backofficeapi.Models.Requests.Employee.EditEmployeeRequest;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -79,7 +80,7 @@ public class UserStoreContainer implements UserDetailsService {
         store.changeRole(customerId, role);
     }
 
-    public void deleteAccount(String businessIdentifier) {
+    public void deleteAccountByBusinessId(String businessIdentifier) {
         store.deleteAccount(businessIdentifier);
     }
 
@@ -89,5 +90,14 @@ public class UserStoreContainer implements UserDetailsService {
     public ApplicationUser getUserById(ObjectId id) throws Exception {
         return store.getUserById(id);
 
+    }
+
+    public void deleteUser(ObjectId objectId) {
+        store.deleteUser(objectId);
+    }
+
+    public ApplicationUser updateEmployee(EditEmployeeRequest employee) throws Exception {
+
+        return store.updateEmployee(employee);
     }
 }
