@@ -11,6 +11,7 @@ import com.joep.backofficeapi.Models.Requests.Order.AddOrderRequest;
 import com.joep.backofficeapi.Models.Requests.Order.ChangeOrderStatusRequest;
 import com.joep.backofficeapi.Models.Requests.Vehicle.AddVehicleRequest;
 import com.joep.backofficeapi.Util.JwtUtil;
+import com.joep.backofficeapi.Util.LocationUtility;
 import com.joep.backofficeapi.Util.RouteUtility;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +105,13 @@ public class OrderController {
         Order order = orderContainer.getOrderById(request.getOrderId());
         orderContainer.changeOrderStatus(order,request.getStatus());
         return ResponseEntity.ok("Status changed to " + request.getStatus().toString());
+    }
+
+    @GetMapping(value = "/getLocation", params = {"address"})
+    public ResponseEntity<?> getLocation(String address) throws Exception {
+        var location= LocationUtility.getLocation(address);
+        assert location != null;
+        return ResponseEntity.ok(location);
     }
 
 
