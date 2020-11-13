@@ -16,7 +16,7 @@ import java.text.MessageFormat;
 public class LocationUtility {
 //    private static String API_KEY = "fwEl8C7Wi53YNXdSo9ljSZrpU6MUN1Zb";
 
-    public static Item getLocation(String Address) throws IOException, InterruptedException {
+    public static Example getLocation(String Address) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         String get =
                 MessageFormat.format("https://autosuggest.search.hereapi.com/v1/autosuggest?limit={0}&at={1}&q={2}",
@@ -40,7 +40,7 @@ public class LocationUtility {
 //            var loc = objectMapper.readValue(response.body(), Item.class);
 ////            String location = loc.getAddress().getLabel();
 //            return loc;
-            return objectMapper.readValue(response.body(), Item.class);
+            return objectMapper.readValue(response.body(), Example.class);
 
         }
         catch (Throwable e){
