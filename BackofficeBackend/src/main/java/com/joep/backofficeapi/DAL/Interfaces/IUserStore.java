@@ -3,6 +3,7 @@ package com.joep.backofficeapi.DAL.Interfaces;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
+import com.joep.backofficeapi.Models.Requests.Employee.EditEmployeeRequest;
 import org.bson.types.ObjectId;
 
 import java.io.IOException;
@@ -20,4 +21,8 @@ public interface IUserStore {
     public void changeRole(ObjectId customerId, Roles role);
     public void deleteAccount(String businessIdentifier);
     public void changeEmail(ObjectId customerId, String email);
+
+    void deleteUser(ObjectId objectId);
+
+    ApplicationUser updateEmployee(EditEmployeeRequest employee) throws Exception;
 }

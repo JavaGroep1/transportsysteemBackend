@@ -7,6 +7,7 @@ import com.joep.backofficeapi.Exceptions.UserNotFoundException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Customer;
+import com.joep.backofficeapi.Models.Requests.Employee.EditEmployeeRequest;
 import com.mongodb.client.MongoClients;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
@@ -100,6 +101,28 @@ public class MongoUserStore implements IUserStore {
                 .filter(Filters.eq("customer", customerId))
                 .update(UpdateOperators.set("email", email))
                 .execute();
+    }
+
+    @Override
+    public void deleteUser(ObjectId objectId) {
+        datastore.find(ApplicationUser.class)
+                .filter(Filters.eq("Id", objectId))
+                .delete();
+    }
+
+    @Override
+    public ApplicationUser updateEmployee(EditEmployeeRequest employee) throws Exception {
+        var employeeId = new ObjectId(employee.getIdString());
+        datastore.find(ApplicationUser.class)
+                .filter(Filters.eq("Id", employeeId))
+                .update(UpdateOperators.set("username", employee.getUsername()),
+                        UpdateOperators.set("email", employee.getEmail()),
+                        UpdateOperators.set("firstName", employee.getFirstName()),
+                        UpdateOperators.set("lastName", employee.getLastName()),
+                        UpdateOperators.set("role", employee.getRole()))
+                .execute();
+
+        return getUserById(employeeId);
     }
 
 }
