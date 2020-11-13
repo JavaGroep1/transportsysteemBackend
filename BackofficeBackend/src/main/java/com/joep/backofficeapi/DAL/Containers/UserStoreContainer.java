@@ -7,7 +7,10 @@ import com.joep.backofficeapi.Exceptions.InvalidEmailException;
 import com.joep.backofficeapi.Exceptions.UsernameTakenException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
+import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Requests.Employee.EditEmployeeRequest;
+import com.joep.backofficeapi.Util.Sanitizers.CustomerSanitizer;
+import com.joep.backofficeapi.Util.Sanitizers.EmployeeSanitizer;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -98,6 +101,8 @@ public class UserStoreContainer implements UserDetailsService {
 
     public ApplicationUser updateEmployee(EditEmployeeRequest employee) throws Exception {
 
+        ApplicationUser user = store.getUserById(new ObjectId(employee.getIdString()));
+        EmployeeSanitizer.sanitize(employee, user);
         return store.updateEmployee(employee);
     }
 }

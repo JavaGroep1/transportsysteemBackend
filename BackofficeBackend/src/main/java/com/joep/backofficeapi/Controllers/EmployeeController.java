@@ -35,7 +35,11 @@ public class EmployeeController {
 
     @PostMapping
     public ResponseEntity<Boolean> createEmployee(@RequestBody ApplicationUser employee) throws Exception {
-        return ResponseEntity.ok(userStoreContainer.createUser(employee));
+        try {
+            return ResponseEntity.ok(userStoreContainer.createUser(employee));
+        } catch (Exception e) {
+            return ResponseEntity.ok(false);
+        }
     }
 
     @PutMapping
