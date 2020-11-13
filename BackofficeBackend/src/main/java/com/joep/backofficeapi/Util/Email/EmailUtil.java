@@ -19,9 +19,9 @@ public class EmailUtil {
         msg.setTo(to);
 
         msg.setSubject(subject);
-        msg.setText(body);
+       msg.setText(body);
 
-        javaMailSender.send(msg);
+        //javaMailSender.send(msg);
 
     }
 }
