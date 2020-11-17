@@ -22,7 +22,7 @@ public class Route_ {
     private String sessionId;
     private List<Location> locations = null;
     private Boolean hasCountryCross;
-    private List<Leg> legs = null;
+    private List<Leg> legs;
     private String formattedTime;
     private Options options;
     private Boolean hasFerry;

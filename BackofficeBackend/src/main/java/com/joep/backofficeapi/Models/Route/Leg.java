@@ -24,7 +24,7 @@ public class Leg {
     private String formattedTime;
     private String destNarrative;
     private Integer destIndex;
-    private List<Maneuver> maneuvers = null;
+    private List<Maneuver> maneuvers;
     private Boolean hasFerry;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 

@@ -24,6 +24,7 @@ public class Maneuver {
     private String transportMode;
     private String formattedTime;
     private String directionName;
+    private startPoint startPoint;
     private String mapUrl;
     private Integer turnType;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -72,6 +73,14 @@ public class Maneuver {
         this.directionName = directionName;
         this.mapUrl = mapUrl;
         this.turnType = turnType;
+    }
+
+    public com.joep.backofficeapi.Models.Route.startPoint getStartPoint() {
+        return startPoint;
+    }
+
+    public void setStartPoint(com.joep.backofficeapi.Models.Route.startPoint startPoint) {
+        this.startPoint = startPoint;
     }
 
     public List<Sign> getSigns() {

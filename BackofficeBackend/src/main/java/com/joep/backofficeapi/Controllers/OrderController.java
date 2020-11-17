@@ -44,8 +44,8 @@ public class OrderController {
 
         var vehicle = vehicleContainer.getVehicleById(order.getVehicleId());
         var customer = userStoreContainer.getUserByName(jwtUtil.extractUsername(req)).getCustomer();
-        if (customer == null)
-            throw new UserIsNotACustomerException();
+        //if (customer == null)
+           // throw new UserIsNotACustomerException();
         var orderToAdd = new Order(
                 order.getDeadline(),
                 order.getWeightInKg(),
