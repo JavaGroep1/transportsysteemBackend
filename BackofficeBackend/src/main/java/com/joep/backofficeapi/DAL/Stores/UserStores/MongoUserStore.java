@@ -6,10 +6,14 @@ import com.joep.backofficeapi.DAL.Interfaces.IUserStore;
 import com.joep.backofficeapi.Exceptions.UserNotFoundException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
+import com.joep.backofficeapi.Models.Customer;
+import com.joep.backofficeapi.Models.Requests.Employee.EditEmployeeRequest;
 import com.mongodb.client.MongoClients;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
+import dev.morphia.query.experimental.filters.Filter;
 import dev.morphia.query.experimental.filters.Filters;
+import dev.morphia.query.experimental.updates.UpdateOperators;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
@@ -72,6 +76,53 @@ public class MongoUserStore implements IUserStore {
     public List<ApplicationUser> getByRole(Roles role) {
         return datastore.find(ApplicationUser.class).filter(Filters.eq("role", role)).iterator().toList();
 
+    }
+
+    @Override
+    public void changeRole(ObjectId customerId, Roles role) {
+        datastore.find(ApplicationUser.class)
+                .filter(Filters.eq("customer", customerId))
+                .update(UpdateOperators.set("role", role))
+                .execute();
+    }
+
+    @Override
+    public void deleteAccount(String businessIdentifier) {
+        Customer customer = datastore.find(Customer.class)
+                .filter(Filters.eq("businessIdentifier", businessIdentifier)).first();
+        datastore.find(ApplicationUser.class)
+                .filter(Filters.eq("customer", customer.getId()))
+                .delete();
+    }
+
+    @Override
+    public void changeEmail(ObjectId customerId, String email) {
+        datastore.find(ApplicationUser.class)
+                .filter(Filters.eq("customer", customerId))
+                .update(UpdateOperators.set("email", email))
+                .execute();
+    }
+
+    @Override
+    public void deleteUser(ObjectId objectId) {
+        datastore.find(ApplicationUser.class)
+                .filter(Filters.eq("Id", objectId))
+                .delete();
+    }
+
+    @Override
+    public ApplicationUser updateEmployee(EditEmployeeRequest employee) throws Exception {
+        var employeeId = new ObjectId(employee.getIdString());
+        datastore.find(ApplicationUser.class)
+                .filter(Filters.eq("Id", employeeId))
+                .update(UpdateOperators.set("username", employee.getUsername()),
+                        UpdateOperators.set("email", employee.getEmail()),
+                        UpdateOperators.set("firstName", employee.getFirstName()),
+                        UpdateOperators.set("lastName", employee.getLastName()),
+                        UpdateOperators.set("role", employee.getRole()))
+                .execute();
+
+        return getUserById(employeeId);
     }
 
 }

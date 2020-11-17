@@ -4,8 +4,8 @@ import com.joep.backofficeapi.Exceptions.UnauthorizedException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
 import org.junit.Assert;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -15,7 +15,7 @@ public class RoleAuthorizationTest {
     @Test
     public void unauthorizedUserThrowsUnauthorizedException () throws UnsupportedEncodingException, NoSuchAlgorithmException {
         //setup
-        var user  = new ApplicationUser("user", "pass", "email", Roles.User);
+        var user  = new ApplicationUser("user", "pass", "email", Roles.Employee);
 
         //execute
         Assertions.assertThrows(UnauthorizedException.class, () -> {

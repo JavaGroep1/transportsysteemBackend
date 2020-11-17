@@ -3,6 +3,7 @@ package com.joep.backofficeapi.Controllers;
 import com.joep.backofficeapi.DAL.Containers.TicketContainer;
 import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
 import com.joep.backofficeapi.Exceptions.BadRequestException;
+import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Requests.Ticket.AddTicketRequest;
 import com.joep.backofficeapi.Models.Requests.Ticket.ChangeTicketStatusRequest;
 import com.joep.backofficeapi.Models.Requests.Ticket.ReplyToTicketRequest;
@@ -67,13 +68,16 @@ public class TicketController {
 
     @PostMapping("/reply")
     ResponseEntity<?> replyToTicket(HttpServletRequest req, @RequestBody ReplyToTicketRequest reply) throws Exception {
+        var user = userStoreContainer.getUserByName(jwtUtil.extractUsername(req));
         var ticket = ticketContainer.getTicketById(reply.getTicketId());
         var replyToAdd = new TicketReply(reply.getReplyBody(), userStoreContainer.getUserByName(jwtUtil.extractUsername(req)));
         ticketContainer.addReply(ticket, replyToAdd);
         if (ticket.getStatus() == TicketStatus.PENDING){
             ticketContainer.changeTicketStatus(ticket, TicketStatus.IN_PROGRESS);
         }
-        emailUtil.sendEmail(new String[]{ticket.getIssuedBy().getEmail()}, "New reply to your Ticket ("+ticket.getIdString()+")", "One of our support staff has replied to your ticket, visit the website to view the reply");
+        if (user.getRole().equals(Roles.Employee) || user.getRole().equals(Roles.Admin)) {
+            emailUtil.sendEmail(new String[]{ticket.getIssuedBy().getEmail()}, "New reply to your Ticket (" + ticket.getIdString() + ")", "One of our support staff has replied to your ticket, visit the website to view the reply");
+        }
         return ResponseEntity.ok("Replied");
     }
     @PutMapping("/changestatus")

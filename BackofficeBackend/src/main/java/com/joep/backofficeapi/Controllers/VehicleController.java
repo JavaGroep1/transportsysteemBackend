@@ -28,7 +28,8 @@ public class VehicleController {
         vehicleContainer.addVehicle(new Vehicle(
                 vehicle.getLicensePlate(),
                 vehicle.getVehicleCategory(),
-                vehicle.getCapacityInKg()
+                vehicle.getCapacityInKg(),
+                vehicle.getKmPerLiter()
         ));
         return ResponseEntity.ok("ok");
     }

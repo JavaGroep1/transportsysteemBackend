@@ -1,5 +1,6 @@
 package com.joep.backofficeapi.Controllers;
 
+import com.joep.backofficeapi.DAL.Containers.CustomerContainer;
 import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Requests.Auth.AuthenticationRequest;
@@ -23,6 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private CustomerContainer customerContainer;
 
     @Autowired
     private UserStoreContainer userStore;
@@ -75,4 +79,5 @@ public class AuthenticationController {
         UserInfoResponse user = new UserInfoResponse(userStore.loadUserByUsername(username));
         return ResponseEntity.ok(user);
     }
+
 }

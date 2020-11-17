@@ -79,7 +79,8 @@ public class MongoVehicleStore implements IVehicleStore {
                 .filter(Filters.eq("id", vehicleId))
                 .update(UpdateOperators.set("vehicleCategory", newVehicle.getNewVehicleCategory()),
                         UpdateOperators.set("licensePlate", newVehicle.getNewLicensePlate()),
-                        UpdateOperators.set("capacityInKG", newVehicle.getNewCapacityInKg()))
+                        UpdateOperators.set("capacityInKG", newVehicle.getNewCapacityInKg()),
+                        UpdateOperators.set("kmPerLiter", newVehicle.getNewKmPerLiter()))
                 .execute();
 
     }

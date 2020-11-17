@@ -17,10 +17,13 @@ public class Vehicle {
     
     private VehicleCategory vehicleCategory;
 
-    public Vehicle(String licensePlate, VehicleCategory vehicleCategory, int capacityInKG) {
+    private double kmPerLiter;
+
+    public Vehicle(String licensePlate, VehicleCategory vehicleCategory, int capacityInKG, double kmPerLiter) {
         this.licensePlate = licensePlate;
         this.capacityInKG = capacityInKG;
         this.vehicleCategory = vehicleCategory;
+        this.kmPerLiter = kmPerLiter;
     }
 
     public Vehicle() {
@@ -42,5 +45,9 @@ public class Vehicle {
 
     public VehicleCategory getVehicleCategory() {
         return vehicleCategory;
+    }
+
+    public double getKmPerLiter() {
+        return kmPerLiter;
     }
 }

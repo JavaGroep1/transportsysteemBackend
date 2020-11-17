@@ -7,6 +7,7 @@ public class EditVehicleRequest {
     public int NewCapacityInKg;
     public String NewLicensePlate;
     public VehicleCategory NewVehicleCategory;
+    public double NewKmPerLiter;
 
     public EditVehicleRequest() {
     }
@@ -32,6 +33,14 @@ public class EditVehicleRequest {
 
     public void setNewVehicleCategory(VehicleCategory newVehicleCategory) {
         NewVehicleCategory = newVehicleCategory;
+    }
+
+
+    public void setNewKmPerLiter(double newKmPerLiter) {
+        NewKmPerLiter = newKmPerLiter;
+    }
+    public double getNewKmPerLiter() {
+        return NewKmPerLiter;
     }
 
     public String getVehicleIdString() {
