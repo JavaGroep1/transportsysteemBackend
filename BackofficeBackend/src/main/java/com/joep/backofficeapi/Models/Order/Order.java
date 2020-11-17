@@ -7,6 +7,7 @@ import com.joep.backofficeapi.Models.Requests.Order.AddOrderRequest;
 import com.joep.backofficeapi.Models.Requests.Vehicle.AddVehicleRequest;
 import com.joep.backofficeapi.Models.Vehicle.Vehicle;
 import com.joep.backofficeapi.Util.RouteUtility;
+import dev.morphia.annotations.Embedded;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
 import dev.morphia.annotations.Reference;
@@ -43,6 +44,9 @@ public class Order {
     private double cost;
     private  String startingPoint;
     private  String destination;
+
+    private Coordinates startingCoordinates;
+    private Coordinates destinationCoordinates;
     private  Orderstatus orderStatus;
 
     @Reference
@@ -76,8 +80,13 @@ public class Order {
         this.vehicle = vehicle;
         this.customer = customer;
 
-        var orderRoute = RouteUtility.getRoute(startingPoint, destination, vehicle.getVehicleCategory(), vehicle.getKmPerLiter());
-        if (orderRoute == null) throw new OrderInvalidException();
+        var orderRoute = RouteUtility.getRoute(startingPoint, destination);
+
+        assert orderRoute != null;
+        var maneuvers = orderRoute.getLegs().get(0).getManeuvers();
+        this.setStartingCoordinates(new Coordinates(maneuvers.get(0).getStartPoint()));
+        this.setDestinationCoordinates(new Coordinates(maneuvers.get(maneuvers.size() -1).getStartPoint()));
+
         this.distanceInKm= orderRoute.getDistance();
         this.fuelUsed = orderRoute.getFuelUsed();
         this.cost= RouteUtility.getRoutePrice(getFuelUsed());
@@ -150,4 +159,19 @@ public class Order {
     }
 
 
+    public Coordinates getStartingCoordinates() {
+        return startingCoordinates;
+    }
+
+    public void setStartingCoordinates(Coordinates startingCoordinates) {
+        this.startingCoordinates = startingCoordinates;
+    }
+
+    public Coordinates getDestinationCoordinates() {
+        return destinationCoordinates;
+    }
+
+    public void setDestinationCoordinates(Coordinates destinationCoordinates) {
+        this.destinationCoordinates = destinationCoordinates;
+    }
 }
