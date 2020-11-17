@@ -11,6 +11,16 @@ public class EditCustomerRequest {
     private String phoneNumber;
     private Boolean prospect;
 
+    public EditCustomerRequest(String businessIdentifier, String name, String address, String phoneNumber) {
+        this.businessIdentifier = businessIdentifier;
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public EditCustomerRequest() {
+    }
+
     public Boolean getProspect() {
         return prospect;
     }

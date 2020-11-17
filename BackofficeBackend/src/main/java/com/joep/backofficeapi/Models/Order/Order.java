@@ -2,6 +2,7 @@ package com.joep.backofficeapi.Models.Order;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.joep.backofficeapi.Exceptions.OrderInvalidException;
+import com.joep.backofficeapi.Exceptions.RouteInvalidException;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Requests.Order.AddOrderRequest;
 import com.joep.backofficeapi.Models.Requests.Vehicle.AddVehicleRequest;
@@ -70,7 +71,7 @@ public class Order {
         this.customer = customer;
 
     }
-    public Order(LocalDate deadline, int weightInKg, String startingPoint, String destination, Vehicle vehicle, Customer customer) throws OrderInvalidException, IOException, InterruptedException {
+    public Order(LocalDate deadline, int weightInKg, String startingPoint, String destination, Vehicle vehicle, Customer customer) throws OrderInvalidException, IOException, InterruptedException, RouteInvalidException {
         this.dateOrdered = LocalDate.now();
         this.deadline = deadline;
         this.weightInKg =weightInKg;
