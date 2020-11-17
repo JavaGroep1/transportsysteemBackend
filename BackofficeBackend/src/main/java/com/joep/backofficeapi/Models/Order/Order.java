@@ -80,7 +80,7 @@ public class Order {
         this.vehicle = vehicle;
         this.customer = customer;
 
-        var orderRoute = RouteUtility.getRoute(startingPoint, destination);
+        var orderRoute = RouteUtility.getRoute(startingPoint, destination, vehicle.getVehicleCategory(), vehicle.getKmPerLiter());
 
         assert orderRoute != null;
         var maneuvers = orderRoute.getLegs().get(0).getManeuvers();
