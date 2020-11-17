@@ -5,11 +5,13 @@ import com.joep.backofficeapi.DAL.Containers.OrderContainer;
 import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
 import com.joep.backofficeapi.DAL.Containers.VehicleContainer;
 import com.joep.backofficeapi.Exceptions.UserIsNotACustomerException;
+import com.joep.backofficeapi.Models.Autosuggest.Address;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Order.Order;
 import com.joep.backofficeapi.Models.Requests.Order.AddOrderRequest;
 import com.joep.backofficeapi.Models.Requests.Order.ChangeOrderStatusRequest;
 import com.joep.backofficeapi.Models.Requests.Vehicle.AddVehicleRequest;
+import com.joep.backofficeapi.Util.HereAuthUtil;
 import com.joep.backofficeapi.Util.JwtUtil;
 import com.joep.backofficeapi.Util.LocationUtility;
 import com.joep.backofficeapi.Util.RouteUtility;
@@ -20,6 +22,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -111,7 +115,14 @@ public class OrderController {
     public ResponseEntity<?> getLocation(String address) throws Exception {
         var location= LocationUtility.getLocation(address);
         assert location != null;
-        return ResponseEntity.ok(location);
+        List<String> addresses = new ArrayList<String>();
+        for (var item: location.getItems()) {
+            addresses.add(item.getAddress().getLabel());
+        }
+        System.out.println(addresses);
+        return ResponseEntity.ok(addresses);
+
+//        return ResponseEntity.ok(HereAuthUtil.getToken());
     }
 
 
