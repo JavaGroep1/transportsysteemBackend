@@ -70,9 +70,8 @@ public class OrderController {
     }
 
     @GetMapping(value = "", params = "userId")
-    public ResponseEntity<List<Order>> getOrderByUserId(String userId) throws Exception {
+    public ResponseEntity<List<Order>> getOrdersByUserId(String userId) throws Exception {
         ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userId)));
-//        var Customer = user.getCustomer();
         Customer customer = customerContainer.getCustomerById(user.getCustomer().getId());
         return ResponseEntity.ok(orderContainer.getOrdersByCustomer(customer));
     }
@@ -84,11 +83,8 @@ public class OrderController {
     }
 
     @GetMapping(value = "/active", params = "userId")
-    public ResponseEntity<?> getActiveOrders(String userId) throws Exception {
-//            Customer customer = customerContainer.getCustomerById(new ObjectId(customerId));
-//            return ResponseEntity.ok(orderContainer.getActiveOrdersByCustomer(customer));
+    public ResponseEntity<?> getActiveOrdersById(String userId) throws Exception {
         ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userId)));
-//        var Customer = user.getCustomer();
         Customer customer = customerContainer.getCustomerById(user.getCustomer().getId());
         return ResponseEntity.ok(orderContainer.getActiveOrdersByCustomer(customer));
 
@@ -100,11 +96,8 @@ public class OrderController {
     }
 
     @GetMapping(value = "/pending", params = "userId")
-    public ResponseEntity<?> getPendingOrder(String userId) throws Exception {
-//        Customer customer = customerContainer.getCustomerById(new ObjectId(customerId));
-//        return ResponseEntity.ok(orderContainer.getPendingOrdersByCustomer(customer));
+    public ResponseEntity<?> getPendingOrderById(String userId) throws Exception {
         ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userId)));
-//        var Customer = user.getCustomer();
         Customer customer = customerContainer.getCustomerById(user.getCustomer().getId());
         return ResponseEntity.ok(orderContainer.getPendingOrdersByCustomer(customer));
     }
@@ -121,7 +114,7 @@ public class OrderController {
         return ResponseEntity.ok("Status changed to " + request.getStatus().toString());
     }
 
-    @GetMapping(value = "/getLocation", path = {"address"})
+    @GetMapping(value = "/getLocation", params = "address")
     public ResponseEntity<?> getLocation(String address) throws Exception {
         var location= LocationUtility.getLocation(address);
         assert location != null;
