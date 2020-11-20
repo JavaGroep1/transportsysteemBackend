@@ -5,6 +5,7 @@ import com.joep.backofficeapi.DAL.Containers.OrderContainer;
 import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
 import com.joep.backofficeapi.DAL.Containers.VehicleContainer;
 import com.joep.backofficeapi.Exceptions.UserIsNotACustomerException;
+import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Autosuggest.Address;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Order.Order;
@@ -68,11 +69,12 @@ public class OrderController {
         return ResponseEntity.ok(orderContainer.getOrders());
     }
 
-    @GetMapping(value = "", params = "customerid")
-    public ResponseEntity<List<Order>> getOrderByCustomerId(HttpServletRequest request, String customerid) throws Exception {
-            var customerIdObject = new ObjectId(customerid);
-            Customer customer = customerContainer.getCustomerById(customerIdObject);
-            return ResponseEntity.ok(orderContainer.getOrdersByCustomer(customer));
+    @GetMapping(value = "", params = "userId")
+    public ResponseEntity<List<Order>> getOrderByUserId(String userId) throws Exception {
+        ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userId)));
+//        var Customer = user.getCustomer();
+        Customer customer = customerContainer.getCustomerById(user.getCustomer().getId());
+        return ResponseEntity.ok(orderContainer.getOrdersByCustomer(customer));
     }
 
     @GetMapping(value = "", params = "orderid")
@@ -81,10 +83,14 @@ public class OrderController {
             return ResponseEntity.ok(orderContainer.getOrderById(orderIdObject));
     }
 
-    @GetMapping(value = "/active", params = "customerId")
-    public ResponseEntity<?> getActiveOrders(String customerId) throws Exception {
-            Customer customer = customerContainer.getCustomerById(new ObjectId(customerId));
-            return ResponseEntity.ok(orderContainer.getActiveOrdersByCustomer(customer));
+    @GetMapping(value = "/active", params = "userId")
+    public ResponseEntity<?> getActiveOrders(String userId) throws Exception {
+//            Customer customer = customerContainer.getCustomerById(new ObjectId(customerId));
+//            return ResponseEntity.ok(orderContainer.getActiveOrdersByCustomer(customer));
+        ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userId)));
+//        var Customer = user.getCustomer();
+        Customer customer = customerContainer.getCustomerById(user.getCustomer().getId());
+        return ResponseEntity.ok(orderContainer.getActiveOrdersByCustomer(customer));
 
     }
 
@@ -93,9 +99,13 @@ public class OrderController {
         return ResponseEntity.ok(orderContainer.getActiveOrders());
     }
 
-    @GetMapping(value = "/pending", params = "customerId")
-    public ResponseEntity<?> getPendingOrder(String customerId) throws Exception {
-        Customer customer = customerContainer.getCustomerById(new ObjectId(customerId));
+    @GetMapping(value = "/pending", params = "userId")
+    public ResponseEntity<?> getPendingOrder(String userId) throws Exception {
+//        Customer customer = customerContainer.getCustomerById(new ObjectId(customerId));
+//        return ResponseEntity.ok(orderContainer.getPendingOrdersByCustomer(customer));
+        ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userId)));
+//        var Customer = user.getCustomer();
+        Customer customer = customerContainer.getCustomerById(user.getCustomer().getId());
         return ResponseEntity.ok(orderContainer.getPendingOrdersByCustomer(customer));
     }
 
@@ -111,7 +121,7 @@ public class OrderController {
         return ResponseEntity.ok("Status changed to " + request.getStatus().toString());
     }
 
-    @GetMapping(value = "/getLocation", params = {"address"})
+    @GetMapping(value = "/getLocation", path = {"address"})
     public ResponseEntity<?> getLocation(String address) throws Exception {
         var location= LocationUtility.getLocation(address);
         assert location != null;
@@ -121,8 +131,20 @@ public class OrderController {
         }
         System.out.println(addresses);
         return ResponseEntity.ok(addresses);
+    }
 
-//        return ResponseEntity.ok(HereAuthUtil.getToken());
+    @DeleteMapping(value = "/delete/{order}")
+    public ResponseEntity<?> deleteOrder(Order order) throws Exception {
+
+//        var location= LocationUtility.getLocation(address);
+//        assert location != null;
+//        List<String> addresses = new ArrayList<String>();
+//        for (var item: location.getItems()) {
+//            addresses.add(item.getAddress().getLabel());
+//        }
+//        System.out.println(addresses);
+        orderContainer.deleteOrder(order);
+        return ResponseEntity.ok("Order deleted");
     }
 
 

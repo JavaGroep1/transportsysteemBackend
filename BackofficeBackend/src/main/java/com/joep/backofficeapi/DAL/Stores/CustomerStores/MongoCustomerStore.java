@@ -50,7 +50,7 @@ public class MongoCustomerStore implements ICustomerStore {
 
     @Override
     public Customer getCustomerById(ObjectId id){
-        return datastore.find(Customer.class).filter(Filters.eq("Id", id.toString())).first();
+        return datastore.find(Customer.class).filter(Filters.eq("Id", id)).first();
     }
 
     @Override

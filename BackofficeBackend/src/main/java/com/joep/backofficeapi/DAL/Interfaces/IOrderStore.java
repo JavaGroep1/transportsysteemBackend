@@ -23,6 +23,6 @@ public interface IOrderStore {
     List<Order> getPendingOrders() throws OrderNotFoundException;
     List<Order> getPendingOrdersByCustomer(Customer customer) throws OrderNotFoundException;
     void changeOrderDate(Order order, LocalDate date);
-
+    void deleteOrder(Order order);
 
 }

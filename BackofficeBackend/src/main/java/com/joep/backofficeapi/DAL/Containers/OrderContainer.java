@@ -72,4 +72,9 @@ public class OrderContainer implements IOrderStore {
     public void changeOrderDate(Order order, LocalDate date) {
         orderStore.changeOrderDate(order, date);
     }
+
+    @Override
+    public void deleteOrder(Order order){
+        orderStore.deleteOrder(order);
+    }
 }
