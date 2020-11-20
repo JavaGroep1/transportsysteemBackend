@@ -69,8 +69,8 @@ public class OrderController {
         return ResponseEntity.ok(orderContainer.getOrders());
     }
 
-    @GetMapping(value = "", params = "userId")
-    public ResponseEntity<List<Order>> getOrdersByUserId(String userId) throws Exception {
+    @GetMapping(value = "/{userId}")
+    public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable String userId) throws Exception {
         ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userId)));
         Customer customer = customerContainer.getCustomerById(user.getCustomer().getId());
         return ResponseEntity.ok(orderContainer.getOrdersByCustomer(customer));
@@ -82,8 +82,8 @@ public class OrderController {
             return ResponseEntity.ok(orderContainer.getOrderById(orderIdObject));
     }
 
-    @GetMapping(value = "/active", params = "userId")
-    public ResponseEntity<?> getActiveOrdersById(String userId) throws Exception {
+    @GetMapping(value = "/active/{userId}")
+    public ResponseEntity<?> getActiveOrdersById(@PathVariable String userId) throws Exception {
         ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userId)));
         Customer customer = customerContainer.getCustomerById(user.getCustomer().getId());
         return ResponseEntity.ok(orderContainer.getActiveOrdersByCustomer(customer));
@@ -95,8 +95,8 @@ public class OrderController {
         return ResponseEntity.ok(orderContainer.getActiveOrders());
     }
 
-    @GetMapping(value = "/pending", params = "userId")
-    public ResponseEntity<?> getPendingOrderById(String userId) throws Exception {
+    @GetMapping(value = "/pending/{userId}")
+    public ResponseEntity<?> getPendingOrderById(@PathVariable String userId) throws Exception {
         ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userId)));
         Customer customer = customerContainer.getCustomerById(user.getCustomer().getId());
         return ResponseEntity.ok(orderContainer.getPendingOrdersByCustomer(customer));
@@ -114,8 +114,8 @@ public class OrderController {
         return ResponseEntity.ok("Status changed to " + request.getStatus().toString());
     }
 
-    @GetMapping(value = "/getLocation", params = "address")
-    public ResponseEntity<?> getLocation(String address) throws Exception {
+    @GetMapping(value = "/location/{address}")
+    public ResponseEntity<?> getLocation(@PathVariable String address) throws Exception {
         var location= LocationUtility.getLocation(address);
         assert location != null;
         List<String> addresses = new ArrayList<String>();
@@ -127,8 +127,8 @@ public class OrderController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleteOrder(HttpServletRequest req, @PathVariable String id) throws Exception {
-        orderContainer.deleteOrder(id);
+    public ResponseEntity<?> deleteOrder(@PathVariable String id) throws Exception {
+        orderContainer.deleteOrder(new ObjectId(id));
         return ResponseEntity.ok("Order deleted");
     }
 }
