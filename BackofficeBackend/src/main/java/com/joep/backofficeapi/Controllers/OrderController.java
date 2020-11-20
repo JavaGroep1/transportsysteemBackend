@@ -127,7 +127,7 @@ public class OrderController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleteOrder(@PathVariable String id) throws Exception {
+    public ResponseEntity<?> deleteOrder(HttpServletRequest req, @PathVariable String id) throws Exception {
         orderContainer.deleteOrder(id);
         return ResponseEntity.ok("Order deleted");
     }
