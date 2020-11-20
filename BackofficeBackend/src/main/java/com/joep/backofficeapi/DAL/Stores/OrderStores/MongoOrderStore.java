@@ -126,9 +126,9 @@ public class MongoOrderStore implements IOrderStore {
     }
 
     @Override
-    public void deleteOrder(Order order){
+    public void deleteOrder(String id){
         datastore.find(Order.class)
-                .filter(Filters.eq("Id", order.getId()))
+                .filter(Filters.eq("Id", id))
                 .delete();
     }
 }

@@ -74,7 +74,7 @@ public class OrderContainer implements IOrderStore {
     }
 
     @Override
-    public void deleteOrder(Order order){
-        orderStore.deleteOrder(order);
+    public void deleteOrder(String id){
+        orderStore.deleteOrder(id);
     }
 }

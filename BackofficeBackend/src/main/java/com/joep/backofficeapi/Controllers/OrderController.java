@@ -133,19 +133,9 @@ public class OrderController {
         return ResponseEntity.ok(addresses);
     }
 
-    @DeleteMapping(value = "/delete/{order}")
-    public ResponseEntity<?> deleteOrder(Order order) throws Exception {
-
-//        var location= LocationUtility.getLocation(address);
-//        assert location != null;
-//        List<String> addresses = new ArrayList<String>();
-//        for (var item: location.getItems()) {
-//            addresses.add(item.getAddress().getLabel());
-//        }
-//        System.out.println(addresses);
-        orderContainer.deleteOrder(order);
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> deleteOrder(@PathVariable String id) throws Exception {
+        orderContainer.deleteOrder(id);
         return ResponseEntity.ok("Order deleted");
     }
-
-
 }
