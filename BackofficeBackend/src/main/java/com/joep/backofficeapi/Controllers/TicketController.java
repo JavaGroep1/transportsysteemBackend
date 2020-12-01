@@ -45,22 +45,22 @@ public class TicketController {
 
     }
 
-    @GetMapping("")
-    Ticket getTicket(String Id){
+    @GetMapping(path = "/{id}")
+    Ticket getTicket(@PathVariable("id") String Id){
         return ticketContainer.getTicketById(new ObjectId(Id));
     }
 
-    @GetMapping(value = "", params = "status", produces = "application/json")
+    @GetMapping(params = "status", produces = "application/json")
     List<Ticket> getTicketByStatus(TicketStatus status) throws BadRequestException {
         return ticketContainer.getTicketByStatus(status);
     }
 
-    @GetMapping(value = "", params = "client", produces = "application/json")
+    @GetMapping(params = "client", produces = "application/json")
     List<Ticket> getTicketByClient(String client) throws Exception {
         var customer= userStoreContainer.getUserByName(jwtUtil.extractUsername(client));
         return ticketContainer.getTicketsByCustomer(customer);
     }
-    @GetMapping(value = "", params = {"client", "status"}, produces = "application/json")
+    @GetMapping( params = {"client", "status"}, produces = "application/json")
     List<Ticket> getTicketByClientAndStatus(String client, TicketStatus status) throws Exception {
         var customer= userStoreContainer.getUserById(new ObjectId(client));
         return ticketContainer.getTicketByStatusAndClient(status, customer);

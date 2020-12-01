@@ -21,7 +21,7 @@ import java.util.List;
 
 @Controller
 @CrossOrigin("*")
-
+@RequestMapping("/customers")
 public class CustomerController {
 
     @Autowired
@@ -30,13 +30,13 @@ public class CustomerController {
     @Autowired
     private UserStoreContainer userStoreContainer;
 
-    @PostMapping(value = "/customers", headers = "Accept=application/json")
+    @PostMapping(headers = "Accept=application/json")
     public ResponseEntity<?> addCustomer(@RequestBody Customer customer, HttpServletRequest req) throws InterruptedException, OrderInvalidException, IOException {
         customerContainer.addCustomer(customer);
         return ResponseEntity.ok("ok");
     }
 
-    @GetMapping("/customers")
+    @GetMapping()
     public ResponseEntity<?> getCustomers(HttpServletRequest request) throws Exception {
         // RoleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
         List<ApplicationUser> customers = new ArrayList<>();
@@ -46,22 +46,22 @@ public class CustomerController {
 
     }
   
-    @GetMapping( value = "/customers", params = "id")
-    public ResponseEntity<Customer> getCustomer(HttpServletRequest request, String id) throws Exception {
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Customer> getCustomer(HttpServletRequest request, @PathVariable("id") String id) throws Exception {
         // RoleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
         return ResponseEntity.ok(customerContainer.getCustomerById(new ObjectId(id)));
 
     }
       
-    @DeleteMapping(value = "/customers", params = "id")
-    public ResponseEntity<?> DeleteCustomer(HttpServletRequest req, String id) {
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> DeleteCustomer(HttpServletRequest req, @PathVariable("id") String id) {
         userStoreContainer.deleteAccountByBusinessId(id);
         customerContainer.deleteCustomer(id);
         return ResponseEntity.ok("Deleted");
     }
 
 
-    @PutMapping("/customers")
+    @PutMapping()
     public ResponseEntity<?> editCustomer(@RequestBody EditCustomerRequest editCustomerRequest) throws CustomerNotFoundException{
         userStoreContainer.changeRole(editCustomerRequest.getCustomerIdString(), editCustomerRequest.getProspect() ? Roles.Prospect : Roles.Customer);
         userStoreContainer.changeEmail(editCustomerRequest.getCustomerIdString(), editCustomerRequest.getEmail());

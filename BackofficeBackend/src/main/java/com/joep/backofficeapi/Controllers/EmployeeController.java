@@ -47,8 +47,8 @@ public class EmployeeController {
         return ResponseEntity.ok(userStoreContainer.updateEmployee(editEmployeeRequest));
     }
 
-    @DeleteMapping(params = "Id")
-    public ResponseEntity<?> DeleteCustomer(HttpServletRequest req, String Id) {
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> DeleteCustomer(HttpServletRequest req, @PathVariable("id") String Id) {
         userStoreContainer.deleteUser(new ObjectId(Id));
         return ResponseEntity.ok("Deleted");
     }
