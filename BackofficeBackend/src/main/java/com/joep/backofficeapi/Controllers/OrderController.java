@@ -107,4 +107,11 @@ public class OrderController {
         return ResponseEntity.ok("Status changed to " + request.getStatus().toString());
     }
 
+    @GetMapping(value = "/getLocation", params = {"address"})
+    public ResponseEntity<?> getLocation(String address) throws Exception {
+        var location= LocationUtility.getLocation(address);
+        assert location != null;
+        return ResponseEntity.ok(location);
+    }
+
 }
