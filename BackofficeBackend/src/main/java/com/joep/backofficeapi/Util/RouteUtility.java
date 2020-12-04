@@ -55,7 +55,6 @@ public class RouteUtility {
 
         HttpResponse<String> response =
                 client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
 
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -64,8 +63,7 @@ public class RouteUtility {
             return route.getRoute();
 
         }
-        catch (Throwable e){
-            System.out.println(e.getMessage());
+        catch (Throwable ignored){
         }
         return null;
     }

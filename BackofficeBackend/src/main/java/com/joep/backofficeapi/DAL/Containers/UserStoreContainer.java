@@ -100,7 +100,6 @@ public class UserStoreContainer implements UserDetailsService {
     }
 
     public ApplicationUser updateEmployee(EditEmployeeRequest employee) throws Exception {
-
         ApplicationUser user = store.getUserById(new ObjectId(employee.getIdString()));
         EmployeeSanitizer.sanitize(employee, user);
         return store.updateEmployee(employee);
