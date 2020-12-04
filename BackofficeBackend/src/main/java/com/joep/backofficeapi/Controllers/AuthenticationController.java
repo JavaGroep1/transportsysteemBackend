@@ -1,5 +1,6 @@
 package com.joep.backofficeapi.Controllers;
 
+import com.joep.backofficeapi.DAL.Containers.CustomerContainer;
 import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Requests.Auth.AuthenticationRequest;
@@ -25,6 +26,9 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    private CustomerContainer customerContainer;
+
+    @Autowired
     private UserStoreContainer userStore;
 
     @Autowired
@@ -41,7 +45,6 @@ public class AuthenticationController {
             );
         }
         catch (Exception e){
-            System.out.println(e);
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Username and password combination not found" ,e);
         }
@@ -70,9 +73,9 @@ public class AuthenticationController {
     public ResponseEntity<?> getUser(HttpServletRequest req) throws Exception {
         String token = req.getHeader("Authorization");
         token = token.substring(7);
-        System.out.println(token);
         String username = jwtTokenUtil.extractUsername(token);
         UserInfoResponse user = new UserInfoResponse(userStore.loadUserByUsername(username));
         return ResponseEntity.ok(user);
     }
+
 }

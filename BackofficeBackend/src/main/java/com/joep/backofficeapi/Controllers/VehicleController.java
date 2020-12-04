@@ -24,7 +24,8 @@ public class VehicleController {
         vehicleContainer.addVehicle(new Vehicle(
                 vehicle.getLicensePlate(),
                 vehicle.getVehicleCategory(),
-                vehicle.getCapacityInKg()
+                vehicle.getCapacityInKg(),
+                vehicle.getKmPerLiter()
         ));
         return ResponseEntity.ok("ok");
     }
@@ -34,8 +35,8 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleContainer.getVehicles());
     }
 
-    @GetMapping(value = "", params = "licensePlate")
-    public ResponseEntity<?> getVehicles(String licensePlate) throws VehicleNotFoundException {
+    @GetMapping(path = "/{licensePlate}")
+    public ResponseEntity<?> getVehicles(@PathVariable("licensePlate") String licensePlate) throws VehicleNotFoundException {
         return ResponseEntity.ok(vehicleContainer.getVehicleByPlate(licensePlate));
     }
 
@@ -50,8 +51,8 @@ public class VehicleController {
         return ResponseEntity.ok("Updated");
     }
 
-    @DeleteMapping("")
-    public ResponseEntity<?> removeVehicle(String vehicleid) {
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> removeVehicle(@PathVariable("id") String vehicleid) {
         vehicleContainer.deleteVehicle(new ObjectId(vehicleid));
         return ResponseEntity.ok("deleted");
     }

@@ -8,13 +8,17 @@ public class EditVehicleRequest {
     public String NewLicensePlate;
     public VehicleCategory NewVehicleCategory;
 
+    public double NewKmPerLiter;
+
     public EditVehicleRequest() {
     }
 
-    public EditVehicleRequest(String vehicleIdString, int newCapacityInKg, String newLicensePlate, VehicleCategory newVehicleCategory) {
+    public EditVehicleRequest(String vehicleIdString, int newCapacityInKg, String newLicensePlate, VehicleCategory newVehicleCategory,double newKmPerLiter) {
         this.vehicleIdString = vehicleIdString;
         NewCapacityInKg = newCapacityInKg;
         NewLicensePlate = newLicensePlate;
+        NewKmPerLiter = newKmPerLiter;
+
         NewVehicleCategory = newVehicleCategory;
     }
 
@@ -32,6 +36,14 @@ public class EditVehicleRequest {
 
     public void setNewVehicleCategory(VehicleCategory newVehicleCategory) {
         NewVehicleCategory = newVehicleCategory;
+    }
+
+
+    public void setNewKmPerLiter(double newKmPerLiter) {
+        NewKmPerLiter = newKmPerLiter;
+    }
+    public double getNewKmPerLiter() {
+        return NewKmPerLiter;
     }
 
     public String getVehicleIdString() {

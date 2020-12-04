@@ -4,11 +4,21 @@ import com.joep.backofficeapi.DAL.Interfaces.ICustomerStore;
 import com.joep.backofficeapi.Exceptions.CustomerNotFoundException;
 import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Customer;
+import com.joep.backofficeapi.Models.Requests.Customer.EditCustomerRequest;
+import com.joep.backofficeapi.Util.JwtUtil;
+import com.joep.backofficeapi.Util.Sanitizers.CustomerSanitizer;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class CustomerContainer implements ICustomerStore {
+
+    @Autowired
+    UserStoreContainer userStoreContainer;
+    @Autowired
+    JwtUtil jwtUtil;
+
     ICustomerStore store;
 
     public CustomerContainer(ICustomerStore store) {
@@ -27,7 +37,8 @@ public class CustomerContainer implements ICustomerStore {
 
     @Override
     public Customer getCustomerByJwt(String jwt) throws Exception {
-        return store.getCustomerByJwt(jwt);
+        var user = userStoreContainer.getUserByName(jwtUtil.extractUsername(jwt));
+        return user.getCustomer();
     }
 
     @Override
@@ -41,9 +52,19 @@ public class CustomerContainer implements ICustomerStore {
     }
 
     @Override
-    public void changeCustomerRole(Customer customer, Roles role) {
-        store.changeCustomerRole(customer, role);
+    public void deleteCustomer(String businessIdentifier) {
+        store.deleteCustomer(businessIdentifier);
     }
 
+    @Override
+    public void updateCustomer(EditCustomerRequest editCustomerRequest) throws CustomerNotFoundException {
+        //still returns 0 from frontend
+        Customer customer = getCustomerById(editCustomerRequest.getCustomerIdString());
+        CustomerSanitizer.sanitize(editCustomerRequest, customer);
+        store.updateCustomer(editCustomerRequest);
 
+        //change role if prospect changed
+
+        //maybe change email / account details later too?
+    }
 }

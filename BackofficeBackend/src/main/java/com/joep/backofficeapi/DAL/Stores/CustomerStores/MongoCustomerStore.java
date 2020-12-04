@@ -5,12 +5,15 @@ import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
 import com.joep.backofficeapi.DAL.Interfaces.ICustomerStore;
 import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Customer;
+import com.joep.backofficeapi.Models.Requests.Customer.EditCustomerRequest;
 import com.joep.backofficeapi.Util.JwtUtil;
 import com.mongodb.client.MongoClients;
 import dev.morphia.Datastore;
 import dev.morphia.Morphia;
 import dev.morphia.query.experimental.filters.Filters;
 import dev.morphia.query.experimental.updates.UpdateOperators;
+import jdk.jshell.spi.ExecutionControl;
+import org.apache.commons.lang3.NotImplementedException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,12 +22,6 @@ import java.util.List;
 
 @Service
 public class MongoCustomerStore implements ICustomerStore {
-
-    @Autowired
-    private UserStoreContainer userStoreContainer;
-
-    @Autowired
-    private JwtUtil jwtUtil;
 
     private final Datastore datastore;
     public MongoCustomerStore() {
@@ -44,8 +41,7 @@ public class MongoCustomerStore implements ICustomerStore {
 
     @Override
     public Customer getCustomerByJwt(String jwt) throws Exception {
-        var user = userStoreContainer.getUserByName(jwtUtil.extractUsername(jwt));
-        return user.getCustomer();
+        throw new NotImplementedException();
     }
 
     @Override
@@ -60,12 +56,24 @@ public class MongoCustomerStore implements ICustomerStore {
     }
 
     @Override
-    public void changeCustomerRole(Customer customer, Roles role) {
+    public void deleteCustomer(String businessIdentifier) {
         datastore.find(Customer.class)
-                .filter(Filters.eq("Id", customer.getId()))
-                .update(UpdateOperators.set("Role", role))
+                .filter(Filters.eq("businessIdentifier", businessIdentifier))
+                .delete();
+    }
+
+    @Override
+    public void updateCustomer(EditCustomerRequest editCustomerRequest) {
+        var id = editCustomerRequest.getCustomerIdString();
+        datastore.find(Customer.class)
+                .filter(Filters.eq("Id", id))
+                .update(UpdateOperators.set("name", editCustomerRequest.getName()),
+                        UpdateOperators.set("businessIdentifier", editCustomerRequest.getBusinessIdentifier()),
+                        UpdateOperators.set("address", editCustomerRequest.getAddress()),
+                        UpdateOperators.set("phoneNumber", editCustomerRequest.getPhoneNumber()))
                 .execute();
     }
+
 
 
 }

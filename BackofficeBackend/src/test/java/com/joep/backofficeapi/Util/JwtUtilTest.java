@@ -17,7 +17,7 @@ public class JwtUtilTest {
       // var token = controller.createAuthenticationToken(new AuthenticationRequest(username, pass)).getStatusCode().getReasonPhrase();
         return "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjA0MzU5NzE2LCJpYXQiOjE2MDQzMjM3MTZ9.CqVfZAq1_JZaODCYDR_tfkyud0r8VEJ1L2giy8UDifI";
     }
-    @Test
+
     public void UtilExtractsClaims() throws Exception {
         var util = new JwtUtil();
         var token = getToken("user", "d");
