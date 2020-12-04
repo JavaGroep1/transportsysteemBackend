@@ -31,20 +31,14 @@ public class LocationUtility {
 
         HttpResponse<String> response =
                 client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
-        System.out.println(response.toString());
+
 
 
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-//            var loc = objectMapper.readValue(response.body(), Item.class);
-////            String location = loc.getAddress().getLabel();
-//            return loc;
             return objectMapper.readValue(response.body(), Example.class);
-
         }
         catch (Throwable e){
-            System.out.println(e.getMessage());
             return null;
         }
     }

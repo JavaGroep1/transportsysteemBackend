@@ -39,7 +39,7 @@ public class OrderController {
     @Autowired
     private CustomerContainer customerContainer;
 
-    @PostMapping(value = "", headers = "Accept=application/json")
+    @PostMapping(headers = "Accept=application/json")
     public ResponseEntity<?> addOrder(@RequestBody AddOrderRequest order, HttpServletRequest req) throws Exception {
 
         var vehicle = vehicleContainer.getVehicleById(order.getVehicleId());
@@ -59,20 +59,20 @@ public class OrderController {
         return ResponseEntity.ok("ok");
     }
 
-    @GetMapping(value = "")
+    @GetMapping()
     public ResponseEntity<List<Order>> getOrder(HttpServletRequest request) throws Exception {
         return ResponseEntity.ok(orderContainer.getOrders());
     }
 
-    @GetMapping(value = "", params = "customerid")
+    @GetMapping(params = "customerid")
     public ResponseEntity<List<Order>> getOrderByCustomerId(HttpServletRequest request, String customerid) throws Exception {
             var customerIdObject = new ObjectId(customerid);
             Customer customer = customerContainer.getCustomerById(customerIdObject);
             return ResponseEntity.ok(orderContainer.getOrdersByCustomer(customer));
     }
 
-    @GetMapping(value = "", params = "orderid")
-    public ResponseEntity<Order> getOrderByOrderId(HttpServletRequest request, String orderid) throws Exception {
+    @GetMapping(path = "/{orderid}")
+    public ResponseEntity<Order> getOrderByOrderId(HttpServletRequest request, @PathVariable("orderid") String orderid) throws Exception {
             var orderIdObject = new ObjectId(orderid);
             return ResponseEntity.ok(orderContainer.getOrderById(orderIdObject));
     }
@@ -113,6 +113,5 @@ public class OrderController {
         assert location != null;
         return ResponseEntity.ok(location);
     }
-
 
 }
