@@ -56,6 +56,7 @@ public class TicketContainerTest {
         var query = new ObjectId();
         var user = new ApplicationUser("name", "pass", "email", Roles.Unknown);
         var ticketToReturn = new Ticket("title", "body", user);
+
         //Mocking
         when(ticketStore.getTicketById(query)).thenReturn(ticketToReturn);
 
