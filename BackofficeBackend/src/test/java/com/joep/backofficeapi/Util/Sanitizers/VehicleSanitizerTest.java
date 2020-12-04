@@ -27,7 +27,7 @@ public class VehicleSanitizerTest {
     @Test
     public void sanitizerLeavesPopulatesValues(){
         //setup
-        var request = new EditVehicleRequest("idstring", 100, "plate", VehicleCategory.Bike);
+        var request = new EditVehicleRequest("idstring", 100, "plate", VehicleCategory.Bike, 0);
         var vehicle= new Vehicle("licensePlate", VehicleCategory.Car, 500, 50);
 
         //execute

@@ -11,7 +11,8 @@ public class EditEmployeeRequest {
     private String email;
     private Roles role;
 
-    public EditEmployeeRequest(String username, String firstName, String lastName, String email) {
+    public EditEmployeeRequest(String idString, String username, String firstName, String lastName, String email) {
+        this.idString = idString;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;

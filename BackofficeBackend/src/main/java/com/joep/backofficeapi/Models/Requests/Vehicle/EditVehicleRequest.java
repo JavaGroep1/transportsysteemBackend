@@ -7,15 +7,18 @@ public class EditVehicleRequest {
     public int NewCapacityInKg;
     public String NewLicensePlate;
     public VehicleCategory NewVehicleCategory;
+
     public double NewKmPerLiter;
 
     public EditVehicleRequest() {
     }
 
-    public EditVehicleRequest(String vehicleIdString, int newCapacityInKg, String newLicensePlate, VehicleCategory newVehicleCategory) {
+    public EditVehicleRequest(String vehicleIdString, int newCapacityInKg, String newLicensePlate, VehicleCategory newVehicleCategory,double newKmPerLiter) {
         this.vehicleIdString = vehicleIdString;
         NewCapacityInKg = newCapacityInKg;
         NewLicensePlate = newLicensePlate;
+        NewKmPerLiter = newKmPerLiter;
+
         NewVehicleCategory = newVehicleCategory;
     }
 

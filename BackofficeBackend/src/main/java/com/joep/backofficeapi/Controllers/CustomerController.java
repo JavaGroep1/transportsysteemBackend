@@ -3,6 +3,8 @@ package com.joep.backofficeapi.Controllers;
 import com.joep.backofficeapi.DAL.Containers.CustomerContainer;
 import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
 import com.joep.backofficeapi.Exceptions.CustomerNotFoundException;
+import com.joep.backofficeapi.Exceptions.EmailTakenException;
+import com.joep.backofficeapi.Exceptions.InvalidEmailException;
 import com.joep.backofficeapi.Exceptions.OrderInvalidException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
@@ -59,6 +61,7 @@ public class CustomerController {
         customerContainer.deleteCustomer(id);
         return ResponseEntity.ok("Deleted");
     }
+
 
 
     @PutMapping()

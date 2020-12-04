@@ -4,6 +4,7 @@ package com.joep.backofficeapi.DAL.Containers;
 import com.joep.backofficeapi.DAL.Interfaces.IUserStore;
 import com.joep.backofficeapi.Exceptions.EmailTakenException;
 import com.joep.backofficeapi.Exceptions.InvalidEmailException;
+import com.joep.backofficeapi.Exceptions.UserNotFoundException;
 import com.joep.backofficeapi.Exceptions.UsernameTakenException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
@@ -35,7 +36,9 @@ public class UserStoreContainer implements UserDetailsService {
         return store.getAllUsers();
     }
     public ApplicationUser getUserByName(String name) throws Exception {
-        return store.getUserByName(name);
+        var user = store.getUserByName(name);
+        if (user == null) throw new UserNotFoundException();
+        return user;
     }
     public Boolean createUser(ApplicationUser user) throws Exception {
         if (!isValidEmail(user.getEmail())){
@@ -76,7 +79,6 @@ public class UserStoreContainer implements UserDetailsService {
 
     public List<ApplicationUser> getByRole(Roles role) {
         return store.getByRole(role);
-
     }
 
     public void changeRole(ObjectId customerId, Roles role) {
@@ -87,12 +89,22 @@ public class UserStoreContainer implements UserDetailsService {
         store.deleteAccount(businessIdentifier);
     }
 
-    public void changeEmail(ObjectId customerIdString, String email) {
+    public void changeEmail(ObjectId customerIdString, String email) throws InvalidEmailException, EmailTakenException {
+        if (!isValidEmail(email)){
+            throw new InvalidEmailException();
+        }
+        if (emailExists(email)) {
+            throw new EmailTakenException();
+        }
         store.changeEmail(customerIdString, email);
+
     }
     public ApplicationUser getUserById(ObjectId id) throws Exception {
-        return store.getUserById(id);
-
+        var user = store.getUserById(id);
+        if (user != null){
+            return user;
+        }
+        throw new UserNotFoundException();
     }
 
     public void deleteUser(ObjectId objectId) {
@@ -102,6 +114,12 @@ public class UserStoreContainer implements UserDetailsService {
     public ApplicationUser updateEmployee(EditEmployeeRequest employee) throws Exception {
         ApplicationUser user = store.getUserById(new ObjectId(employee.getIdString()));
         EmployeeSanitizer.sanitize(employee, user);
+        if (!isValidEmail(employee.getEmail())){
+            throw new InvalidEmailException();
+        }
+        if (emailExists(employee.getEmail())) {
+            throw new EmailTakenException();
+        }
         return store.updateEmployee(employee);
     }
 }
