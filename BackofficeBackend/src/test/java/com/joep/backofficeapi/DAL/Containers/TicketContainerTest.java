@@ -146,7 +146,7 @@ public class TicketContainerTest {
             //execute
            container.changeTicketStatus(ticket, TicketStatus.IN_PROGRESS);
         });
-
-
     }
+
+
 }
