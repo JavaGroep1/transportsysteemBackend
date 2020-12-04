@@ -8,12 +8,14 @@ import com.joep.backofficeapi.Models.Vehicle.VehicleCategory;
 import com.joep.backofficeapi.Util.Sanitizers.VehicleSanitizer;
 import org.bson.types.ObjectId;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class VehicleContainer implements IVehicleStore {
 
     private final IVehicleStore vehicleStore;
+
     public VehicleContainer(IVehicleStore vehicleStore) {
         this.vehicleStore = vehicleStore;
     }
@@ -58,5 +60,32 @@ public class VehicleContainer implements IVehicleStore {
         var vehicle = vehicleStore.getVehicleById(new ObjectId(newVehicle.vehicleIdString));
         VehicleSanitizer.sanitize(newVehicle, vehicle);
         vehicleStore.updateVehicle(newVehicle);
+    }
+
+    @Override
+    public List<Vehicle> getVehiclesByWeight(int weight) {
+
+        List<Vehicle> vehicles = vehicleStore.getVehicles();
+
+        List<Vehicle> vehicleList = new ArrayList<Vehicle>();
+
+//        int distance = vehicles.get(0).getCapacityInKG() - weight;
+        int distance = weight;
+        int idx = 0;
+        for (int c = 0; c < vehicles.size(); c++) {
+            int cdistance = vehicles.get(c).getCapacityInKG() - weight;
+            if (cdistance >= distance && cdistance >= 0) {
+                idx = c;
+                distance = cdistance;
+                vehicleList.add(vehicles.get(c));
+            }
+//            if(c + 1 < vehicles.size()){
+//                if (vehicles.get(idx).getCapacityInKG() == vehicles.get(c + 1).getCapacityInKG()) {
+//                    vehicleList.add(vehicles.get(c + 1));
+//                    return vehicleList;
+//                }
+//            }
+        }
+        return vehicleList;
     }
 }

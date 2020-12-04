@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.Inet4Address;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -58,6 +59,34 @@ public class VehicleController {
     public ResponseEntity<?> removeVehicle(String vehicleid) {
         vehicleContainer.deleteVehicle(new ObjectId(vehicleid));
         return ResponseEntity.ok("deleted");
+    }
+
+    @GetMapping(value = "/{weight}")
+    public ResponseEntity<?> getVehiclesByWeight(@PathVariable String weight) throws VehicleNotFoundException {
+//        return ResponseEntity.ok(vehicleContainer.getVehiclesByCategory(category))
+
+//        var vehicles = vehicleContainer.getVehicles();
+//
+//        for (var item: vehicles) {
+//            int holder;
+//            holder = Integer.parseInt(weight)-item.getCapacityInKG();
+//            if(holder >= 0){
+//            }
+//        }
+//        return ResponseEntity.ok(closest);
+
+//        public void getClosest() {
+//            var results = vehicleContainer.getVehicles();
+//            Vehicle closest = results.get(0);
+//
+//            for (var v : results){
+//                if (v.getCapacityInKG() - Integer.parseInt(weight) < closest.getCapacityInKG() - Integer.parseInt(weight))
+//                    closest = v;
+//            }
+//        }
+//        return ResponseEntity.ok(closest);
+
+        return ResponseEntity.ok(vehicleContainer.getVehiclesByWeight(Integer.parseInt(weight)));
     }
 
 }

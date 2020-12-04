@@ -83,4 +83,17 @@ public class MongoVehicleStore implements IVehicleStore {
                 .execute();
 
     }
+
+    @Override
+    public List<Vehicle> getVehiclesByWeight(int weight) throws VehicleNotFoundException {
+        return null;
+    }
+
+//    @Override
+//    public Vehicle getVehiclesByWeight(int weight) throws VehicleNotFoundException {
+//        Vehicle result = datastore.find(Vehicle.class).filter(Filters.eq("capacityInKG", weight)).first();
+//        if (result != null) return result;
+//
+//        throw new VehicleNotFoundException();
+//    }
 }

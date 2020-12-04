@@ -11,7 +11,6 @@ import java.net.http.HttpResponse;
 import java.text.MessageFormat;
 
 public class LocationUtility {
-//    private static String API_KEY = "fwEl8C7Wi53YNXdSo9ljSZrpU6MUN1Zb";
 
     public static Example getLocation(String Address) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
