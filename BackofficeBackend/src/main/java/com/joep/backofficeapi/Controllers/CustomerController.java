@@ -3,6 +3,8 @@ package com.joep.backofficeapi.Controllers;
 import com.joep.backofficeapi.DAL.Containers.CustomerContainer;
 import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
 import com.joep.backofficeapi.Exceptions.CustomerNotFoundException;
+import com.joep.backofficeapi.Exceptions.EmailTakenException;
+import com.joep.backofficeapi.Exceptions.InvalidEmailException;
 import com.joep.backofficeapi.Exceptions.OrderInvalidException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
@@ -62,7 +64,7 @@ public class CustomerController {
 
 
     @PutMapping("/customers")
-    public ResponseEntity<?> editCustomer(@RequestBody EditCustomerRequest editCustomerRequest) throws CustomerNotFoundException{
+    public ResponseEntity<?> editCustomer(@RequestBody EditCustomerRequest editCustomerRequest) throws CustomerNotFoundException, InvalidEmailException, EmailTakenException {
         userStoreContainer.changeRole(editCustomerRequest.getCustomerIdString(), editCustomerRequest.getProspect() ? Roles.Prospect : Roles.Customer);
         userStoreContainer.changeEmail(editCustomerRequest.getCustomerIdString(), editCustomerRequest.getEmail());
         customerContainer.updateCustomer(editCustomerRequest);
