@@ -3,7 +3,6 @@ package com.joep.backofficeapi.DAL.Stores.VehicleStores;
 import com.joep.backofficeapi.ConnectionConfiguration;
 import com.joep.backofficeapi.DAL.Interfaces.IVehicleStore;
 import com.joep.backofficeapi.Exceptions.VehicleNotFoundException;
-import com.joep.backofficeapi.Models.Order.Order;
 import com.joep.backofficeapi.Models.Requests.Vehicle.EditVehicleRequest;
 import com.joep.backofficeapi.Models.Vehicle.Vehicle;
 import com.joep.backofficeapi.Models.Vehicle.VehicleCategory;
@@ -85,15 +84,7 @@ public class MongoVehicleStore implements IVehicleStore {
     }
 
     @Override
-    public List<Vehicle> getVehiclesByWeight(int weight) throws VehicleNotFoundException {
+    public List<Vehicle> getVehiclesByWeight(int weight) {
         return datastore.find(Vehicle.class).filter(Filters.eq("capacityInKG", weight)).iterator().toList();
     }
-
-//    @Override
-//    public Vehicle getVehiclesByWeight(int weight) throws VehicleNotFoundException {
-//        Vehicle result = datastore.find(Vehicle.class).filter(Filters.eq("capacityInKG", weight)).first();
-//        if (result != null) return result;
-//
-//        throw new VehicleNotFoundException();
-//    }
 }

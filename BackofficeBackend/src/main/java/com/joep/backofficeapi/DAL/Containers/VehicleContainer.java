@@ -67,8 +67,6 @@ public class VehicleContainer implements IVehicleStore {
 
         List<Vehicle> vehicles = vehicleStore.getVehicles();
 
-        List<Vehicle> vehicleList = new ArrayList<Vehicle>();
-
         int closest = Integer.MAX_VALUE;
         int distance = closest - weight;
         for (var vehicle : vehicles) {
@@ -78,68 +76,6 @@ public class VehicleContainer implements IVehicleStore {
                 distance = distanceI;
             }
         }
-
-        for (var item: vehicleStore.getVehiclesByWeight(closest)){
-            vehicleList.add(item);
-        }
-//        vehicleStore.getVehiclesByWeight(closest));
-
-
-//        int distance = vehicles.get(0).getCapacityInKG() - weight;
-//        int distance = weight;
-
-        /* Start -> Pak alle vehicles -> Kijk voor elk vehicle of de capaciteit groter is dan t gewicht ->
-         *  JA -> kijk of de afstand tussen de capaciteit en het gewicht niet groter is dan het gewicht zelf of niet negatief is ->
-         *       JA -> Voeg het vehicle toe
-         *       NEE -> Doe niets -> start
-         *   Zijn er geen vehicles in de lijst?
-         *   JA -> Pak dan t grootste vehicle
-         *   NEE -> Start
-         *
-         *  NEE -> start
-         *  */
-
-
-        /*
-        Je hebt vehicles,
-            kijk voor elk vehicle of ie kleiner(capaciteit) is dan t gewicht, ja -> sla over volgende
-            Als je een vehicle vind die groter is dan t gewicht, kijk of de afstand (capaciteit - gewicht) positief is?
-            Voeg m toe
-
-
-
-         */
-
-
-//        int value = 0;
-
-
-//        for (var veh: vehicles) {
-//            if (veh.getCapacityInKG() > weight) {
-//                int afstand = veh.getCapacityInKG() - weight;
-//                if (afstand <= weight && afstand >= 0) {
-//                    vehicleList.add(veh);
-//                }
-//            }
-//        }
-
-
-//        int distance = 20000;
-//        int idx = 0;
-//        for (int c = 0; c < vehicles.size(); c++) {
-//            int cdistance = vehicles.get(c).getCapacityInKG() - weight;
-//            if (cdistance <= distance && cdistance >= 0) {
-//                idx = c;
-//                distance = cdistance;
-//                vehicleList.add(vehicles.get(c));
-//            }
-//        }
-//        if(vehicleStore.getVehiclesByWeight(vehicleList.get(0).getCapacityInKG()).size() > 1){
-//            vehicleList.clear();
-//            for (var veh: vehicleStore.getVehiclesByWeight(vehicleList.get(0).getCapacityInKG())) {
-//                vehicleList.add(veh);
-//            }
-//        }
-        return vehicleList;
+        return new ArrayList<>(vehicleStore.getVehiclesByWeight(closest));
     }
 }
