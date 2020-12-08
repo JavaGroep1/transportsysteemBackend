@@ -16,7 +16,7 @@ import java.text.MessageFormat;
 
 public class RouteUtility {
     private static String API_KEY = "fwEl8C7Wi53YNXdSo9ljSZrpU6MUN1Zb";
-    public static double dieselPrice = 1.27;
+    public static double dieselPrice = GasPriceUtility.getDieselPrice();
 
     private static double KmPerLiterToMilesPerGallon(double KmPerLiter){
         return KmPerLiter * 2.352;
