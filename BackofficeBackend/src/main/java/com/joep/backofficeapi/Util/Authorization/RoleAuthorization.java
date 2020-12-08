@@ -23,13 +23,6 @@ public class RoleAuthorization {
     }
 
 
-    public Boolean checkRole(ApplicationUser user, Roles[] roles) throws Exception {
-        if (user == null) throw new UnauthorizedException();
-        for (Roles role : roles){
-            if (user.getRole()== role) return true;
-        }
-        throw new UnauthorizedException();
-    };
 
     private ApplicationUser getUser(HttpServletRequest req) throws Exception {
         JwtUtil util = new JwtUtil();
