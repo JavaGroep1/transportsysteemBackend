@@ -84,10 +84,11 @@ public class Order {
         var orderRoute = RouteUtility.getRoute(startingPoint, destination, vehicle.getVehicleCategory(), vehicle.getKmPerLiter());
 
         assert orderRoute != null;
-        var maneuvers = orderRoute.getLegs().get(0).getManeuvers();
-        this.setStartingCoordinates(new Coordinates(maneuvers.get(0).getStartPoint()));
-        this.setDestinationCoordinates(new Coordinates(maneuvers.get(maneuvers.size() -1).getStartPoint()));
-
+        if(orderRoute.getLegs() != null){
+            var maneuvers = orderRoute.getLegs().get(0).getManeuvers();
+            this.setStartingCoordinates(new Coordinates(maneuvers.get(0).getStartPoint()));
+            this.setDestinationCoordinates(new Coordinates(maneuvers.get(maneuvers.size() -1).getStartPoint()));
+        }
         this.distanceInKm= orderRoute.getDistance();
         this.fuelUsed = orderRoute.getFuelUsed();
         this.cost= RouteUtility.getRoutePrice(getFuelUsed());

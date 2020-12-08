@@ -158,4 +158,64 @@ public class VehicleContainerTest {
         //execute
         container.changeVehicleCategory(vehicle, VehicleCategory.Plane);
     }
+
+    @Test
+    public void getVehiclesByPositiveWeight() throws VehicleNotFoundException{
+
+        //setup
+        var weight = 500;
+        var listOfVehicles = new ArrayList<Vehicle>();
+        listOfVehicles.add(new Vehicle(null, null,200,0));
+        listOfVehicles.add(new Vehicle(null, null,500,0));
+
+        //Mocking
+        when(vehicleStore.getVehiclesByWeight(weight)).thenReturn(listOfVehicles);
+        when(vehicleStore.getVehicles()).thenReturn(listOfVehicles);
+
+        //execute
+        var res = container.getVehiclesByWeight(weight);
+
+        //assert
+        assertEquals(res, listOfVehicles);
+    }
+
+    @Test
+    public void getVehiclesByTooMuchWeight() throws VehicleNotFoundException{
+
+        //setup
+        var weight = 1000;
+        var listOfVehicles = new ArrayList<Vehicle>();
+        listOfVehicles.add(new Vehicle(null, null,200,0));
+        listOfVehicles.add(new Vehicle(null, null,500,0));
+
+        //Mocking
+        when(vehicleStore.getVehiclesByWeight(weight)).thenReturn(listOfVehicles);
+        when(vehicleStore.getVehicles()).thenReturn(listOfVehicles);
+
+        //execute
+        var res = container.getVehiclesByWeight(weight);
+
+        //assert
+        assertEquals(res, new ArrayList<>());
+    }
+
+    @Test
+    public void getVehiclesByNegativeWeight() throws VehicleNotFoundException{
+
+        //setup
+        var weight = -250;
+        var listOfVehicles = new ArrayList<Vehicle>();
+        listOfVehicles.add(new Vehicle(null, null,250,0));
+        listOfVehicles.add(new Vehicle(null, null,250,0));
+
+        //Mocking
+        when(vehicleStore.getVehiclesByWeight(weight)).thenReturn(listOfVehicles);
+        when(vehicleStore.getVehicles()).thenReturn(listOfVehicles);
+
+        //execute
+        var res = container.getVehiclesByWeight(weight);
+
+        //assert
+        assertEquals(res, new ArrayList<>());
+    }
 }

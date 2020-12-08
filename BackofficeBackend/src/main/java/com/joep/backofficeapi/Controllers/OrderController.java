@@ -9,6 +9,7 @@ import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Autosuggest.Address;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Order.Order;
+import com.joep.backofficeapi.Models.Order.Orderstatus;
 import com.joep.backofficeapi.Models.Requests.Order.AddOrderRequest;
 import com.joep.backofficeapi.Models.Requests.Order.ChangeOrderStatusRequest;
 import com.joep.backofficeapi.Models.Requests.Vehicle.AddVehicleRequest;
@@ -16,6 +17,7 @@ import com.joep.backofficeapi.Util.HereAuthUtil;
 import com.joep.backofficeapi.Util.JwtUtil;
 import com.joep.backofficeapi.Util.LocationUtility;
 import com.joep.backofficeapi.Util.RouteUtility;
+import com.sun.mail.iap.Response;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -69,13 +71,16 @@ public class OrderController {
         return ResponseEntity.ok(orderContainer.getOrders());
     }
 
-    @GetMapping(value = "/{userId}")
-    public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable String userId) throws Exception {
-        ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userId)));
+    @GetMapping(params = "userid")
+    public ResponseEntity<List<Order>> getOrdersByUserId(String userid) throws Exception {
+        ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userid)));
         Customer customer = customerContainer.getCustomerById(user.getCustomer().getId());
         return ResponseEntity.ok(orderContainer.getOrdersByCustomer(customer));
     }
-  
+
+    // Path = enkel
+    // Vraagteken = kan meerdere
+
     @GetMapping(params = "customerid")
     public ResponseEntity<List<Order>> getOrderByCustomerId(HttpServletRequest request, String customerid) throws Exception {
             var customerIdObject = new ObjectId(customerid);
@@ -83,18 +88,17 @@ public class OrderController {
             return ResponseEntity.ok(orderContainer.getOrdersByCustomer(customer));
     }
 
-    @GetMapping(path = "/{orderid}")
-    public ResponseEntity<Order> getOrderByOrderId(HttpServletRequest request, @PathVariable("orderid") String orderid) throws Exception {
+    @GetMapping(params = "orderid")
+    public ResponseEntity<Order> getOrderByOrderId(HttpServletRequest request, String orderid) throws Exception {
             var orderIdObject = new ObjectId(orderid);
             return ResponseEntity.ok(orderContainer.getOrderById(orderIdObject));
     }
 
-    @GetMapping(value = "/active/{userId}")
-    public ResponseEntity<?> getActiveOrdersById(@PathVariable String userId) throws Exception {
-        ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userId)));
+    @GetMapping(value = "/active", params = "userid")
+    public ResponseEntity<?> getActiveOrdersById(String userid) throws Exception {
+        ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userid)));
         Customer customer = customerContainer.getCustomerById(user.getCustomer().getId());
         return ResponseEntity.ok(orderContainer.getActiveOrdersByCustomer(customer));
-
     }
 
     @GetMapping(value = "/active")
@@ -102,9 +106,9 @@ public class OrderController {
         return ResponseEntity.ok(orderContainer.getActiveOrders());
     }
 
-    @GetMapping(value = "/pending/{userId}")
-    public ResponseEntity<?> getPendingOrderById(@PathVariable String userId) throws Exception {
-        ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userId)));
+    @GetMapping(value = "/pending", params = "userid")
+    public ResponseEntity<?> getPendingOrderById(@PathVariable String userid) throws Exception {
+        ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userid)));
         Customer customer = customerContainer.getCustomerById(user.getCustomer().getId());
         return ResponseEntity.ok(orderContainer.getPendingOrdersByCustomer(customer));
     }

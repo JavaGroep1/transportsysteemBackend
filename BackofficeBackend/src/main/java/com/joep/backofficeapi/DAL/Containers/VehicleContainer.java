@@ -68,6 +68,9 @@ public class VehicleContainer implements IVehicleStore {
 
         List<Vehicle> vehicles = vehicleStore.getVehicles();
 
+
+
+
         int closest = Integer.MAX_VALUE;
         int distance = closest - weight;
         for (var vehicle : vehicles) {
