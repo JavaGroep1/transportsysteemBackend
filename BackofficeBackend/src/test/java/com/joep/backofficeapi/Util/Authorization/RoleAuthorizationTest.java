@@ -9,6 +9,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import java.io.UnsupportedEncodingException;
@@ -16,44 +19,50 @@ import java.security.NoSuchAlgorithmException;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class RoleAuthorizationTest {
 
-    private RoleAuthorization roleAuthorization;
+    RoleAuthorization roleAuthorization;
     @Before
-    public void Setup(){
-        var userStore = mock(IUserStore.class);
-        roleAuthorization= new RoleAuthorization(new UserStoreContainer(userStore));
+    public void Setup() throws Exception {
+        var userstore = mock(UserStoreContainer.class);
+        var user = new ApplicationUser("user", "pass", "email", Roles.Employee);
+        when(userstore.getUserByName(any())).thenReturn(user);
+        roleAuthorization = new RoleAuthorization(userstore);
     }
 
     @Test
     public void unauthorizedUserThrowsUnauthorizedException () throws UnsupportedEncodingException, NoSuchAlgorithmException {
         //setup
-        var user  = new ApplicationUser("user", "pass", "email", Roles.Employee);
-
+        var request = mock(HttpServletRequest.class);
+        when(request.getHeader(anyString())).thenReturn("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjA5NDk5ODU5LCJpYXQiOjE2MDczNTIzNzV9.2_ZfYXAFhTx6gvEuaL8Aqzqp5Cu6RBxAO-dGECA2FWc");
         //execute
         Assertions.assertThrows(UnauthorizedException.class, () -> {
-            roleAuthorization.checkRole(user, new Roles[]{Roles.Admin});
+            roleAuthorization.checkRole(request, new Roles[]{Roles.Admin});
         });
     }
 
     @Test
     public void authorizedUserDoesNotThrowUnauthorizedException () throws UnsupportedEncodingException, NoSuchAlgorithmException {
         //setup
-        var user  = new ApplicationUser("user", "pass", "email", Roles.Admin);
-
+        var request = mock(HttpServletRequest.class);
+        when(request.getHeader(anyString())).thenReturn("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjA5NDk5ODU5LCJpYXQiOjE2MDczNTIzNzV9.2_ZfYXAFhTx6gvEuaL8Aqzqp5Cu6RBxAO-dGECA2FWc");
         //execute
         Assertions.assertDoesNotThrow(() -> {
-            roleAuthorization.checkRole(user, new Roles[]{Roles.Admin});
+            roleAuthorization.checkRole(request, new Roles[]{Roles.Employee});
         });
     }
 
     @Test
     public void authorizedUserReturnsTrue () throws Exception {
         //setup
-        var user  = new ApplicationUser("user", "pass", "email", Roles.Admin);
+        var request = mock(HttpServletRequest.class);
+        when(request.getHeader(anyString())).thenReturn("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjA5NDk5ODU5LCJpYXQiOjE2MDczNTIzNzV9.2_ZfYXAFhTx6gvEuaL8Aqzqp5Cu6RBxAO-dGECA2FWc");
 
         //execute
-        Assert.assertTrue(roleAuthorization.checkRole(user, new Roles[]{user.getRole()}));
+        Assert.assertTrue(roleAuthorization.checkRole(request, new Roles[]{Roles.Employee}));
     }
 
 }
+
