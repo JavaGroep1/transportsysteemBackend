@@ -16,7 +16,7 @@ import java.text.MessageFormat;
 
 public class RouteUtility {
     private static String API_KEY = "fwEl8C7Wi53YNXdSo9ljSZrpU6MUN1Zb";
-    public static double dieselPrice = 1.27;
+    public static double dieselPrice = GasPriceUtility.getDieselPrice();
 
     private static double KmPerLiterToMilesPerGallon(double KmPerLiter){
         return KmPerLiter * 2.352;
@@ -55,7 +55,6 @@ public class RouteUtility {
 
         HttpResponse<String> response =
                 client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
 
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -64,8 +63,7 @@ public class RouteUtility {
             return route.getRoute();
 
         }
-        catch (Throwable e){
-            System.out.println(e.getMessage());
+        catch (Throwable ignored){
         }
         return null;
     }

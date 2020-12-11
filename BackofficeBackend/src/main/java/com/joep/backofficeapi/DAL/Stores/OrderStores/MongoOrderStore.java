@@ -124,4 +124,11 @@ public class MongoOrderStore implements IOrderStore {
                 .execute();
 
     }
+
+    @Override
+    public void deleteOrder(ObjectId id){
+        datastore.find(Order.class)
+                .filter(Filters.eq("Id", id))
+                .delete();
+    }
 }

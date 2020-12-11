@@ -10,6 +10,7 @@ import com.joep.backofficeapi.Models.Requests.Ticket.ReplyToTicketRequest;
 import com.joep.backofficeapi.Models.Ticket.Ticket;
 import com.joep.backofficeapi.Models.Ticket.TicketReply;
 import com.joep.backofficeapi.Models.Ticket.TicketStatus;
+import com.joep.backofficeapi.Util.Authorization.RoleAuthorization;
 import com.joep.backofficeapi.Util.Email.EmailUtil;
 import com.joep.backofficeapi.Util.JwtUtil;
 import org.bson.types.ObjectId;
@@ -24,6 +25,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/tickets")
 public class TicketController {
+    @Autowired
+    private RoleAuthorization roleAuthorization;
+
     @Autowired
     private TicketContainer ticketContainer;
 
@@ -50,6 +54,7 @@ public class TicketController {
         return ticketContainer.getTicketById(new ObjectId(Id));
     }
 
+
     @GetMapping(params = "status", produces = "application/json")
     List<Ticket> getTicketByStatus(TicketStatus status) throws BadRequestException {
         return ticketContainer.getTicketByStatus(status);
@@ -60,6 +65,7 @@ public class TicketController {
         var customer= userStoreContainer.getUserByName(jwtUtil.extractUsername(client));
         return ticketContainer.getTicketsByCustomer(customer);
     }
+
     @GetMapping( params = {"client", "status"}, produces = "application/json")
     List<Ticket> getTicketByClientAndStatus(String client, TicketStatus status) throws Exception {
         var customer= userStoreContainer.getUserById(new ObjectId(client));

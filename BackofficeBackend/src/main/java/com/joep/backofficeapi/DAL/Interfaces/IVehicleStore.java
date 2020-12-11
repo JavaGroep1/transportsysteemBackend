@@ -17,4 +17,5 @@ public interface IVehicleStore {
     void deleteVehicle(ObjectId vehicleId);
     void changeVehicleCategory(Vehicle Vehicle, VehicleCategory newVehicleCat);
     void updateVehicle(EditVehicleRequest newVehicle) throws VehicleNotFoundException;
+    List<Vehicle> getVehiclesByWeight(int weight) throws VehicleNotFoundException;
 }

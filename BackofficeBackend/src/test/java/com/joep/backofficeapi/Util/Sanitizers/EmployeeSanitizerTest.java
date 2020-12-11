@@ -33,7 +33,7 @@ public class EmployeeSanitizerTest {
     @Test
     public void sanitizerLeavesPopulatesValues() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         //setup
-        var request = new EditEmployeeRequest("new username", "newfirstname", "newlastname", "newemail");
+        var request = new EditEmployeeRequest("idstring","new username", "newfirstname", "newlastname", "newemail");
 
         var user= new ApplicationUser("username",  "firstName",  "lastName",  "password",  "email", Roles.Employee);
 

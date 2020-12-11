@@ -14,15 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class RoleAuthorization {
 
-    @Autowired
-    private UserStoreContainer store;
 
-    public Boolean checkRole(ApplicationUser user, Roles[] roles) throws Exception {
-        if (user == null) throw new UnauthorizedException();
-        for (Roles role : roles){
-            if (user.getRole()== role) return true;
-        }
-        throw new UnauthorizedException();
+    private final UserStoreContainer store;
+
+    @Autowired
+    public RoleAuthorization(UserStoreContainer store) {
+        this.store = store;
     }
 
     private ApplicationUser getUser(HttpServletRequest req) throws Exception {
@@ -39,7 +36,8 @@ public class RoleAuthorization {
         throw new UnauthorizedException();
     }
 
-    public Boolean checkRole(HttpServletRequest req, Roles role) throws Exception {
+ 
+    public  Boolean checkRole(HttpServletRequest req, Roles role) throws Exception {
         ApplicationUser user = getUser(req);
         if (user == null) throw new UnauthorizedException();
 
