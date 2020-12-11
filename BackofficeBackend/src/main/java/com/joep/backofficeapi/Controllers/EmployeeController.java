@@ -7,7 +7,6 @@ import com.joep.backofficeapi.Models.Requests.Employee.EditEmployeeRequest;
 import com.joep.backofficeapi.Util.Authorization.RoleAuthorization;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +19,8 @@ import java.util.List;
 @RequestMapping(value = "/employees")
 public class EmployeeController {
 
-    private UserStoreContainer userStoreContainer;
-    private RoleAuthorization roleAuthorization;
+    private final UserStoreContainer userStoreContainer;
+    private final RoleAuthorization roleAuthorization;
 
     @Autowired
     public EmployeeController(UserStoreContainer userStoreContainer, RoleAuthorization roleAuthorization) {

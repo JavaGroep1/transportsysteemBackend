@@ -9,7 +9,7 @@ import org.bson.types.ObjectId;
 import java.util.List;
 
 public interface ITicketStore {
-    public void addReply(Ticket ticket, TicketReply ticketReply);
+    void addReply(Ticket ticket, TicketReply ticketReply);
     void addTicket(Ticket ticket);
     Ticket getTicketById(ObjectId id);
     List<Ticket> getTicketsByCustomer(ApplicationUser customer);

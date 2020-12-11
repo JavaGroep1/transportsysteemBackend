@@ -72,7 +72,7 @@ public class MongoVehicleStore implements IVehicleStore {
     }
 
     @Override
-    public void updateVehicle(EditVehicleRequest newVehicle) throws VehicleNotFoundException {
+    public void updateVehicle(EditVehicleRequest newVehicle) {
         var vehicleId = new ObjectId(newVehicle.getVehicleIdString());
         datastore.find(Vehicle.class)
                 .filter(Filters.eq("id", vehicleId))

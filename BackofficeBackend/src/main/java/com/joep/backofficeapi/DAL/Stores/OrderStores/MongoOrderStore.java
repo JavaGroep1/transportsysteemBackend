@@ -114,7 +114,8 @@ public class MongoOrderStore implements IOrderStore {
             return cursor.toList();
         }
 
-        throw new OrderNotFoundException();    }
+        throw new OrderNotFoundException();
+    }
 
     @Override
     public void changeOrderDate(Order order, LocalDate date) {

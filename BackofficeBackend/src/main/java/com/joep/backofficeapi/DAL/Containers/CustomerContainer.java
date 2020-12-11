@@ -2,7 +2,6 @@ package com.joep.backofficeapi.DAL.Containers;
 
 import com.joep.backofficeapi.DAL.Interfaces.ICustomerStore;
 import com.joep.backofficeapi.Exceptions.CustomerNotFoundException;
-import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Requests.Customer.EditCustomerRequest;
 import com.joep.backofficeapi.Util.JwtUtil;
@@ -23,6 +22,12 @@ public class CustomerContainer implements ICustomerStore {
 
     public CustomerContainer(ICustomerStore store) {
         this.store = store;
+    }
+
+    public CustomerContainer(ICustomerStore store, JwtUtil jwtUtil, UserStoreContainer userStoreContainer1) {
+        this.store = store;
+        this.jwtUtil = jwtUtil;
+        this.userStoreContainer = userStoreContainer1;
     }
 
     @Override

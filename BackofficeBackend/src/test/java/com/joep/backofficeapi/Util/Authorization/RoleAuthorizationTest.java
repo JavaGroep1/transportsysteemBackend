@@ -1,7 +1,6 @@
 package com.joep.backofficeapi.Util.Authorization;
 
 import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
-import com.joep.backofficeapi.DAL.Interfaces.IUserStore;
 import com.joep.backofficeapi.Exceptions.UnauthorizedException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
@@ -10,30 +9,26 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
+import javax.servlet.http.HttpServletRequest;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import org.junit.jupiter.api.Assertions;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.servlet.http.HttpServletRequest;
 
 public class RoleAuthorizationTest {
 
     RoleAuthorization roleAuthorization;
     @Before
     public void Setup() throws Exception {
-        var userstore = mock(UserStoreContainer.class);
+        var userStore = mock(UserStoreContainer.class);
         var user = new ApplicationUser("user", "pass", "email", Roles.Employee);
-        when(userstore.getUserByName(any())).thenReturn(user);
-        roleAuthorization = new RoleAuthorization(userstore);
+        when(userStore.getUserByName(any())).thenReturn(user);
+        roleAuthorization = new RoleAuthorization(userStore);
     }
 
     @Test
-    public void unauthorizedUserThrowsUnauthorizedException () throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void unauthorizedUserThrowsUnauthorizedException () {
         //setup
         var request = mock(HttpServletRequest.class);
         when(request.getHeader(anyString())).thenReturn("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjA5NDk5ODU5LCJpYXQiOjE2MDczNTIzNzV9.2_ZfYXAFhTx6gvEuaL8Aqzqp5Cu6RBxAO-dGECA2FWc");
@@ -44,7 +39,7 @@ public class RoleAuthorizationTest {
     }
 
     @Test
-    public void authorizedUserDoesNotThrowUnauthorizedException () throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void authorizedUserDoesNotThrowUnauthorizedException () {
         //setup
         var request = mock(HttpServletRequest.class);
         when(request.getHeader(anyString())).thenReturn("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjA5NDk5ODU5LCJpYXQiOjE2MDczNTIzNzV9.2_ZfYXAFhTx6gvEuaL8Aqzqp5Cu6RBxAO-dGECA2FWc");

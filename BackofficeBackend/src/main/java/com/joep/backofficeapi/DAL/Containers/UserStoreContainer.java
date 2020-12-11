@@ -8,13 +8,10 @@ import com.joep.backofficeapi.Exceptions.UserNotFoundException;
 import com.joep.backofficeapi.Exceptions.UsernameTakenException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
-import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Requests.Employee.EditEmployeeRequest;
-import com.joep.backofficeapi.Util.Sanitizers.CustomerSanitizer;
 import com.joep.backofficeapi.Util.Sanitizers.EmployeeSanitizer;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -26,10 +23,15 @@ public class UserStoreContainer implements UserDetailsService {
     @Autowired
     private CustomerContainer customerContainer;
 
-    private IUserStore store;
+    private final IUserStore store;
 
     public UserStoreContainer(IUserStore userStore) {
         store=userStore;
+    }
+
+    public UserStoreContainer(IUserStore userStore, CustomerContainer cust){
+        this.store = userStore;
+        this.customerContainer = cust;
     }
 
     public List<ApplicationUser> getAllUsers(){

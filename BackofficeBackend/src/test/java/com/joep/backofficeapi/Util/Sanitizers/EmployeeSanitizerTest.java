@@ -3,15 +3,13 @@ package com.joep.backofficeapi.Util.Sanitizers;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Requests.Employee.EditEmployeeRequest;
-import com.joep.backofficeapi.Models.Requests.Vehicle.EditVehicleRequest;
-import com.joep.backofficeapi.Models.Vehicle.Vehicle;
-import com.joep.backofficeapi.Models.Vehicle.VehicleCategory;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class EmployeeSanitizerTest {
     @Test

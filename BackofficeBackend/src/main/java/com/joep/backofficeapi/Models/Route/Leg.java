@@ -26,7 +26,7 @@ public class Leg {
     private Integer destIndex;
     private List<Maneuver> maneuvers;
     private Boolean hasFerry;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization

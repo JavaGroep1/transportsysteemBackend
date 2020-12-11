@@ -27,7 +27,7 @@ public class Maneuver {
     private startPoint startPoint;
     private String mapUrl;
     private Integer turnType;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization

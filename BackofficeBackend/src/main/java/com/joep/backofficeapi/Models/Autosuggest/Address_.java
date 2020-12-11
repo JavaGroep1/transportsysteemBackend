@@ -11,7 +11,7 @@ import java.util.Map;
 public class Address_ {
 
     private List<Label> label = null;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization

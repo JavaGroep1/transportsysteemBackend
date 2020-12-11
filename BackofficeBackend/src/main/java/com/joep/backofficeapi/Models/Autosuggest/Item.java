@@ -20,7 +20,7 @@ public class Item {
     private Integer distance;
     private MapView mapView;
     private Highlights highlights;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization

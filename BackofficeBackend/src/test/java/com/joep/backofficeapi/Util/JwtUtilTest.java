@@ -1,24 +1,18 @@
 package com.joep.backofficeapi.Util;
 
-import com.joep.backofficeapi.Controllers.AuthenticationController;
-import com.joep.backofficeapi.Models.Requests.Auth.AuthenticationRequest;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class JwtUtilTest {
 
-    @Autowired
-    private AuthenticationController controller;
-
-    private String getToken(String username, String pass) throws Exception {
-      // var token = controller.createAuthenticationToken(new AuthenticationRequest(username, pass)).getStatusCode().getReasonPhrase();
+    private String getToken(String username, String pass) {
         return "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjA0MzU5NzE2LCJpYXQiOjE2MDQzMjM3MTZ9.CqVfZAq1_JZaODCYDR_tfkyud0r8VEJ1L2giy8UDifI";
     }
 
-    public void UtilExtractsClaims() throws Exception {
+    public void UtilExtractsClaims() {
         var util = new JwtUtil();
         var token = getToken("user", "d");
         var res=   util.extractUsername(token);
