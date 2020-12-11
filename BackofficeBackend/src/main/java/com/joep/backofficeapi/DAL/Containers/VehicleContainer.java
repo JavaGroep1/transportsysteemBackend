@@ -67,10 +67,6 @@ public class VehicleContainer implements IVehicleStore {
     public List<Vehicle> getVehiclesByWeight(int weight) throws VehicleNotFoundException {
 
         List<Vehicle> vehicles = vehicleStore.getVehicles();
-
-
-
-
         int closest = Integer.MAX_VALUE;
         int distance = closest - weight;
         for (var vehicle : vehicles) {
