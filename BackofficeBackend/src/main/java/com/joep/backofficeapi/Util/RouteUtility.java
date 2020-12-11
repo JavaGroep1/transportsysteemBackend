@@ -12,14 +12,21 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.MessageFormat;
+import java.util.Locale;
 
 public class RouteUtility {
     private static String API_KEY = "fwEl8C7Wi53YNXdSo9ljSZrpU6MUN1Zb";
     public static double dieselPrice = GasPriceUtility.getDieselPrice();
 
-    private static double KmPerLiterToMilesPerGallon(double KmPerLiter){
-        return KmPerLiter * 2.352;
+    private static String KmPerLiterToMilesPerGallon(double KmPerLiter){
+        DecimalFormat df = new DecimalFormat("#.00",
+                DecimalFormatSymbols.getInstance(Locale.US));
+        double liters = KmPerLiter * 2.352;
+        return df.format(liters);
+//        return KmPerLiter * 2.352;
     }
     public static Route_ getRoute(String startAdress, String destination, VehicleCategory vehicleCategory, double KmPerLiter) throws IOException, InterruptedException, RouteInvalidException {
         if (StringUtils.isBlank(startAdress) || StringUtils.isBlank(destination)) throw  new RouteInvalidException();

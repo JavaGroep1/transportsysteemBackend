@@ -4,24 +4,21 @@ import com.joep.backofficeapi.DAL.Containers.CustomerContainer;
 import com.joep.backofficeapi.DAL.Containers.OrderContainer;
 import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
 import com.joep.backofficeapi.DAL.Containers.VehicleContainer;
-import com.joep.backofficeapi.Exceptions.UserIsNotACustomerException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
-import com.joep.backofficeapi.Models.Autosuggest.Address;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Order.Order;
 import com.joep.backofficeapi.Models.Requests.Order.AddOrderRequest;
 import com.joep.backofficeapi.Models.Requests.Order.ChangeOrderStatusRequest;
+import com.joep.backofficeapi.Util.LocationUtility;
 import com.joep.backofficeapi.Models.Requests.Vehicle.AddVehicleRequest;
 import com.joep.backofficeapi.Util.*;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -49,8 +46,7 @@ public class OrderController {
 
         var vehicle = vehicleContainer.getVehicleById(order.getVehicleId());
         var customer = userStoreContainer.getUserByName(jwtUtil.extractUsername(req)).getCustomer();
-        //if (customer == null)
-           // throw new UserIsNotACustomerException();
+
         var orderToAdd = new Order(
                 order.getDeadline(),
                 order.getWeightInKg(),
@@ -75,7 +71,7 @@ public class OrderController {
         Customer customer = customerContainer.getCustomerById(user.getCustomer().getId());
         return ResponseEntity.ok(orderContainer.getOrdersByCustomer(customer));
     }
-  
+
     @GetMapping(params = "customerid")
     public ResponseEntity<List<Order>> getOrderByCustomerId(HttpServletRequest request, String customerid) throws Exception {
             var customerIdObject = new ObjectId(customerid);
@@ -83,18 +79,17 @@ public class OrderController {
             return ResponseEntity.ok(orderContainer.getOrdersByCustomer(customer));
     }
 
-    @GetMapping(path = "/{orderid}")
-    public ResponseEntity<Order> getOrderByOrderId(HttpServletRequest request, @PathVariable("orderid") String orderid) throws Exception {
+    @GetMapping(params = "orderid")
+    public ResponseEntity<Order> getOrderByOrderId(HttpServletRequest request, String orderid) throws Exception {
             var orderIdObject = new ObjectId(orderid);
             return ResponseEntity.ok(orderContainer.getOrderById(orderIdObject));
     }
 
-    @GetMapping(value = "/active/{userId}")
-    public ResponseEntity<?> getActiveOrdersById(@PathVariable String userId) throws Exception {
-        ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userId)));
+    @GetMapping(value = "/active", params = "userid")
+    public ResponseEntity<?> getActiveOrdersById(String userid) throws Exception {
+        ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userid)));
         Customer customer = customerContainer.getCustomerById(user.getCustomer().getId());
         return ResponseEntity.ok(orderContainer.getActiveOrdersByCustomer(customer));
-
     }
 
     @GetMapping(value = "/active")
@@ -102,9 +97,9 @@ public class OrderController {
         return ResponseEntity.ok(orderContainer.getActiveOrders());
     }
 
-    @GetMapping(value = "/pending/{userId}")
-    public ResponseEntity<?> getPendingOrderById(@PathVariable String userId) throws Exception {
-        ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userId)));
+    @GetMapping(value = "/pending", params = "userid")
+    public ResponseEntity<?> getPendingOrderById(String userid) throws Exception {
+        ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userid)));
         Customer customer = customerContainer.getCustomerById(user.getCustomer().getId());
         return ResponseEntity.ok(orderContainer.getPendingOrdersByCustomer(customer));
     }

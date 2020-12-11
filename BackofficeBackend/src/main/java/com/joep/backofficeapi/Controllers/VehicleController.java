@@ -57,7 +57,7 @@ public class VehicleController {
         return ResponseEntity.ok("deleted");
     }
 
-    @GetMapping(value = "/{weight}")
+    @GetMapping(path = "/weight/{weight}")
     public ResponseEntity<?> getVehiclesByWeight(@PathVariable String weight) throws VehicleNotFoundException {
         return ResponseEntity.ok(vehicleContainer.getVehiclesByWeight(Integer.parseInt(weight)));
     }
