@@ -69,9 +69,9 @@ public class OrderController {
         return ResponseEntity.ok(orderContainer.getOrders());
     }
 
-    @GetMapping(value = "/{userId}")
-    public ResponseEntity<List<Order>> getOrdersByUserId(@PathVariable String userId) throws Exception {
-        ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userId)));
+    @GetMapping(params = "userid")
+    public ResponseEntity<List<Order>> getOrdersByUserId(String userid) throws Exception {
+        ApplicationUser user = userStoreContainer.getUserById(new ObjectId((userid)));
         Customer customer = customerContainer.getCustomerById(user.getCustomer().getId());
         return ResponseEntity.ok(orderContainer.getOrdersByCustomer(customer));
     }
