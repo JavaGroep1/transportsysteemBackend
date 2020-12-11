@@ -4,5 +4,5 @@ public enum VehicleCategory {
     Car,
     Bike,
     Plane,
-    Truck,
+    Truck
 }
