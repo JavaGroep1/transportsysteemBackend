@@ -49,6 +49,27 @@ public class RoleAuthorizationTest {
     }
 
     @Test
+    public void unauthorizedUserOneRoleThrowsUnauthorizedException () {
+        //setup
+        var request = mock(HttpServletRequest.class);
+        when(request.getHeader(anyString())).thenReturn("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjA5NDk5ODU5LCJpYXQiOjE2MDczNTIzNzV9.2_ZfYXAFhTx6gvEuaL8Aqzqp5Cu6RBxAO-dGECA2FWc");
+        //execute
+        Assertions.assertThrows(UnauthorizedException.class, () -> {
+            roleAuthorization.checkRole(request, Roles.Admin); });
+    }
+
+    @Test
+    public void authorizedUserOneRoleDoesNotThrowUnauthorizedException () {
+        //setup
+        var request = mock(HttpServletRequest.class);
+        when(request.getHeader(anyString())).thenReturn("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjA5NDk5ODU5LCJpYXQiOjE2MDczNTIzNzV9.2_ZfYXAFhTx6gvEuaL8Aqzqp5Cu6RBxAO-dGECA2FWc");
+        //execute
+        Assertions.assertDoesNotThrow(() -> {
+            roleAuthorization.checkRole(request, Roles.Employee);
+        });
+    }
+
+    @Test
     public void authorizedUserReturnsTrue () throws Exception {
         //setup
         var request = mock(HttpServletRequest.class);
