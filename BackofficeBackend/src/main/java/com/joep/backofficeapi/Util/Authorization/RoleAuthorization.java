@@ -36,7 +36,7 @@ public class RoleAuthorization {
     }
 
  
-    public  Boolean checkRole(HttpServletRequest req, Roles role) throws Exception {
+    public Boolean checkRole(HttpServletRequest req, Roles role) throws Exception {
         ApplicationUser user = getUser(req);
         if (user == null) throw new UnauthorizedException();
 
