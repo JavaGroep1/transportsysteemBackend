@@ -10,17 +10,17 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IUserStore {
-    public List<ApplicationUser> getAllUsers();
-    public ApplicationUser getUserByName(String name) throws JsonProcessingException, IOException, Exception;
-    public ApplicationUser getUserById(ObjectId id) throws JsonProcessingException, IOException, Exception;
+    List<ApplicationUser> getAllUsers();
+    ApplicationUser getUserByName(String name) throws Exception;
+    ApplicationUser getUserById(ObjectId id) throws Exception;
 
-    public Boolean createUser(ApplicationUser user);
-    public Boolean emailExists(String email);
-    public Boolean usernameExists(String name);
-    public List<ApplicationUser> getByRole(Roles role);
-    public void changeRole(ObjectId customerId, Roles role);
-    public void deleteAccount(String businessIdentifier);
-    public void changeEmail(ObjectId customerId, String email);
+    Boolean createUser(ApplicationUser user);
+    Boolean emailExists(String email);
+    Boolean usernameExists(String name);
+    List<ApplicationUser> getByRole(Roles role);
+    void changeRole(ObjectId customerId, Roles role);
+    void deleteAccount(String businessIdentifier);
+    void changeEmail(ObjectId customerId, String email);
 
     void deleteUser(ObjectId objectId);
 

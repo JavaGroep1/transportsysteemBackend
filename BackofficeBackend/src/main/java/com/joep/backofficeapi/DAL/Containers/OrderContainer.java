@@ -6,7 +6,6 @@ import com.joep.backofficeapi.Exceptions.OrderNotFoundException;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Order.Order;
 import com.joep.backofficeapi.Models.Order.Orderstatus;
-import com.joep.backofficeapi.Util.RouteUtility;
 import org.bson.types.ObjectId;
 
 import java.io.IOException;

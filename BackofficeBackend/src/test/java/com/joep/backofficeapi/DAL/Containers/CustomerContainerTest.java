@@ -2,15 +2,18 @@ package com.joep.backofficeapi.DAL.Containers;
 
 import com.joep.backofficeapi.DAL.Interfaces.ICustomerStore;
 import com.joep.backofficeapi.DAL.Interfaces.ITicketStore;
+import com.joep.backofficeapi.DAL.Interfaces.IUserStore;
 import com.joep.backofficeapi.Exceptions.CustomerNotFoundException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Requests.Customer.EditCustomerRequest;
 import com.joep.backofficeapi.Models.Ticket.Ticket;
+import com.joep.backofficeapi.Util.JwtUtil;
 import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -18,6 +21,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -25,11 +29,13 @@ public class CustomerContainerTest {
 
     private CustomerContainer container;
     private ICustomerStore customerStore;
+    private UserStoreContainer userStoreContainer;
 
     @Before
-    public void setup() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void setup() {
         customerStore = mock(ICustomerStore.class);
-        container = new CustomerContainer(customerStore);
+        userStoreContainer = mock(UserStoreContainer.class);
+        container = new CustomerContainer(customerStore, new JwtUtil(),userStoreContainer);
     }
 
     @Test
@@ -42,7 +48,7 @@ public class CustomerContainerTest {
     }
 
     @Test
-    public void canGetAllCustomers() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void canGetAllCustomers() {
 
         //setup
         var customersToReturn = new ArrayList<Customer>();
@@ -59,17 +65,27 @@ public class CustomerContainerTest {
         assertTrue(customers.size() > 0);
     }
 
+    private String token;
+    @Before
+    public void Setup() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        var util = new JwtUtil();
+        var userDetails = new ApplicationUser("username", "pass", "email@gmail.com", Roles.Customer);
+        token=util.generateToken(userDetails);
+    }
 
     @Test
     public void canGetByJWT() throws Exception {
         //setup
-        String jwt = "";
         var customerToReturn = new Customer();
+        ApplicationUser user = new ApplicationUser();
+        user.setCustomer(customerToReturn);
+
+
         //mocking
-        when(customerStore.getCustomerByJwt(any())).thenReturn(customerToReturn);
+        when(userStoreContainer.getUserByName(any())).thenReturn(user);
 
         //execute
-        var customer = container.getCustomerByJwt(jwt);
+        var customer = container.getCustomerByJwt(token);
 
         assertEquals(customer, customerToReturn);
     }
@@ -151,6 +167,11 @@ public class CustomerContainerTest {
 
         //execute
         container.updateCustomer(editCustomerRequest);
+    }
+
+    @Test
+    public void canInitiate(){
+        new CustomerContainer(customerStore);
     }
 
 

@@ -50,7 +50,6 @@ public class CustomerController {
   
     @GetMapping(path = "/{id}")
     public ResponseEntity<Customer> getCustomer(HttpServletRequest request, @PathVariable("id") String id) throws Exception {
-        // RoleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
         return ResponseEntity.ok(customerContainer.getCustomerById(new ObjectId(id)));
 
     }

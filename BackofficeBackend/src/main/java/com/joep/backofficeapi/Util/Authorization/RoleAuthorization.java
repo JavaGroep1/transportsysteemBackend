@@ -1,7 +1,6 @@
 package com.joep.backofficeapi.Util.Authorization;
 
 import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
-import com.joep.backofficeapi.DAL.Stores.UserStores.MongoUserStore;
 import com.joep.backofficeapi.Exceptions.UnauthorizedException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;

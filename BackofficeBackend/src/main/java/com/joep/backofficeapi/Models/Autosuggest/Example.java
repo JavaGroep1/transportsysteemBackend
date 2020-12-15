@@ -12,7 +12,7 @@ public class Example {
 
     private List<Item> items = null;
     private List<Object> queryTerms = null;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization

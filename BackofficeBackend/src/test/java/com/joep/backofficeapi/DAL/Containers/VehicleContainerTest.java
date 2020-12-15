@@ -2,21 +2,17 @@ package com.joep.backofficeapi.DAL.Containers;
 
 import com.joep.backofficeapi.DAL.Interfaces.IVehicleStore;
 import com.joep.backofficeapi.Exceptions.VehicleNotFoundException;
-import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
-import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Requests.Vehicle.EditVehicleRequest;
-import com.joep.backofficeapi.Models.Ticket.Ticket;
 import com.joep.backofficeapi.Models.Vehicle.Vehicle;
 import com.joep.backofficeapi.Models.Vehicle.VehicleCategory;
 import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -128,15 +124,14 @@ public class VehicleContainerTest {
     }
 
     @Test
-    public void cantUpdateVehicleWithNullId() throws VehicleNotFoundException {
+    public void cantUpdateVehicleWithNullId() {
         //setup
         var vehicle = new ObjectId();
         var update = new EditVehicleRequest(null, 0, null, null,0);
 
         //execute
         assertThrows(IllegalArgumentException.class, () -> {
-            container.updateVehicle(update);
-        });
+            container.updateVehicle(update); });
     }
     @Test
     public void canUpdateVehicleWithNulls() throws VehicleNotFoundException {
@@ -151,7 +146,7 @@ public class VehicleContainerTest {
     }
 
     @Test
-    public void canUpdateVehicleCat() throws VehicleNotFoundException {
+    public void canUpdateVehicleCat() {
         //setup
         var vehicle = new Vehicle();
 

@@ -2,17 +2,12 @@ package com.joep.backofficeapi.Util.Sanitizers;
 
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Requests.Customer.EditCustomerRequest;
-import com.joep.backofficeapi.Models.Requests.Vehicle.EditVehicleRequest;
-import com.joep.backofficeapi.Models.Vehicle.Vehicle;
-import com.joep.backofficeapi.Models.Vehicle.VehicleCategory;
-import org.bson.types.ObjectId;
 import org.junit.Test;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class CustomerSanitizerTest {
     @Test

@@ -4,8 +4,8 @@ import com.joep.backofficeapi.Models.Authentication.Roles;
 import org.bson.types.ObjectId;
 
 public class ChangeCustomerRequest {
-    private ObjectId customerId;
-    private Roles role;
+    private final ObjectId customerId;
+    private final Roles role;
 
     public ChangeCustomerRequest(ObjectId customerId, Roles role) {
         this.customerId = customerId;

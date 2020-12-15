@@ -9,8 +9,9 @@ import java.net.UnknownHostException;
 
 @Service
 public class CustomerStoreBean {
+
     @Bean
-    CustomerContainer customerContainer() throws UnknownHostException {
+    CustomerContainer customerContainer() {
         return new CustomerContainer(new MongoCustomerStore());
     }
 }

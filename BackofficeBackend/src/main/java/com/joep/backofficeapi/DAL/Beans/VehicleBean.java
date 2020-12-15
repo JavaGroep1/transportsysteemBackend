@@ -9,8 +9,9 @@ import java.net.UnknownHostException;
 
 @Service
 public class VehicleBean {
+
     @Bean
-    VehicleContainer vehicleContainer() throws UnknownHostException {
+    VehicleContainer vehicleContainer() {
         return new VehicleContainer(new MongoVehicleStore());
     }
 }

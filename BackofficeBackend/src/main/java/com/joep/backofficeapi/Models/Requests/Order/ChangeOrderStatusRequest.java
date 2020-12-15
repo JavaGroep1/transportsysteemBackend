@@ -4,8 +4,8 @@ import com.joep.backofficeapi.Models.Order.Orderstatus;
 import org.bson.types.ObjectId;
 
 public class ChangeOrderStatusRequest {
-    private String orderId;
-    private Orderstatus status;
+    private final String orderId;
+    private final Orderstatus status;
 
     public ChangeOrderStatusRequest(String orderId, Orderstatus status) {
         this.orderId = orderId;

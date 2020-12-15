@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
 public class OrderBean {
 
     @Bean
-    OrderContainer orderContainer() throws UnknownHostException {
+    OrderContainer orderContainer() {
         return new OrderContainer(new MongoOrderStore());
     }
 }

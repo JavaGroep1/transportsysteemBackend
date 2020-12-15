@@ -11,7 +11,7 @@ public class Label {
 
     private Integer start;
     private Integer end;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization

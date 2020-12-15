@@ -41,7 +41,7 @@ public class Options {
     private Boolean sideOfStreetDisplay;
     private Integer cyclingRoadFactor;
     private Integer urbanAvoidFactor;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization

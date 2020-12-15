@@ -18,7 +18,7 @@ import java.text.MessageFormat;
 import java.util.Locale;
 
 public class RouteUtility {
-    private static String API_KEY = "fwEl8C7Wi53YNXdSo9ljSZrpU6MUN1Zb";
+    private static final String API_KEY = "fwEl8C7Wi53YNXdSo9ljSZrpU6MUN1Zb";
     public static double dieselPrice = GasPriceUtility.getDieselPrice();
 
     private static String KmPerLiterToMilesPerGallon(double KmPerLiter){
@@ -38,7 +38,7 @@ public class RouteUtility {
                 API_KEY,
                 startAdress,
                 destination,
-                KmPerLiterToMilesPerGallon(KmPerLiter)).replaceAll(" ", "%20");;
+                KmPerLiterToMilesPerGallon(KmPerLiter)).replaceAll(" ", "%20");
 
         String BikeGet = MessageFormat.format("http://www.mapquestapi.com/directions/v2/route?key={0}" +
                         "&from={1}" +

@@ -20,7 +20,7 @@ public class ApplicationUser implements UserDetails {
     }
 
     @Transient
-    private PasswordEncoder encoder = new PasswordEncoder();
+    private final PasswordEncoder encoder = new PasswordEncoder();
 
     @dev.morphia.annotations.Id
     private ObjectId Id;
@@ -150,5 +150,9 @@ public class ApplicationUser implements UserDetails {
 
     public Customer getCustomer() {
         return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }

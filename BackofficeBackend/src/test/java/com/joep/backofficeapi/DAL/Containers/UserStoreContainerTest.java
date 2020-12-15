@@ -1,17 +1,18 @@
 package com.joep.backofficeapi.DAL.Containers;
 
-import com.joep.backofficeapi.DAL.Interfaces.ITicketStore;
 import com.joep.backofficeapi.DAL.Interfaces.IUserStore;
-import com.joep.backofficeapi.Exceptions.*;
+import com.joep.backofficeapi.Exceptions.EmailTakenException;
+import com.joep.backofficeapi.Exceptions.InvalidEmailException;
+import com.joep.backofficeapi.Exceptions.UserNotFoundException;
+import com.joep.backofficeapi.Exceptions.UsernameTakenException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
+import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Requests.Employee.EditEmployeeRequest;
-import com.joep.backofficeapi.Models.Vehicle.Vehicle;
-import org.apache.catalina.User;
+import com.joep.backofficeapi.Util.JwtUtil;
 import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -27,11 +28,14 @@ public class UserStoreContainerTest {
 
     private UserStoreContainer container;
     private IUserStore userStore;
+    private CustomerContainer customerContainer;
 
     @Before
-    public void setup() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void setup() {
         userStore = mock(IUserStore.class);
         container = new UserStoreContainer(userStore);
+        customerContainer = mock(CustomerContainer.class);
+        container = new UserStoreContainer(userStore, customerContainer);
     }
 
     @Test
@@ -78,8 +82,7 @@ public class UserStoreContainerTest {
         //assert
         assertThrows(UserNotFoundException.class, () -> {
             //execute
-            var res = container.getUserByName(query);
-        });
+            var res = container.getUserByName(query); });
     }
 
     @Test
@@ -132,6 +135,25 @@ public class UserStoreContainerTest {
     }
 
     @Test
+    public void canCreateUserWithCustomer() throws Exception {
+        //setup
+        var customerToReturn = new Customer();
+        var userToCreate = new ApplicationUser("username", "pass", "email@gmail.com", Roles.Unknown);
+        userToCreate.setCustomer(customerToReturn);
+        //Mocking
+        when(userStore.usernameExists(anyString())).thenReturn(false);
+        when(userStore.emailExists(anyString())).thenReturn(false);
+
+
+        //assert
+        assertDoesNotThrow(() -> {
+            //execute
+            var res = container.createUser(userToCreate);
+        });
+    }
+
+
+    @Test
     public void takenEmailShowsError() throws Exception {
         //setup
         var userToCreate = new ApplicationUser("username", "pass", "email@gmail.com", Roles.Unknown);
@@ -143,8 +165,7 @@ public class UserStoreContainerTest {
         //assert
         assertThrows(EmailTakenException.class,() -> {
             //execute
-            var res = container.createUser(userToCreate);
-        });
+            var res = container.createUser(userToCreate); });
     }
 
     @Test
@@ -159,8 +180,7 @@ public class UserStoreContainerTest {
         //assert
         assertThrows(UsernameTakenException.class,() -> {
             //execute
-            var res = container.createUser(userToCreate);
-        });
+            var res = container.createUser(userToCreate); });
     }
 
     @Test
@@ -174,12 +194,11 @@ public class UserStoreContainerTest {
         //assert
         assertThrows(InvalidEmailException.class,() -> {
             //execute
-            var res = container.createUser(userToCreate);
-        });
+            var res = container.createUser(userToCreate); });
     }
 
     @Test
-    public void LoadByRoleReturnsUsers() throws Exception {
+    public void LoadByRoleReturnsUsers() {
         //setup
         var query = Roles.Customer;
         var usersToReturn = new ArrayList<ApplicationUser>();
@@ -198,7 +217,7 @@ public class UserStoreContainerTest {
     }
 
     @Test
-    public void canChangeRole() throws Exception {
+    public void canChangeRole() {
         //setup
         var newRole = Roles.Customer;
         var user = new ApplicationUser();
@@ -213,22 +232,22 @@ public class UserStoreContainerTest {
     }
 
     @Test
-    public void canChangeEmail() throws Exception {
+    public void canChangeEmail() {
         //setup
-        var newemail ="newEmail@gmail.com";
+        var newEmail ="newEmail@gmail.com";
         var user = new ApplicationUser();
 
         //assert
         assertDoesNotThrow(() -> {
             //execute
-            container.changeEmail(user.getId(),newemail);
+            container.changeEmail(user.getId(),newEmail);
         });
     }
 
     @Test
-    public void cantChangeWithTakenEmail() throws Exception {
+    public void cantChangeWithTakenEmail() {
         //setup
-        var newemail ="newEmail@gmail.com";
+        var newEmail ="newEmail@gmail.com";
         var user = new ApplicationUser();
 
         //Mocking
@@ -237,15 +256,14 @@ public class UserStoreContainerTest {
         //assert
         assertThrows(EmailTakenException.class,() -> {
             //execute
-            container.changeEmail(user.getId(),newemail);
-        });
+            container.changeEmail(user.getId(),newEmail); });
 
     }
 
     @Test
-    public void cantChangeWithInvalidEmail() throws Exception {
+    public void cantChangeWithInvalidEmail() {
         //setup
-        var newemail ="fakeemail";
+        var newEmail ="fakeemail";
         var user = new ApplicationUser();
 
         //Mocking
@@ -254,8 +272,7 @@ public class UserStoreContainerTest {
         //assert
         assertThrows(InvalidEmailException.class,() -> {
             //execute
-            container.changeEmail(user.getId(),newemail);
-        });
+            container.changeEmail(user.getId(),newEmail); });
 
     }
 
@@ -302,8 +319,7 @@ public class UserStoreContainerTest {
         //assert
         assertThrows(UserNotFoundException.class, () -> {
             //execute
-            var res = container.getUserById(query);
-        });
+            var res = container.getUserById(query); });
     }
 
     @Test
@@ -341,8 +357,7 @@ public class UserStoreContainerTest {
         //assert
         assertThrows(EmailTakenException.class, () -> {
             //execute
-            container.updateEmployee(editRequest);
-        });
+            container.updateEmployee(editRequest); });
 
     }
     @Test
@@ -357,8 +372,6 @@ public class UserStoreContainerTest {
         //assert
         assertThrows(InvalidEmailException.class, () -> {
             //execute
-            container.updateEmployee(editRequest);
-        });
-
+            container.updateEmployee(editRequest); });
     }
 }

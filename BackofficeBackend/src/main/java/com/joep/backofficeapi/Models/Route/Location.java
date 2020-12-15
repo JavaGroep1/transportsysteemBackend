@@ -24,7 +24,7 @@ public class Location {
     private String geocodeQuality;
     private String geocodeQualityCode;
     private String adminArea3Type;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization

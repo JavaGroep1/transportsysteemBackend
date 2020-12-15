@@ -12,7 +12,7 @@ public class Highlights {
 
     private List<Title> title = null;
     private Address_ address;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization

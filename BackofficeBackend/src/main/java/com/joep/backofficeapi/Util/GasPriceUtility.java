@@ -3,14 +3,6 @@ package com.joep.backofficeapi.Util;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.text.MessageFormat;
-import java.util.logging.Logger;
-
 public class GasPriceUtility {
 
     public static Double getDieselPrice() {

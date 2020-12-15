@@ -6,7 +6,6 @@ import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Ticket.Ticket;
 import com.joep.backofficeapi.Models.Ticket.TicketReply;
 import com.joep.backofficeapi.Models.Ticket.TicketStatus;
-import com.joep.backofficeapi.Models.Vehicle.Vehicle;
 import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +25,7 @@ public class TicketContainerTest {
     private ITicketStore ticketStore;
 
     @Before
-    public void setup() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void setup() {
         ticketStore = mock(ITicketStore.class);
         container = new TicketContainer(ticketStore);
     }

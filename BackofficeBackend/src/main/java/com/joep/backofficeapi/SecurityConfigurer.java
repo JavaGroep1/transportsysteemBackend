@@ -62,7 +62,7 @@ public class SecurityConfigurer  extends WebSecurityConfigurerAdapter {
 
                 // all other requests need to be authenticated
                         anyRequest().authenticated()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);;
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // Add a filter to validate the tokens with every request
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }

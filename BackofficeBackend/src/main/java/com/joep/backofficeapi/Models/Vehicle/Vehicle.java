@@ -2,7 +2,6 @@ package com.joep.backofficeapi.Models.Vehicle;
 
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
-import dev.morphia.annotations.experimental.Name;
 import org.bson.types.ObjectId;
 
 @Entity

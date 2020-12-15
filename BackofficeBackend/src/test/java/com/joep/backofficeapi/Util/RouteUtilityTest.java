@@ -17,14 +17,14 @@ public class RouteUtilityTest {
     }
 
     @Test
-    public void RouteThrowsErrorWithBadInput() throws IOException, InterruptedException, RouteInvalidException {
+    public void RouteThrowsErrorWithBadInput() {
         Assertions.assertThrows(RouteInvalidException.class, () -> {
             RouteUtility.getRoute(" ", "", VehicleCategory.Car, 10);
         });
     }
 
     @Test
-    public void RouteDoesNotThrowErrorWithGoodInput() throws IOException, InterruptedException, RouteInvalidException {
+    public void RouteDoesNotThrowErrorWithGoodInput() {
         Assertions.assertDoesNotThrow(() -> {
             RouteUtility.getRoute("Veltackerstraat", "Professor goossenlaan", VehicleCategory.Car, 10);
         });

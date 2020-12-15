@@ -13,7 +13,7 @@ public class MapView {
     private Double south;
     private Double east;
     private Double north;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      * No args constructor for use in serialization

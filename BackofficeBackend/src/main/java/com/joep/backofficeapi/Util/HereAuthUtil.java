@@ -6,9 +6,9 @@ import com.here.account.oauth2.*;
 
 public class HereAuthUtil {
 
-    private static String tokenEndpointUrl = "https://account.api.here.com/oauth2/token";
-    private static String accessKeyId = "mxNDghYJmeEDbBemQHcRzA";
-    private static String accessKeySecret = "ot4OMxnUZVaQfMVvfO9vEDUk6kLTdiX8QteobgI8DqzWwQdoxdmEmHCnNq-OecjMJEmsPCQZzx9QGaa-Yea6-Q";
+    private static final String tokenEndpointUrl = "https://account.api.here.com/oauth2/token";
+    private static final String accessKeyId = "mxNDghYJmeEDbBemQHcRzA";
+    private static final String accessKeySecret = "ot4OMxnUZVaQfMVvfO9vEDUk6kLTdiX8QteobgI8DqzWwQdoxdmEmHCnNq-OecjMJEmsPCQZzx9QGaa-Yea6-Q";
 
     public static String getToken() {
         ClientAuthorizationRequestProvider credentialsProvider = new OAuth1ClientCredentialsProvider(tokenEndpointUrl, accessKeyId, accessKeySecret);

@@ -1,6 +1,7 @@
 package com.joep.backofficeapi.Util;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -12,7 +13,7 @@ public class PasswordEncoder {
 
     public String Encode(String pass) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest hasher = MessageDigest.getInstance("SHA1");
-        hasher.update(pass.getBytes("UTF-8"));
+        hasher.update(pass.getBytes(StandardCharsets.UTF_8));
         byte[] hash = hasher.digest();
         StringBuilder sb = new StringBuilder();
         for(int i=0; i< hash.length ;i++)

@@ -3,7 +3,6 @@ package com.joep.backofficeapi.DAL.Stores.Tickets;
 import com.joep.backofficeapi.ConnectionConfiguration;
 import com.joep.backofficeapi.DAL.Interfaces.ITicketStore;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
-import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Ticket.Ticket;
 import com.joep.backofficeapi.Models.Ticket.TicketReply;
 import com.joep.backofficeapi.Models.Ticket.TicketStatus;
