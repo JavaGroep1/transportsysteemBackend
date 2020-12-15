@@ -34,8 +34,7 @@ public class RoleAuthorizationTest {
         when(request.getHeader(anyString())).thenReturn("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjA5NDk5ODU5LCJpYXQiOjE2MDczNTIzNzV9.2_ZfYXAFhTx6gvEuaL8Aqzqp5Cu6RBxAO-dGECA2FWc");
         //execute
         Assertions.assertThrows(UnauthorizedException.class, () -> {
-            roleAuthorization.checkRole(request, new Roles[]{Roles.Admin});
-        });
+            roleAuthorization.checkRole(request, new Roles[]{Roles.Admin}); });
     }
 
     @Test
