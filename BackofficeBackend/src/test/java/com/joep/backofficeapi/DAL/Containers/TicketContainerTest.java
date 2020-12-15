@@ -1,6 +1,7 @@
 package com.joep.backofficeapi.DAL.Containers;
 
 import com.joep.backofficeapi.DAL.Interfaces.ITicketStore;
+import com.joep.backofficeapi.Exceptions.TicketInvalidException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Ticket.Ticket;
@@ -30,7 +31,7 @@ public class TicketContainerTest {
         container = new TicketContainer(ticketStore);
     }
     @Test
-    public void canAddTicket() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public void canAddTicket() throws UnsupportedEncodingException, NoSuchAlgorithmException, TicketInvalidException {
         //setup
         var sampleUser = new ApplicationUser("name", "pass", "email", Roles.Customer);
         var sampleTicket = new Ticket("title", "body", sampleUser);

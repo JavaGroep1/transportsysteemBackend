@@ -1,10 +1,12 @@
 package com.joep.backofficeapi.DAL.Containers;
 
 import com.joep.backofficeapi.DAL.Interfaces.ITicketStore;
+import com.joep.backofficeapi.Exceptions.TicketInvalidException;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Ticket.Ticket;
 import com.joep.backofficeapi.Models.Ticket.TicketReply;
 import com.joep.backofficeapi.Models.Ticket.TicketStatus;
+import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
 
 import java.util.List;
@@ -22,7 +24,9 @@ public class TicketContainer implements ITicketStore {
     }
 
     @Override
-    public void addTicket(Ticket ticket) {
+    public void addTicket(Ticket ticket) throws TicketInvalidException {
+        if (StringUtils.isBlank(ticket.getBody() )|| StringUtils.isBlank(ticket.getTitle()))
+            throw new TicketInvalidException();
         ticketStore.addTicket(ticket);
     }
 
