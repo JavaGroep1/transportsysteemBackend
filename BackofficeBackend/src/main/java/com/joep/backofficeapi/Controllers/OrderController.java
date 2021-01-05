@@ -5,10 +5,12 @@ import com.joep.backofficeapi.DAL.Containers.OrderContainer;
 import com.joep.backofficeapi.DAL.Containers.UserStoreContainer;
 import com.joep.backofficeapi.DAL.Containers.VehicleContainer;
 import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
+import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Order.Order;
 import com.joep.backofficeapi.Models.Requests.Order.AddOrderRequest;
 import com.joep.backofficeapi.Models.Requests.Order.ChangeOrderStatusRequest;
+import com.joep.backofficeapi.Util.Authorization.RoleAuthorization;
 import com.joep.backofficeapi.Util.JwtUtil;
 import com.joep.backofficeapi.Util.LocationUtility;
 import org.bson.types.ObjectId;
@@ -25,19 +27,23 @@ import java.util.List;
 @RequestMapping("/orders")
 public class OrderController {
 
-    @Autowired
-    private OrderContainer orderContainer;
+    private final OrderContainer orderContainer;
 
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private UserStoreContainer userStoreContainer;
-    @Autowired
-    private VehicleContainer vehicleContainer;
-    @Autowired
-    private CustomerContainer customerContainer;
+    private final JwtUtil jwtUtil;
+    private final UserStoreContainer userStoreContainer;
+    private final VehicleContainer vehicleContainer;
+    private final CustomerContainer customerContainer;
+    private RoleAuthorization roleAuthorization;
 
+    public OrderController(OrderContainer orderContainer, JwtUtil jwtUtil, UserStoreContainer userStoreContainer, VehicleContainer vehicleContainer, CustomerContainer customerContainer) {
+        this.orderContainer = orderContainer;
+        this.jwtUtil = jwtUtil;
+        this.userStoreContainer = userStoreContainer;
+        this.vehicleContainer = vehicleContainer;
+        this.customerContainer = customerContainer;
+        this.roleAuthorization = new RoleAuthorization(userStoreContainer);
 
+    }
 
 
     @PostMapping(headers = "Accept=application/json")
@@ -61,6 +67,8 @@ public class OrderController {
 
     @GetMapping()
     public ResponseEntity<List<Order>> getOrder(HttpServletRequest request) throws Exception {
+        roleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
+
         return ResponseEntity.ok(orderContainer.getOrders());
     }
 
@@ -80,7 +88,9 @@ public class OrderController {
 
     @GetMapping(params = "orderid")
     public ResponseEntity<Order> getOrderByOrderId(HttpServletRequest request, String orderid) throws Exception {
-            var orderIdObject = new ObjectId(orderid);
+        roleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
+
+        var orderIdObject = new ObjectId(orderid);
             return ResponseEntity.ok(orderContainer.getOrderById(orderIdObject));
     }
 
@@ -92,7 +102,9 @@ public class OrderController {
     }
 
     @GetMapping(value = "/active")
-    public ResponseEntity<?> getActiveOrders() throws Exception {
+    public ResponseEntity<?> getActiveOrders(HttpServletRequest request) throws Exception {
+        roleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
+
         return ResponseEntity.ok(orderContainer.getActiveOrders());
     }
 
@@ -104,7 +116,9 @@ public class OrderController {
     }
 
     @GetMapping(value = "/pending")
-    public ResponseEntity<?> getPendingOrder() throws Exception {
+    public ResponseEntity<?> getPendingOrder(HttpServletRequest request) throws Exception {
+        roleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
+
         return ResponseEntity.ok(orderContainer.getPendingOrders());
     }
 
@@ -128,7 +142,9 @@ public class OrderController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleteOrder(@PathVariable String id) throws Exception {
+    public ResponseEntity<?> deleteOrder(HttpServletRequest request, @PathVariable String id) throws Exception {
+        roleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
+
         orderContainer.deleteOrder(new ObjectId(id));
         return ResponseEntity.ok("Order deleted");
     }
