@@ -30,6 +30,7 @@ public class TicketContainerTest {
         ticketStore = mock(ITicketStore.class);
         container = new TicketContainer(ticketStore);
     }
+
     @Test
     public void canAddTicket() throws UnsupportedEncodingException, NoSuchAlgorithmException, TicketInvalidException {
         //setup
@@ -84,6 +85,7 @@ public class TicketContainerTest {
         //assert
         assertEquals(res, listOfTickets);
     }
+
     @Test
     public void getTicketReturnsTickets() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         //setup
@@ -101,6 +103,7 @@ public class TicketContainerTest {
         //assert
         assertEquals(res, listOfTickets);
     }
+
     @Test
     public void getTicketByStatusAndClientReturnsTickets() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         //setup
@@ -136,6 +139,7 @@ public class TicketContainerTest {
         //assert
         assertEquals(res, listOfTickets);
     }
+
     @Test
     public void canChangeTicketStatus() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         //setup
