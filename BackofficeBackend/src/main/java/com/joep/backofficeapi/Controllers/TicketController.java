@@ -25,19 +25,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/tickets")
 public class TicketController {
-    @Autowired
-    private RoleAuthorization roleAuthorization;
+    private final RoleAuthorization roleAuthorization;
 
-    @Autowired
-    private TicketContainer ticketContainer;
+    private final TicketContainer ticketContainer;
 
-    @Autowired
-    EmailUtil emailUtil;
+    final EmailUtil emailUtil;
 
-    @Autowired
-    private UserStoreContainer userStoreContainer;
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final UserStoreContainer userStoreContainer;
+    private final JwtUtil jwtUtil;
+
+    public TicketController(TicketContainer ticketContainer, EmailUtil emailUtil, UserStoreContainer userStoreContainer, JwtUtil jwtUtil) {
+        this.roleAuthorization = new RoleAuthorization(userStoreContainer);
+        this.ticketContainer = ticketContainer;
+        this.emailUtil = emailUtil;
+        this.userStoreContainer = userStoreContainer;
+        this.jwtUtil = jwtUtil;
+    }
 
     @PostMapping(value = "", headers = "Accept=application/json")
     ResponseEntity<?> addTicket(HttpServletRequest req, @RequestBody AddTicketRequest ticket) throws Exception {
@@ -56,7 +59,9 @@ public class TicketController {
 
 
     @GetMapping(params = "status", produces = "application/json")
-    List<Ticket> getTicketByStatus(TicketStatus status) throws BadRequestException {
+    List<Ticket> getTicketByStatus(HttpServletRequest request, TicketStatus status) throws Exception {
+        roleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
+
         return ticketContainer.getTicketByStatus(status);
     }
 

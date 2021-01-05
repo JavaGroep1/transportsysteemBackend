@@ -23,13 +23,15 @@ public class EmployeeController {
     private final RoleAuthorization roleAuthorization;
 
     @Autowired
-    public EmployeeController(UserStoreContainer userStoreContainer, RoleAuthorization roleAuthorization) {
+    public EmployeeController(UserStoreContainer userStoreContainer) {
         this.userStoreContainer = userStoreContainer;
-        this.roleAuthorization = roleAuthorization;
+        this.roleAuthorization = new RoleAuthorization(userStoreContainer);
     }
 
     @GetMapping
-    public ResponseEntity<List<ApplicationUser>> getEmployees() {
+    public ResponseEntity<List<ApplicationUser>> getEmployees(HttpServletRequest request) throws Exception {
+        roleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
+
         List<ApplicationUser> employees = new ArrayList<>();
         employees.addAll(userStoreContainer.getByRole(Roles.Admin));
         employees.addAll(userStoreContainer.getByRole(Roles.Employee));
@@ -39,6 +41,7 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<Boolean> createEmployee(HttpServletRequest req, @RequestBody ApplicationUser employee) throws Exception {
         roleAuthorization.checkRole(req, Roles.Admin);
+
         try {
             return ResponseEntity.ok(userStoreContainer.createUser(employee));
         } catch (Exception e) {
@@ -49,12 +52,14 @@ public class EmployeeController {
     @PutMapping
     public ResponseEntity<ApplicationUser> updateEmployee(HttpServletRequest req, @RequestBody EditEmployeeRequest editEmployeeRequest) throws Exception {
         roleAuthorization.checkRole(req, Roles.Admin);
+
         return ResponseEntity.ok(userStoreContainer.updateEmployee(editEmployeeRequest));
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<String> DeleteCustomer(HttpServletRequest req, @PathVariable("id") String Id) throws Exception {
         roleAuthorization.checkRole(req, Roles.Admin);
+        
         userStoreContainer.deleteUser(new ObjectId(Id));
         return ResponseEntity.ok("Deleted");
     }

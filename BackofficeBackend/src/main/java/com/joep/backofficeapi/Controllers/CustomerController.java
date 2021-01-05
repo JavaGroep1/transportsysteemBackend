@@ -10,6 +10,7 @@ import com.joep.backofficeapi.Models.Authentication.ApplicationUser;
 import com.joep.backofficeapi.Models.Authentication.Roles;
 import com.joep.backofficeapi.Models.Customer;
 import com.joep.backofficeapi.Models.Requests.Customer.EditCustomerRequest;
+import com.joep.backofficeapi.Util.Authorization.RoleAuthorization;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,21 +27,32 @@ import java.util.List;
 @RequestMapping("/customers")
 public class CustomerController {
 
-    @Autowired
-    private CustomerContainer customerContainer;
+    private final CustomerContainer customerContainer;
 
-    @Autowired
-    private UserStoreContainer userStoreContainer;
+    private final UserStoreContainer userStoreContainer;
+
+    private RoleAuthorization roleAuthorization;
+
+
+    public CustomerController(CustomerContainer customerContainer, UserStoreContainer userStoreContainer) {
+        this.customerContainer = customerContainer;
+        this.userStoreContainer = userStoreContainer;
+        this.roleAuthorization = new RoleAuthorization(userStoreContainer);
+    }
 
     @PostMapping(headers = "Accept=application/json")
-    public ResponseEntity<?> addCustomer(@RequestBody Customer customer, HttpServletRequest req) throws InterruptedException, OrderInvalidException, IOException {
+    public ResponseEntity<?> addCustomer(HttpServletRequest request, @RequestBody Customer customer, HttpServletRequest req) throws Exception {
+        roleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
+
         customerContainer.addCustomer(customer);
+
         return ResponseEntity.ok("ok");
     }
 
     @GetMapping()
     public ResponseEntity<?> getCustomers(HttpServletRequest request) throws Exception {
-        // RoleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
+        roleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
+
         List<ApplicationUser> customers = new ArrayList<>();
         customers.addAll(userStoreContainer.getByRole(Roles.Customer));
         customers.addAll(userStoreContainer.getByRole(Roles.Prospect));
@@ -55,7 +67,9 @@ public class CustomerController {
     }
       
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<?> DeleteCustomer(HttpServletRequest req, @PathVariable("id") String id) {
+    public ResponseEntity<?> DeleteCustomer(HttpServletRequest req, @PathVariable("id") String id) throws Exception {
+        roleAuthorization.checkRole(req, new Roles[]{Roles.Admin, Roles.Employee});
+
         userStoreContainer.deleteAccountByBusinessId(id);
         customerContainer.deleteCustomer(id);
         return ResponseEntity.ok("Deleted");
@@ -64,7 +78,9 @@ public class CustomerController {
 
 
     @PutMapping()
-    public ResponseEntity<?> editCustomer(@RequestBody EditCustomerRequest editCustomerRequest) throws CustomerNotFoundException, InvalidEmailException, EmailTakenException {
+    public ResponseEntity<?> editCustomer(HttpServletRequest request, @RequestBody EditCustomerRequest editCustomerRequest) throws Exception {
+        roleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
+
         userStoreContainer.changeRole(editCustomerRequest.getCustomerIdString(), editCustomerRequest.getProspect() ? Roles.Prospect : Roles.Customer);
         userStoreContainer.changeEmail(editCustomerRequest.getCustomerIdString(), editCustomerRequest.getEmail());
         customerContainer.updateCustomer(editCustomerRequest);
