@@ -120,6 +120,7 @@ public class UserStoreContainer implements UserDetailsService {
             throw new InvalidEmailException();
         }
         if (emailExists(employee.getEmail())) {
+            if (!employee.getEmail().equals(user.getEmail()))
             throw new EmailTakenException();
         }
         return store.updateEmployee(employee);

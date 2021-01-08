@@ -4,6 +4,7 @@ import org.bson.types.ObjectId;
 
 public class EditCustomerRequest {
     private ObjectId customerIdString;
+    private ObjectId userId;
     private String businessIdentifier;
     private String name;
     private String email;
@@ -19,6 +20,14 @@ public class EditCustomerRequest {
     }
 
     public EditCustomerRequest() {
+    }
+
+    public ObjectId getUserId() {
+        return userId;
+    }
+
+    public void setUserId(ObjectId userId) {
+        this.userId = userId;
     }
 
     public Boolean getProspect() {

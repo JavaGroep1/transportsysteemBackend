@@ -81,8 +81,12 @@ public class CustomerController {
     public ResponseEntity<?> editCustomer(HttpServletRequest request, @RequestBody EditCustomerRequest editCustomerRequest) throws Exception {
         roleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
 
+        ApplicationUser user = userStoreContainer.getUserById(editCustomerRequest.getUserId());
+
         userStoreContainer.changeRole(editCustomerRequest.getCustomerIdString(), editCustomerRequest.getProspect() ? Roles.Prospect : Roles.Customer);
-        userStoreContainer.changeEmail(editCustomerRequest.getCustomerIdString(), editCustomerRequest.getEmail());
+        if (!editCustomerRequest.getEmail().equals(user.getEmail())) {
+            userStoreContainer.changeEmail(editCustomerRequest.getCustomerIdString(), editCustomerRequest.getEmail());
+        }
         customerContainer.updateCustomer(editCustomerRequest);
         return ResponseEntity.ok("updated");
     }
