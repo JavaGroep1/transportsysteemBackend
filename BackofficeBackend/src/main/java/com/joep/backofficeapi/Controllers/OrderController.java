@@ -88,7 +88,7 @@ public class OrderController {
 
     @GetMapping(params = "orderid")
     public ResponseEntity<Order> getOrderByOrderId(HttpServletRequest request, String orderid) throws Exception {
-        roleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee});
+//        roleAuthorization.checkRole(request, new Roles[]{Roles.Admin, Roles.Employee})
 
         var orderIdObject = new ObjectId(orderid);
             return ResponseEntity.ok(orderContainer.getOrderById(orderIdObject));
